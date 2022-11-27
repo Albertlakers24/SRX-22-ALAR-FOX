@@ -4,3 +4,5 @@ a = 10
 b = 11
 print(a+b)
 print(a*b)
+d = 9
+print(a+d)
