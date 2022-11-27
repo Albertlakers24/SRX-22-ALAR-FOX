@@ -6,3 +6,5 @@ print(a+b)
 print(a*b)
 c = 12
 print(c+a)
+d = 9
+print(a+d)
