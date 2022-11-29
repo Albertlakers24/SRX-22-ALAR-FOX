@@ -4,4 +4,3 @@
 # Relationship: WOE = WE + Wtfo + Wcrew
 # Relationship: Wtfo = Mtfo * Wto
 
-#Jaaa
