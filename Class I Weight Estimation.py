@@ -8,10 +8,10 @@ import numpy as np
 # Cd = 2*Cd0
 # Cl = np.sqrt(np.pi()*A*Cd0 * A)
 #
-a = input("What is the a value of the linear regression?")
-b = input("What is the b value of the linear regression?")
+a = 0.5422 or 0.4985 #Linear regression from MTOW/ OEW (turboprop or turbrojet)
+b = 1455.2 or 1782.3 #Linear regression from MTOW/ OEW (turboprop or turbrojet)
 g = 9.80665
-A = 10#Aspect ratio (CHANGE)
-Cd0 = 2 #zero lift drag (CHANGE)
+A = #Aspect ratio (CHANGE)
+Cd0 = #zero lift drag (CHANGE)
 R = 1000 * 1852 # range in meters
 E = 35 * 60 # loiter endurance in seconds
