@@ -1,64 +1,72 @@
-# Output is MTOW and OEW
-#Outputs: WTO, WOE, WF, WFused
+import numpy as np
 
-# Input is
+# Outputs: MTOW OEW and WF
 # Relationships: MTOW = WOE + WF + WPL
-# Relationship: WOE = WE + Wtfo + Wcrew
-
-##FUEL Calculations
-
-# Relationship:
-# Wtfo = Mtfo * MTOW    (trapped fuel and oil) -> Mtfo 0.001 - 0.005
-# WPLtot = WPL + Wcrew
-# MTOW = WE + WF + WPLtot + Mtfo*WTO
-# WF = WFres + WFused
-# WFres =
-# WFused = Mused + MTOW
-# Mused = 1-Mff
-# Mff is the fraction method
-# R = (/)*(L/D)*ln(W4/W5) dependent on fueltype/propulsion system
-# E = (/)*(L/D)*ln(W8/W9)
-
-# FUEL DEPENDENT:
-# * Mtfo
-# * Mff
+# Relationships: MTOW = WE + WF + WPLtot + Wtfo
 
 
-#Inputs:    Dependent on fuel-type
-#           statics on Mff to be found on the slides (except cruise and loiter):
-#           for W4/WF5 (cruise) -> R      --to be calculated
-#           for W8/W9 (loiter) -> E
-#           Payload from statistics
-#           MTOW = a*WF +b ---given by Gabriel
-#           Mtfo = ?
-#           Wcrew = ?
-
-#WOE
-# WOE = WE + Wtfo + Wcrew
-#
-# Wtfo = Mtfo * MTOW    (trapped fuel and oil) -> Mtfo 0.001 - 0.005
+#Constants
 g = 9.80665
-Mtfo = #0.001 - 0.005
-Wcrew= 3*190*0.45359237*g     #in N
+R = 1000 * 1852                 #Range in meters
+E = 35 * 60                     #Loiter endurance in seconds
+Mtfo = #0.001 - 0.005           #Trapped fuel oil in fraction
+Wcrew= 3*190*0.45359237*g       #in N
+V_cruise =                      #m/s
+
+
+#Constant on estimation
+A =                             #Aspect ratio (CHANGE)
+e =                             #Oswald factor (CHANGE)
+Cd0 =                           #zero lift drag (CHANGE)   ---or through calculations?
+WPL = *g                        #From the guidelines
+eta_p =                         #propeller efficiency   -> maximize
+c_p =                           #propeller              -> minimize
+c_j =                           #jet                    -> minimize
+
+WPLtot = WPL + Wcrew
+
 WE = ##linear regression relating to MTOW depending on the aircraft
+a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
+b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
+
+#Wtfo = Mtfo * MTOW    (trapped fuel and oil)
 
 
-##WF
-#WF = WFres + WFused
-#WFres = Mres *WFused
-#WFused = Mused*MTOW
 
 
+#WF    use the fuel fraction method
 #WF = Mused*MTOW*(Mres + 1)
 
+# R = (/)*(L/D)*ln(W4/W5)         dependent on fueltype/propulsion system
+# E = (/)*(L/D)*ln(W8/W9)
+
+#W4/W5
+CL = np.sqrt(np.pi()*Cd0*A*e)
+CD = 2 * Cd0
+fuelfractioncruise_propeller = eta_p/(g*c_p)
+fuelfractioncruise_jet = V_cruise/(g*c_j)
+
+W4_5 = np.exp(R*(CD/CL)*(1/fraction_propeller))     # W4/W5 for propeller
+W4_5 = np.exp(R*(CD/CL)*(1/fraction_jet))           # W4/W5 for jet
+
+#W8/W9
+fuelfractionloiter_propeller = eta_p/(V*g*c_p)      
+fuelfractionloiter_jet = 1/(g*c_j)
+
+W8_9 = np.exp(E*(1/fuelfractionloiter_propeller)*(CD/CL))   # W8/W9 for propeller
+W8_9 = np.exp(E*(1/fuelfractionloiter_jet)*(CD/CL))   # W8/W9 for jet
+
+W1_TO =                      #statistics dependent on aircraft
+W2_1 =                       #statistics dependent on aircraft
+W3_2 =                       #statistics dependent on aircraft
+W4_3 =                       #statistics dependent on aircraft
+W6_5 =                       #statistics dependent on aircraft
+W7_6 =                       #statistics dependent on aircraft
+W8_7 =                       #statistics dependent on aircraft
+W10_9 =                      #statistics dependent on aircraft
+WF_10 =                      #statistics dependent on aircraft
+
+Mff = W1_TO*W2_1*W3_2*W4_3*(1/W4_5)*W6_5*W7_6*W8_7*(1/W8_9)*W10_9*WF_10                    
+
 Mres = 0.25
-Mff = ##from the fuel fraction method
 Mused = (1-Mff)
-
-
-
-
-
-
-
-
