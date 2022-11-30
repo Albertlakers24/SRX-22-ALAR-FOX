@@ -12,12 +12,14 @@ import numpy as np
 g = 9.80665
 R_norm = 1000 * 1852            #Range in meters
 E = 45 * 60                     #Loiter endurance in seconds
-Mtfo = #0.001 - 0.005           #Trapped fuel oil in fraction
-Wcrew= 3*190*0.45359237*g       #in N
-V_cruise =                      #m/s
+V_cruise = 275 * 0.51444444     #m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
-R_div =                         #m (CHANGE)
+R_div = 0                       #m (CHANGE)
 f_con = 5/100                   #-
+e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
+e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
+e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
+e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
 
 
 #Constant on estimation
@@ -28,12 +30,12 @@ eta_p =                         #propeller efficiency   -> maximize (CHANGE)
 c_p =                           #propeller              -> minimize (CHANGE)
 c_j =                           #jet                    -> minimize (CHANGE)
 se =                            #Specific Energy (MJ/kg) (CHANGE)
-
-WPLtot = WPL + Wcrew
-
+eta_EM =                        # Electric motor efficiency
+eta_p =                         # Propulsive efficiency
+eta_eng =                       # Thermodynamic efficiency of engine
 #linear regression relating to MTOW depending on the aircraft   WE = a*MTOW+b
-a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbojet)
-b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbojet)
+a = 0.5464 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbojet)
+b = 1439 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbojet)
 
 #Wtfo = Mtfo * MTOW    (trapped fuel and oil)
 
