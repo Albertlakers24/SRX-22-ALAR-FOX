@@ -23,7 +23,6 @@ f_con = 5/100                   #-
 #Constant on estimation
 A =                             #Aspect ratio (CHANGE) - high A for slender wing
 e =                             #Oswald factor (CHANGE)
-Cd0 =                           #zero lift drag (CHANGE)   ---or through calculations?
 WPL = *g                        #From the guidelines   (CHANGE)
 eta_p =                         #propeller efficiency   -> maximize (CHANGE)
 c_p =                           #propeller              -> minimize (CHANGE)
