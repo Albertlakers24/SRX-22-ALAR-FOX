@@ -54,10 +54,11 @@ b =                             #Linear regression for OEW
 
 
 #Cdo calculations
-Cd0 = Cfe*Swet_S
-
-#Oswald Factor Calculation
-e =                             #Oswald factor (CHANGE)
+Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
+phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
+e = 1/((np.pi)*A*Psi+(1/phi))
+Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
+Swet_S =                        #Wetted area ratios - depending on airframe structure
 
 CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
@@ -93,4 +94,5 @@ WPLtot = WPAX + WPAXBAGGAGE + WCargo
 MTOW = (b + WPLtot)/(Mff-a)
 WOE = a*MTOW + b
 WF = (Mres+1)*(1-Mff)*MTOW                  ##TO BE CHECKED
+
 ##REWRITTEN main FORMULA & add output formulas
