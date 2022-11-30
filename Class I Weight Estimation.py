@@ -28,7 +28,6 @@ e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/k
 #Constant on estimation
 A =                             #Aspect ratio (CHANGE) - high A for slender wing
 e =                             #Oswald factor (CHANGE)
-
 PAX = 50        #Number of passengers
 #WE = ##linear regression relating to MTOW depending on the aircraft
 OEW = ## linear regression relating to MTOW dependiin on the aircraft
