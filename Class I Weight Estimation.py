@@ -59,6 +59,7 @@ fuelfractionloiter_jet = 1/(g*c_j)
 W8_9 = np.exp(E*(1/fuelfractionloiter_propeller)*(CD/CL))   # W8/W9 for propeller
 W8_9 = np.exp(E*(1/fuelfractionloiter_jet)*(CD/CL))   # W8/W9 for jet
 
+
 W1_TO =                      #statistics dependent on aircraft
 W2_1 =                       #statistics dependent on aircraft
 W3_2 =                       #statistics dependent on aircraft
