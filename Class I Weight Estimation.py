@@ -51,6 +51,7 @@ b = 1439 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or tu
 WF = Mused*MTOW*(Mres + 1)
 
 #Cdo calculations
+e = 1/(np.pi)*A*thine
 Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
 Swet_S =                        #Wetted area ratios - depending on airframe structure
 Cd0 = Cfe*Swet_S
@@ -110,5 +111,5 @@ WPAX = 200*0.453592*PAX
 WPAXBAGGAGE = 40*0.453592*PAX
 WCargo = #Cargo Weight
 WPLtot = WPAX + WPAXBAGGAGE + WCargo
-MTOW = (b + WPLtot)/(Mff-1)
+MTOW = (b + WPLtot)/(Mff-a-Mres*(1-Mff))
 ##REWRITTEN main FORMULA & add output formulas
