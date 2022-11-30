@@ -48,7 +48,7 @@ CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
 fuelfractioncruise_propeller = eta_p/(g*c_p)
 fuelfractioncruise_jet = V_cruise/(g*c_j)
-
+asd
 W4_5 = np.exp(R*(CD/CL)*(1/fraction_propeller))     # W4/W5 for propeller
 W4_5 = np.exp(R*(CD/CL)*(1/fraction_jet))           # W4/W5 for jet
 
