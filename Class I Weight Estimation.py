@@ -6,24 +6,28 @@ import numpy as np
 # LOOK INTO MF/MTO FORMULA FROM ROLOEF READER
 # LIQUID FUELS WILL HAVE THE SAME FORMULA AS JET-A FUEL
 # BATTERIES WILL HAVE FORMULA WITHOUT ln()
-#
+
 
 #Constants
 g = 9.80665
-R = 1000 * 1852                 #Range in meters
-E = 35 * 60                     #Loiter endurance in seconds
+R_norm = 1000 * 1852            #Range in meters
+E = 45 * 60                     #Loiter endurance in seconds
 Mtfo = #0.001 - 0.005           #Trapped fuel oil in fraction
 Wcrew= 3*190*0.45359237*g       #in N
 V_cruise =                      #m/s
+h_cruise = 280*100 * 0.3048     #m
+R_div =                         #m (CHANGE)
+f_con = 5/100                   #-
 
 
 #Constant on estimation
 A =                             #Aspect ratio (CHANGE) - high A for slender wing
 e =                             #Oswald factor (CHANGE)
-WPL = *g                        #From the guidelines
-eta_p =                         #propeller efficiency   -> maximize
-c_p =                           #propeller              -> minimize
-c_j =                           #jet                    -> minimize
+WPL = *g                        #From the guidelines   (CHANGE)
+eta_p =                         #propeller efficiency   -> maximize (CHANGE)
+c_p =                           #propeller              -> minimize (CHANGE)
+c_j =                           #jet                    -> minimize (CHANGE)
+se =                            #Specific Energy (MJ/kg) (CHANGE)
 
 WPLtot = WPL + Wcrew
 
@@ -45,6 +49,8 @@ Cd0 = Cfe*Swet_S
 #W4/W5
 CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
+R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
+Req = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + E*V_cruise
 
 fuelfractioncruise_propeller = eta_p/(g*c_p)
 fuelfractioncruise_jet = V_cruise/(g*c_j)
@@ -58,6 +64,7 @@ fuelfractionloiter_jet = 1/(g*c_j)
 
 W8_9 = np.exp(E*(1/fuelfractionloiter_propeller)*(CD/CL))   # W8/W9 for propeller
 W8_9 = np.exp(E*(1/fuelfractionloiter_jet)*(CD/CL))   # W8/W9 for jet
+
 
 W1_TO =                      #statistics dependent on aircraft
 W2_1 =                       #statistics dependent on aircraft
