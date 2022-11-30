@@ -22,9 +22,9 @@ f_con = 5/100                   #-
 e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
 e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
 e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
-e_LNG =                         #MJ/kg Specific Energy LNG
-e_AVGAS = 44.7                  #MJ/kg Specific Energy AVGAS
 e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
+
+#Constant on estimation
 PAX = 50                        #Number of passengers
 WCargo =                        #Cargo Weight (TBD)
 eta_EM =                        # Electric motor efficiency
