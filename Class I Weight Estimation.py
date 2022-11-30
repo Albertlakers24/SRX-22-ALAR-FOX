@@ -18,9 +18,8 @@ V_cruise =                      #m/s
 
 
 #Constant on estimation
-A =                             #Aspect ratio (CHANGE)
+A =                             #Aspect ratio (CHANGE) - high A for slender wing
 e =                             #Oswald factor (CHANGE)
-Cd0 =                           #zero lift drag (CHANGE)   ---or through calculations?
 WPL = *g                        #From the guidelines
 eta_p =                         #propeller efficiency   -> maximize
 c_p =                           #propeller              -> minimize
@@ -28,24 +27,25 @@ c_j =                           #jet                    -> minimize
 
 WPLtot = WPL + Wcrew
 
-WE = ##linear regression relating to MTOW depending on the aircraft
-a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
-b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
+#linear regression relating to MTOW depending on the aircraft   WE = a*MTOW+b
+a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbojet)
+b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbojet)
 
 #Wtfo = Mtfo * MTOW    (trapped fuel and oil)
 
 
-
-
-#WF    use the fuel fraction method
+#WF use the fuel fraction method
 #WF = Mused*MTOW*(Mres + 1)
 
-# R = (/)*(L/D)*ln(W4/W5)         dependent on fueltype/propulsion system
-# E = (/)*(L/D)*ln(W8/W9)
+#Cdo calculations
+Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
+Swet_S =                        #Wetted area ratios - depending on airframe structure
+Cd0 = Cfe*Swet_S
 
 #W4/W5
 CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
+
 fuelfractioncruise_propeller = eta_p/(g*c_p)
 fuelfractioncruise_jet = V_cruise/(g*c_j)
 
@@ -74,3 +74,6 @@ Mff = W1_TO*W2_1*W3_2*W4_3*(1/W4_5)*W6_5*W7_6*W8_7*(1/W8_9)*W10_9*WF_10
 
 Mres = 0.25
 Mused = (1-Mff)
+
+
+##REWRITTEN main FORMULA & add output formulas
