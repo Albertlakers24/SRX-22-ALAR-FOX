@@ -7,39 +7,48 @@ import numpy as np
 # LIQUID FUELS WILL HAVE THE SAME FORMULA AS JET-A FUEL
 # BATTERIES WILL HAVE FORMULA WITHOUT ln()
 
+#Handy unit conversion
+#1 lbs = 0.453592 kg
+#1 ft = 0.3048 m
 
 #Constants
 g = 9.80665
 R_norm = 1000 * 1852            #Range in meters
 E = 45 * 60                     #Loiter endurance in seconds
-Mtfo = #0.001 - 0.005           #Trapped fuel oil in fraction
-Wcrew= 3*190*0.45359237*g       #in N
-V_cruise =                      #m/s
+V_cruise = 275 * 0.51444444     #m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
-R_div =                         #m (CHANGE)
+R_div = 0                       #m (CHANGE)
 f_con = 5/100                   #-
+e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
+e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
+e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
+e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
 
 
 #Constant on estimation
 A =                             #Aspect ratio (CHANGE) - high A for slender wing
 e =                             #Oswald factor (CHANGE)
-WPL = *g                        #From the guidelines   (CHANGE)
+
+PAX = 50        #Number of passengers
+#WE = ##linear regression relating to MTOW depending on the aircraft
+OEW = ## linear regression relating to MTOW dependiin on the aircraft
+a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
+b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
 eta_p =                         #propeller efficiency   -> maximize (CHANGE)
 c_p =                           #propeller              -> minimize (CHANGE)
 c_j =                           #jet                    -> minimize (CHANGE)
 se =                            #Specific Energy (MJ/kg) (CHANGE)
-
-WPLtot = WPL + Wcrew
+eta_EM =                        # Electric motor efficiency
+eta_p =                         # Propulsive efficiency
+eta_eng =                       # Thermodynamic efficiency of engine
 
 #linear regression relating to MTOW depending on the aircraft   WE = a*MTOW+b
-a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbojet)
-b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbojet)
+a = 0.5464 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbojet)
+b = 1439 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbojet)
 
 #Wtfo = Mtfo * MTOW    (trapped fuel and oil)
-
-
-#WF use the fuel fraction method
-#WF = Mused*MTOW*(Mres + 1)
+#WF    use the fuel fraction method
+WF = Mused*MTOW*(Mres + 1)
 
 #Cdo calculations
 Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
@@ -97,6 +106,9 @@ Mff = W1_TO*W2_1*W3_2*W4_3*(1/W4_5)*W6_5*W7_6*W8_7*(1/W8_9)*W10_9*WF_10
 
 Mres = 0.25
 Mused = (1-Mff)
-
-
+WPAX = 200*0.453592*PAX
+WPAXBAGGAGE = 40*0.453592*PAX
+WCargo = #Cargo Weight
+WPLtot = WPAX + WPAXBAGGAGE + WCargo
+MTOW = (b + WPLtot)/(Mff-1)
 ##REWRITTEN main FORMULA & add output formulas
