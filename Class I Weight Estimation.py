@@ -6,7 +6,11 @@ import numpy as np
 # LOOK INTO MF/MTO FORMULA FROM ROLOEF READER
 # LIQUID FUELS WILL HAVE THE SAME FORMULA AS JET-A FUEL
 # BATTERIES WILL HAVE FORMULA WITHOUT ln()
-#
+
+#Handy unit conversion
+#1 lbs = 0.453592 kg
+#1 ft = 0.3048 m
+
 
 #Constants
 g = 9.80665
@@ -26,9 +30,13 @@ eta_p =                         #propeller efficiency   -> maximize
 c_p =                           #propeller              -> minimize
 c_j =                           #jet                    -> minimize
 
-WPLtot = WPL + Wcrew
 
-WE = ##linear regression relating to MTOW depending on the aircraft
+
+
+PAX = 50        #Number of passengers
+
+#WE = ##linear regression relating to MTOW depending on the aircraft
+OEW = ## linear regression relating to MTOW dependiin on the aircraft
 a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
 b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
 
@@ -38,7 +46,7 @@ b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or 
 
 
 #WF    use the fuel fraction method
-#WF = Mused*MTOW*(Mres + 1)
+WF = Mused*MTOW*(Mres + 1)
 
 # R = (/)*(L/D)*ln(W4/W5)         dependent on fueltype/propulsion system
 # E = (/)*(L/D)*ln(W8/W9)
@@ -74,3 +82,9 @@ Mff = W1_TO*W2_1*W3_2*W4_3*(1/W4_5)*W6_5*W7_6*W8_7*(1/W8_9)*W10_9*WF_10
 
 Mres = 0.25
 Mused = (1-Mff)
+WPAX = 200*0.453592*PAX
+WPAXBAGGAGE = 40*0.453592*PAX
+WCargo = #Cargo Weight
+WPLtot = WPAX + WPAXBAGGAGE + WCargo
+MTOW = (b + WPLtot)/(Mff-1)
+
