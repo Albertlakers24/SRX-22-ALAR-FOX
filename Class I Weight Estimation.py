@@ -34,7 +34,6 @@ PAX = 50        #Number of passengers
 OEW = ## linear regression relating to MTOW dependiin on the aircraft
 a = 0.5422 or 0.4985            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
 b = 1455.2 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or turbrojet)
-WPL = *g                        #From the guidelines   (CHANGE)
 eta_p =                         #propeller efficiency   -> maximize (CHANGE)
 c_p =                           #propeller              -> minimize (CHANGE)
 c_j =                           #jet                    -> minimize (CHANGE)
