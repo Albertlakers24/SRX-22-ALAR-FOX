@@ -51,7 +51,9 @@ b = 1439 or 1782.3            #Linear regression from MTOW/ OEW (turboprop or tu
 WF = Mused*MTOW*(Mres + 1)
 
 #Cdo calculations
-e = 1/(np.pi)*A*thine
+Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
+phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
+e = 1/((np.pi)*A*Psi+(1/phi))
 Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
 Swet_S =                        #Wetted area ratios - depending on airframe structure
 Cd0 = Cfe*Swet_S
