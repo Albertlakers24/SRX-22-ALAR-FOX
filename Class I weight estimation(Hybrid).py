@@ -12,7 +12,13 @@ e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
 e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
 e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
 e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
-V_stall =
+s_takeoff_ISA= 1370             #Takeoff Distance at (ISA + 10 ◦C day) (m)
+s_takeoff_1524 = 1370           #Takeoff Distance at 1524 m above mean sea level (ISA + 10 ◦C day) (m)
+s_landing_ISA = 1370            #Landing Distance at (ISA + 10 ◦C day) (m)
+s_landing_1524 = 1370           #Landing Distance at 1524 m above mean sea level (ISA + 10 ◦C day) (m)
+density_0 =                     #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
+density_1524=                   #1524m ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
+
 #Cdo calculations
 Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
@@ -28,4 +34,18 @@ CD_to =
 CL_0 =
 CL_max =
 # Stall Speed Requirement
-W_S = 1/2 * rho * V_stall **2 * CL_max
+V_stall_land_1524 = np.sqrt(s_landing_1524 / 0.5915)
+V_stall_takeoff_1524 = np.sqrt(s_takeoff_1524 / 0.5915)
+#W_S = 1/2 * rho * V_stall **2 * CL_max
+
+# Take off Distance Requirement
+Rho = density / desnity_0
+#W_P = TOP/ (W_S) * CL_to * Rho
+
+# Rate of Climb Requirement
+
+# Climb Gradent Requirement
+
+# Cruise Speed Requirement
+
+# Landing Distance Requirement
