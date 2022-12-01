@@ -17,7 +17,7 @@ R_norm = 1852000                #Range in m
 E = 45 * 60                     #Loiter endurance in seconds
 V_cruise = 275 * 0.51444444     #m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
-R_div = 0                       #m
+R_div = 0                       #m                                          CHANGE!!!
 f_con = 5/100                   #-
 PAX = 50                        #Number of passengers
 
