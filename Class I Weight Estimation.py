@@ -20,6 +20,7 @@ h_cruise = 280*100 * 0.3048     #m
 R_div = 0                       #m                                          CHANGE!!!
 f_con = 5/100                   #-
 PAX = 50                        #Number of passengers
+Mres = 0.25                     #-
 
 #Constants depending on the aircraft
 e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
@@ -41,7 +42,7 @@ phi = 0.97                      #- span efficiency factor (value based on Roelof
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 eta_p =    eta_p_turbo          #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
-e_f = e_kero*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+e_f = e_lh2*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
 
 #Intermediate calculations
 eta_eng_prop = (1/e_f)*(1/PSFC)                     # thermodynamic efficiency of engine turbo/piston
@@ -49,8 +50,8 @@ eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)     # thermodynamic efficiency o
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 A = 12                          #- aspect ratio -> high A for slender wing
-Cfe = 0.0045                    #- equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S = 7                      #- wetted area ratios -> depending on airframe structure
+Cfe = 0.003                     #- equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Swet_S = 6                      #- wetted area ratios -> depending on airframe structure
 eta_eng =  eta_eng_prop         #- engine efficiency             (TYPES: jet, propeller)
 a =    a_p                      #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =       b_p                   #N linear regression for OEW     (TYPES: turboprop, turbojet)
@@ -71,7 +72,6 @@ mbat_MTO_FULL = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))                            #-
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 Mused = mfuel_MTO_FULL                                                        #-
-Mres = 0.25                                                                   #-
 
 WPAX = 200*0.453592*PAX*g + 3*190*0.453592*g                                  #N
 WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N Crew is bagageless
