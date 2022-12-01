@@ -64,7 +64,7 @@ phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
 e = 1/((np.pi)*A*Psi+(1/phi))
 Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
 Swet_S =                        #Wetted area ratios - depending on airframe structure
-
+Cd0 = Cfe * Swet_S
 CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
 
