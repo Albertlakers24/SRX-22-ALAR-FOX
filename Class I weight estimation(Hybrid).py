@@ -57,3 +57,5 @@ H_p_ser = P_em_max / P_ice_max
 
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
+#Create Wing Loading diagram
+#Create split point by ratio
