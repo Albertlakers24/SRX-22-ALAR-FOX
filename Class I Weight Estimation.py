@@ -26,7 +26,7 @@ e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/k
 
 #Constant on estimation
 PAX = 50                        #Number of passengers
-WCargo =                        #Cargo Weight (TBD)
+WCargo = g*(30*2 +40*50)*0.453592   #Cargo Weight (TBD)
 eta_EM = 0.95                   # Electric motor efficiency
 PSFC = 0.48                     # Power Specific Fuel Consumption    --- to be checked
 TSFC = 0.67                     # Thrust Specific Fuel Consumption
@@ -38,17 +38,22 @@ a_j = 0.4985                    # turbojet
 b_p = 1439                      # turboprop
 b_j = 1782.3                    # turbojet
 
+e_f = e_lh2         #CHANGE               # Specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+#calculation Turboprop/piston
+eta_eng_prop = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
+#calculation Jet engine
+eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)
+
 # Variable Constants depending on aircraft features
 A =    #(CHANGE)                # Aspect ratio - high A for slender wing
-Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
-Swet_S =                        # Wetted area ratios - depending on airframe structure
+Cfe = 0.0045  #(CHANGE)               #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
+Swet_S = 6.2       #(CHANGE)      # Wetted area ratios - depending on airframe structure
 
 # Depending on energy source
-e_f =                           # Specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
-eta_eng =                       # Engine efficiency             (TYPES: jet, propeller)
-eta_p =                         # Propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
-a =                             # Linear regression for OEW     (TYPES: turboprop, turbojet)
-b =                             # Linear regression for OEW     (TYPES: turboprop, turbojet)
+eta_eng =  eta_eng_prop   #CHANGE                   # Engine efficiency             (TYPES: jet, propeller)
+eta_p =    eta_p_turbo      #CHANGE                # Propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
+a =    a_p        #CHANGE                  # Linear regression for OEW     (TYPES: turboprop, turbojet)
+b =       b_p             #CHANGE          # Linear regression for OEW     (TYPES: turboprop, turbojet)
 
 #Cdo calculations
 Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
@@ -60,17 +65,8 @@ CL = np.sqrt(np.pi()*Cd0*A*e)
 CD = 2 * Cd0
 
 
-
-#calculation Turboprop/piston
-eta_eng = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
-
-#calculation Jet engine
-eta_eng = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)
-
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 Req = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + E*V_cruise
-
-
 
 #take-off, climb, descent, deceleration
 R = R_lost*(1+f_con)
@@ -82,15 +78,13 @@ R = (R_norm)*(1+f_con) + 1.2 * R_div + E*V_cruise
 mfuel_MTO = 1- np.exp(-R/(eta_eng*eta_p*(e_f/g)*(CL/CD)))
 mbat_MTO = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))
 
-
-
-#cruise + loiter cruise + take-off, clmib, descent, deceleration
+#Full flight: cruise + loiter cruise + take-off, clmib, descent, deceleration
 R = Req
-mfuel_MTO = 1- np.exp(-R/(eta_eng*eta_p*(e_f/g)*(CL/CD)))
-mbat_MTO = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))
+mfuel_MTO_FULL = 1- np.exp(-R/(eta_eng*eta_p*(e_f/g)*(CL/CD)))
+mbat_MTO_FULL = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))
 
 ##dependent on aircraft fuel use
-Mff =                                   #dependent on energy source
+Mff = mfuel_MTO_FULL                                     #dependent on energy source
 Mres = 0.25
 
 WPAX = 200*0.453592*PAX
