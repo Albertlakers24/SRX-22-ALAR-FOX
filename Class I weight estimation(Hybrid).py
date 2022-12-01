@@ -43,7 +43,7 @@ Rho = density_1524 / desnity_0 #
 # Rate of Climb Constraint
 
 # Climb Gradent Constraint
-
+W_P = eff_prop / (np.sqrt(W_S)*(climb_grad + CD_to/CL_to)*(np.sqrt((2/density_1524)*(1/CL_to))))
 # Cruise Speed Constraint
 
 # Landing Distance Constraint
