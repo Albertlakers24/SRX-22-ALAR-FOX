@@ -12,7 +12,7 @@ import numpy as np
 #1 ft = 0.3048 m
 
 #Constants
-g = 9.80665
+g = 9.80665                     #gravity
 R_norm = 1000 * 1852            #Range in meters
 E = 45 * 60                     #Loiter endurance in seconds
 V_cruise = 275 * 0.51444444     #m/s (TAS)
@@ -26,7 +26,7 @@ e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/k
 
 #Constant on estimation
 PAX = 50                        #Number of passengers
-WCargo = g*(30*2 +40*50)*0.453592   #Cargo Weight (TBD)
+WCargo = (30*2 +40*50)*0.453592 * g   #Cargo Weight (TBD)
 eta_EM = 0.95                   # Electric motor efficiency
 PSFC = 0.48                     # Power Specific Fuel Consumption    --- to be checked
 TSFC = 0.67                     # Thrust Specific Fuel Consumption
@@ -38,6 +38,7 @@ a_j = 0.4985                    # turbojet
 b_p = 1439                      # turboprop
 b_j = 1782.3                    # turbojet
 
+eta_p =    eta_p_turbo      #CHANGE                # Propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
 e_f = e_lh2         #CHANGE               # Specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
 #calculation Turboprop/piston
 eta_eng_prop = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
@@ -45,13 +46,12 @@ eta_eng_prop = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
 eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)
 
 # Variable Constants depending on aircraft features
-A =    #(CHANGE)                # Aspect ratio - high A for slender wing
+A = 10   #(CHANGE)                # Aspect ratio - high A for slender wing
 Cfe = 0.0045  #(CHANGE)               #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
 Swet_S = 6.2       #(CHANGE)      # Wetted area ratios - depending on airframe structure
 
 # Depending on energy source
 eta_eng =  eta_eng_prop   #CHANGE                   # Engine efficiency             (TYPES: jet, propeller)
-eta_p =    eta_p_turbo      #CHANGE                # Propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
 a =    a_p        #CHANGE                  # Linear regression for OEW     (TYPES: turboprop, turbojet)
 b =       b_p             #CHANGE          # Linear regression for OEW     (TYPES: turboprop, turbojet)
 
@@ -61,7 +61,7 @@ phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
 e = 1/((np.pi)*A*Psi+(1/phi))
 
 Cd0 = Cfe * Swet_S
-CL = np.sqrt(np.pi()*Cd0*A*e)
+CL = np.sqrt(np.pi*Cd0*A*e)
 CD = 2 * Cd0
 
 
@@ -98,4 +98,6 @@ WF = (Mres+1)*(1-Mff)*MTOW                  ##TO BE CHECKED
 
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
+print(Mff)
 print("Operational Empty Weight =", WOE)
+print("R =",R)
