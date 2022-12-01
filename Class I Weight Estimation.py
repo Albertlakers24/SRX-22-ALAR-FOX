@@ -27,8 +27,9 @@ e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/k
 #Constant on estimation
 PAX = 50                        #Number of passengers
 WCargo =                        #Cargo Weight (TBD)
-eta_EM =                        # Electric motor efficiency
-eta_eng =                       # Thermodynamic efficiency of engine
+eta_EM = 0.95                   # Electric motor efficiency
+PSFC =                          # Power Specific Fuel Consumption
+TSFC =                          # Thrust Specific Fuel Consumption
 eta_p_home = 0.7                # Propulsive efficiency - homebuilts
 eta_p_single = 0.80             # Propulsive efficiency - single engine/motor props
 eta_p_twin = 0.82               # Propulsive efficiency - twin engine props
@@ -51,7 +52,11 @@ eta_p =                         # Propulsive efficiency depending on airplane ty
 a =                             #Linear regression for OEW
 b =                             #Linear regression for OEW
 
+#calculation Turboprop/piston
+eta_eng = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
 
+#calculation Jet engine
+eta_eng = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)
 
 #Cdo calculations
 Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
