@@ -14,14 +14,13 @@ e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
 e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
 s_takeoff_1524 = 1370           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 s_landing_1524 = 1370           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-density_0 =                     #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
-density_1524=                   #1524m ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
-
-#Cdo calculations
+rho_0=                          #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
+rho_1524=                       #1524m ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
+##Cdo calculations
 Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
 e = 1/((np.pi())*A*Psi+(1/phi))
-Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
+Cfe =                           #Equivalent skin friction coefficient
 Swet_S =                        #Wetted area ratios - depending on airframe structure
 Cd0 = Cfe * Swet_S
 CL = np.sqrt(np.pi()*Cd0*A*e)
@@ -48,3 +47,13 @@ Rho = density_1524 / desnity_0 #
 # Cruise Speed Constraint
 
 # Landing Distance Constraint
+
+#Degree of Hybridization of Power(Hp)
+# Choice between Parallel and Series needs to be made
+#If Parallel:
+H_p_para = P_em_max / P_max
+#If Series:
+H_p_ser = P_em_max / P_ice_max
+
+#Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
+He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
