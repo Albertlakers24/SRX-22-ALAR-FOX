@@ -13,7 +13,7 @@ import numpy as np
 
 #Constants
 g = 9.80665                     #gravity
-R_norm = 1000 * 1852            #Range in meters
+R_norm = 1852                   #Range in km
 E = 45 * 60                     #Loiter endurance in seconds
 V_cruise = 275 * 0.51444444     #m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
@@ -65,8 +65,8 @@ CL = np.sqrt(np.pi*Cd0*A*e)
 CD = 2 * Cd0
 
 
-R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
-Req = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + E*V_cruise
+R_lost = (1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g))))/1000           #km
+Req = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + (E*V_cruise)/1000             #km - Rnorm is gone
 
 #take-off, climb, descent, deceleration
 R = R_lost*(1+f_con)
@@ -80,7 +80,7 @@ mbat_MTO = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))
 
 #Full flight: cruise + loiter cruise + take-off, clmib, descent, deceleration
 R = Req
-mfuel_MTO_FULL = 1- np.exp(-R/(eta_eng*eta_p*(e_f/g)*(CL/CD)))
+mfuel_MTO_FULL = 1-np.exp(-R/(eta_eng*eta_p*(e_f/g)*(CL/CD)))
 mbat_MTO_FULL = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))
 
 ##dependent on aircraft fuel use
@@ -96,8 +96,18 @@ MTOW = (b + WPLtot)/(Mff-a)
 WOE = a*MTOW + b
 WF = (Mres+1)*(1-Mff)*MTOW                  ##TO BE CHECKED
 
+parameter = -R/(eta_eng*eta_p*(e_f/g)*(CL/CD))
+
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
-print(Mff)
 print("Operational Empty Weight =", WOE)
+
+print("Mff =", Mff)
 print("R =",R)
+print("eta_engine = ", eta_eng)
+print("eta_p", eta_p)
+print("e_f = ",e_f)
+print("CL =",CL)
+print("CD =", CD)
+
+print(parameter)
