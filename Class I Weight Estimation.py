@@ -40,10 +40,16 @@ b_p = 1439                      # turboprop
 b_j = 1782.3                    # turbojet
 
 # Variable Constants depending on aircraft features
-# Depending on aircraft framework
 A =                             # Aspect ratio (CHANGE) - high A for slender wing
-Cfe =                           # Equivalent skin friction coefficient - depending on empirical estimation
-Swet_S =                        # Wetted area ratios - depending on airframe structure
+#Cdo calculations
+Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
+phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
+e = 1/((np.pi)*A*Psi+(1/phi))
+Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
+Swet_S =                        #Wetted area ratios - depending on airframe structure
+Cd0 = Cfe * Swet_S
+CL = np.sqrt(np.pi()*Cd0*A*e)
+CD = 2 * Cd0
 
 # Depending on energy source
 e_f =                           # Specfic Energy per fuel type
@@ -57,17 +63,6 @@ eta_eng = (1/e_f)*(1/PSFC)      # Thermodynamic efficiency of engine
 
 #calculation Jet engine
 eta_eng = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)
-
-#Cdo calculations
-Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
-phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
-e = 1/((np.pi)*A*Psi+(1/phi))
-Cfe =                           #Equivalent skin friction coefficient - depending on aircraft from empirical estimation
-Swet_S =                        #Wetted area ratios - depending on airframe structure
-Cd0 = Cfe * Swet_S
-CL = np.sqrt(np.pi()*Cd0*A*e)
-CD = 2 * Cd0
-
 
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 Req = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + E*V_cruise
