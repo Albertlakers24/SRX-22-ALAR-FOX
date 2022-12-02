@@ -20,6 +20,7 @@ W_S = np.arange(1,3000,1)
 ##Cdo calculations
 Psi = 0.0075 #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97   #span efficiency factor (value based on Roelof reader p.46)
+A =             #Aspect Ratio
 e = 1/((np.pi())*A*Psi+(1/phi))
 Cfe =                           #Equivalent skin friction coefficient
 Swet_S =                        #Wetted area ratios - depending on airframe structure
@@ -39,17 +40,17 @@ stall_criteria_takeoff = 1/2 * density_1524 * V_stall_takeoff_1524 **2 * CL_max_
 stall_criteria_landing = 1/2 * density_1524 * V_stall_land_1524 **2 * CL_max_land
 
 # Take off Distance Constraint
-Rho = density_1524 / density_0 #
+Rho = rho_1524 / rho_0 #
 W_P_TOP = TOP/ ((W_S) * CL_to * Rho)
 
 # Rate of Climb Constraint
-
+W_P_ROC = eff_prop / (climb_grad +(np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*(A*e)**(3/4)/Cd0**(1/4)) )
 # Climb Gradent Constraint
-W_P_cv = eff_prop / (np.sqrt(W_S)*(climb_grad + CD_to/CL_to)*(np.sqrt((2/density_1524)*(1/CL_to))))
+W_P_cv = eff_prop / (np.sqrt(W_S)*(climb_grad + CD_to/CL_to)*(np.sqrt((2/rho_1524)*(1/CL_to))))
 # Cruise Speed Constraint
-W_P_cru
+W_P_cru = eff_prop * (rho_1524 /rho_0)**(3/4) * ((Cd0*(1/2)*rho_1524*V_cruise**3)/W_S + W_S*(1/(np.pi()*A*e*rho_1524*V_cruise)))**(-1)
 # Landing Distance Constraint
-W_P_land
+landing_criteria = (CL_max * rho_1524 * s_landing_1524/0.5915)/(2*0.95) #Change to CS25 regulation
 #Degree of Hybridization of Power(Hp)
 # Choice between Parallel and Series needs to be made
 #If Parallel:
@@ -60,12 +61,12 @@ H_p_ser = P_em_max / P_ice_max
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 #Create Wing Loading diagram and split points
-plt.vlines(stall_criteria_takeoff,0,1,'b',label = "V_stall Takeoff")
+plt.vlines(stall_criteria_takeoff,0,100,'b',label = "V_stall Takeoff")
 plt.plot(W_S,1/W_P_TOP,'r',label = "Takeoff Constraint")
 plt.plot(W_S,1/W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,1/W_P_cv,'g',label = "Climb Gradient Constraint")
 plt.plot(W_S,1/W_P_cru,'m',label = "Cruise Constraint")
-plt.plot(W_S,1/W_P_land,'y',label = "Landing Constraint")
+plt.vlines(landing_criteria,'y',label = "Landing Constraint")
 plt.xlabel("W/S")
 plt.ylabel("W/P")
 plt.ylim(0,1)
