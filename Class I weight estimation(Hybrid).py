@@ -31,6 +31,7 @@ CL_to =
 CD_to =
 CL_0 =
 CL_max =
+## THE DOCUMENT HAS P/W INSTEAD OF W/P
 # Stall Speed Requirement (CHECK WHICH RHO TO TAKE)
 V_stall_land_1524 = np.sqrt(s_landing_1524 / 0.5915)
 V_stall_takeoff_1524 = np.sqrt(s_takeoff_1524 / 0.5915)
