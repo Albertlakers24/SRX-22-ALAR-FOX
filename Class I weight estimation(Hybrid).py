@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 g = 9.80665
 R_norm = 1000 * 1852            #Range in meters
 E = 45 * 60                     #Loiter endurance in seconds
-V_cruise = 275 * 0.51444444     #m/s (TAS)
+V_cruise = 275 * 0.51444444     #knt -> m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
 R_div = 0                       #m (TBD)  --> to be determined in literature
 f_con = 5/100                   #-
@@ -61,11 +61,11 @@ H_p_ser = P_em_max / P_ice_max
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 #Create Wing Loading diagram and split points
 plt.vlines(stall_criteria_takeoff,0,1,'b',label = "V_stall Takeoff")
-plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
-plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
-plt.plot(W_S,W_P_cv,'g',label = "Climb Gradient Constraint")
-plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
-plt.plot(W_S,W_P_land,'y',label = "Landing Constraint")
+plt.plot(W_S,1/W_P_TOP,'r',label = "Takeoff Constraint")
+plt.plot(W_S,1/W_P_ROC,'c',label = "Rate of Climb Constraint")
+plt.plot(W_S,1/W_P_cv,'g',label = "Climb Gradient Constraint")
+plt.plot(W_S,1/W_P_cru,'m',label = "Cruise Constraint")
+plt.plot(W_S,1/W_P_land,'y',label = "Landing Constraint")
 plt.xlabel("W/S")
 plt.ylabel("W/P")
 plt.ylim(0,1)
