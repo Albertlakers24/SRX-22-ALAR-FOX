@@ -79,7 +79,7 @@ W_P_TOP = TOP/ (W_S) * CL_to * Rho
 # Landing Distance Constraint
 W_S_land = (CL_land * rho_0 * s_landing/0.5915)/(2*0.95) #Change to CS25 regulation
 # Cruise Speed Constraint
-W_P_cru = eff_prop * (rho_rho0)**(3/4) * ((((Cd0*1/2*rho_2000*V_cruise**3)/W_S)+(W_S*(1/(np.pi*A*e*1/2*rho_2000*V_cruise))))**(-1))
+W_P_cru = eff_prop * (rho_rho0)**(3/4) * ((((Cd0*1/2*rho_2000*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_2000*V_cruise)))**(-1))
 # Rate of Climb Constraint
 W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
