@@ -22,7 +22,7 @@ W_S = np.arange(1,3000,1)
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A =                             #Aspect Ratio
-e = 1/((np.pi())*A*Psi+(1/phi))
+e = 1/(np.pi*A*Psi+(1/phi))
 Cfe =                           #Equivalent skin friction coefficient
 Swet_S =                        #Wetted area ratios - depending on airframe structure
 Cd0 = Cfe * Swet_S
@@ -72,3 +72,6 @@ H_p_ser = P_em_max / P_ice_max
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 
+#Mass Preliminary Calculation
+P_max = MTOW_desing / W_P_design
+S = MTOW / W_S_design
