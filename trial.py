@@ -44,6 +44,7 @@ W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4
 W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + CD_to/CL_to)*(np.sqrt((2/rho_0)*(1/CL_to))))
 
 
+
 print("cruise density =", rho_cruise)
 print("VTO =",V_to)
 print("Vcruise =", V_cruise)
