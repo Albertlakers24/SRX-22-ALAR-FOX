@@ -8,7 +8,7 @@ R_norm = 1000 * 1852            #Range in meters
 E = 45 * 60                     #Loiter endurance in seconds
 V_cruise = 275 * 0.51444444     #knt -> m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
-R_div = 0                       #m (TBD)  --> to be determined in literature
+R_div = 200*1000                #m (TBD)  --> to be determined in literature
 f_con = 5/100                   #-
 s_takeoff_1524 = 1370           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 s_landing_1524 = 1370           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
@@ -77,7 +77,7 @@ S = MTOW_design / W_S_design
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
 t_toal =
 t_cruise =
-delta_v =
+delta_v = 
 E_nc =
 E_total = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*(t_total - t_cruise)
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
