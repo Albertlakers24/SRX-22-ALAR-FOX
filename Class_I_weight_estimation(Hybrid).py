@@ -75,3 +75,4 @@ He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 #Mass Preliminary Calculation
 P_max = MTOW_desing / W_P_design
 S = MTOW / W_S_design
+

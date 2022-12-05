@@ -17,7 +17,7 @@ R_norm = 1852000                #Range in m
 E = 45 * 60                     #Loiter endurance in seconds
 V_cruise = 275 * 0.51444444     #m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
-R_div = 0                       #m                                          CHANGE!!!
+R_div = 200000                  #m
 f_con = 5/100                   #-
 PAX = 50                        #Number of passengers
 Mres = 0.25                     #-
@@ -41,8 +41,9 @@ Psi = 0.0075                    #- parasite drag dependent on the lift coefficie
 phi = 0.97                      #- span efficiency factor (value based on Roelof reader p.46)
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
-eta_p =    eta_p_turbo          #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
-e_f = e_lh2*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
+e_f = e_lh2*1000000             #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+
 
 #Intermediate calculations
 eta_eng_prop = (1/e_f)*(1/PSFC)                     # thermodynamic efficiency of engine turbo/piston
@@ -51,8 +52,8 @@ eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)     # thermodynamic efficiency o
 #TO BE CHANGED DEPENDING ON THE DESIGN
 A = 12                          #- aspect ratio -> high A for slender wing
 Cfe = 0.003                     #- equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S = 6                      #- wetted area ratios -> depending on airframe structure
-eta_eng =  eta_eng_prop         #- engine efficiency             (TYPES: jet, propeller)
+Swet_S = 6                      #- (6.0-6.2) wetted area ratios -> depending on airframe structure
+eta_eng = eta_eng_prop          #- engine efficiency             (TYPES: jet, propeller)
 a =    a_p                      #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =       b_p                   #N linear regression for OEW     (TYPES: turboprop, turbojet)
 
@@ -77,25 +78,12 @@ WPAX = 200*0.453592*PAX*g + 3*190*0.453592*g                                  #N
 WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N Crew is bagageless
 
 
+#OUTPUTS
+
 WPLtot = WPAX + WPAXBAGGAGE                                                   #N
 MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                                      #N
 WOE = a*MTOW + b                                                              #N
 WF = MTOW*(Mused*(1+Mres))                                                    #N
-
-
-
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
 print("Operational Empty Weight =", WOE)
-print("R =",R)
-print("eta_engine = ", eta_eng)
-print("eta_p", eta_p)
-print("e_f = ",e_f)
-print("CL =",CL)
-print("CD =", CD)
-print("Rlost =", R_lost, "[m]")
-print("PSFC =", PSFC)
-print("Wpl =", WPLtot, "[N]")
-print("W")
-
-
