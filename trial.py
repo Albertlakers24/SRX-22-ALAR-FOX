@@ -57,3 +57,4 @@ plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.legend(loc='center right', bbox_to_anchor=(1.0, 0.5))
 plt.show()
+
