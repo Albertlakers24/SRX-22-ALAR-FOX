@@ -19,7 +19,7 @@ Cd0 = 0.0335                    #- calculated in Class I conventional: Cdo =Swet
 ROC = 20                        #m/s higher more constraints
 ROC_V = 0.083                   #- gradient
 CL_to_max = 2.5                 #- (1.9-3.3)
-CL_land = 1.9                   #- ? (1.7-2.1) (max?)
+CL_land = 1.9                   #-  (1.7-2.1) (max?)
 TOP = 300                       #- (420-460) -> from Raymer graph
 V_stall = 61 * 0.514444         #m/s maximum 61kts for CS23
 
