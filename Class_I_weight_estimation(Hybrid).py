@@ -26,7 +26,6 @@ e = 1/(np.pi*A*Psi+(1/phi))
 Cfe =                           #Equivalent skin friction coefficient
 Swet_S =                        #Wetted area ratios - depending on airframe structure
 Cd0 = Cfe * Swet_S
-CL = np.sqrt(np.pi()*Cd0*A*e)
 #Aerodynamic Estimations
 CL_max =                        #Change with Literature
 CL_to =                         #Change with Estimate
@@ -62,17 +61,36 @@ plt.yticks(np.arange(0,0.41,0.05))
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
-#Degree of Hybridization of Power(Hp)
+'''#Degree of Hybridization of Power(Hp)
 # Choice between Parallel and Series needs to be made
 #If Parallel:
 H_p_para = P_em_max / P_max
 #If Series:
 H_p_ser = P_em_max / P_ice_max
 
-#Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
-He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
-
 #Mass Preliminary Calculation
-P_max = MTOW_desing / W_P_design
-S = MTOW / W_S_design
-
+MTOW_design=
+W_P_design =
+W_S_design =
+P_max = MTOW_design / W_P_design
+S = MTOW_design / W_S_design
+#Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
+t_toal =
+t_cruise =
+delta_v =
+E_nc =
+E_total = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*(t_total - t_cruise)
+He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
+eta_stt =                   #Efficiency chain from shaft-to-thrust
+eta_btt =                   #Efficiency chain from battery-to-thrust
+NoD_ice =                   #Number of turboprop engines
+NoD_em =                    #Number of electric motor engines
+P_ice = (E_total - E_nc)/ (eta_stt * t_toal * NoD_ice)
+P_em = E_nc/ (eta_btt * t_toal * NoD_em)
+tf =                        #Trap fuel time step
+BSFC=                       #Brake-specific fuel consumption
+ddp =                       #Deep discharge protection
+E_bat =                     #Total Battery Energy
+m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
+m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
+m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
