@@ -2,33 +2,37 @@ import numpy as np
 from matplotlib import pyplot as plt
 n_eng =                                                    #Engine efficiency
 n_p =                                                        #Propulsive efficiency
-L/D =                                                       #Lift over drag
+L/D = 16                                                      #Lift over drag
 e_f =                                                       #
-g =                                                         #
+g = 9.81                                                        #
 m_oe =                                                      #given
 m_plmax =                                                   #  max payload mass, obtained from comparing with other aircraft                                                    #
 m_mto  =                                                    #given
-#Point A
+# #Point A
 ranges = [0]
-plmasses = [m_pl]
+plmasses = [m_pldes]
 #Point B (Range at Max Payload)
-m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
+# m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
+#
+# R_b = n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_pl))
+#
+# m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
+#
+# ranges = np.append(ranges, [R_b])
+# plmasses = np.append(plmasses, [m_pl])
 
-R_b = n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_pl))
-
-m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
-
-ranges = np.append(ranges, [R_b])
-plmasses = np.append(plmasses, [m_pl])
-
-print(ranges)
+#print(ranges)
 
 #Point C (Design Range)
-
-R_lost = (1/0.7) * (L/D)_crs * (h_cr + ((V_cr **2)/(2*g)))
+V_cr = 143.89
+h_cr = 11000
+LD_crs = 16.7
+R_lost = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
+print(R_lost)
+R_nom = 1852000
 R_eq = ((R_nom + R_lost)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 R_aux = R_eq - R_nom
-m_pldes
+m_pldes = 100*50
 
 R_c = (n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_pldes + m_f)/(m_oe + m_pldes))) - R_aux
 
