@@ -44,6 +44,7 @@ phi = 0.97                      #- span efficiency factor (value based on Roelof
 eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
 e_f = e_lh2*1000000             #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
 
+
 #Intermediate calculations
 eta_eng_prop = (1/e_f)*(1/PSFC)                     # thermodynamic efficiency of engine turbo/piston
 eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)     # thermodynamic efficiency of engine jet
@@ -56,7 +57,7 @@ eta_eng = eta_eng_prop          #- engine efficiency             (TYPES: jet, pr
 a =    a_p                      #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =       b_p                   #N linear regression for OEW     (TYPES: turboprop, turbojet)
 
-#Calculations Aerodynamic Characteristics
+#Calculations Aerodynamics
 e = 1/((np.pi)*A*Psi+(1/phi))   #-
 Cd0 = Cfe * Swet_S              #-
 CL = np.sqrt(np.pi*Cd0*A*e)     #-
@@ -78,22 +79,11 @@ WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N
 
 
 #OUTPUTS
+
 WPLtot = WPAX + WPAXBAGGAGE                                                   #N
 MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                                      #N
 WOE = a*MTOW + b                                                              #N
 WF = MTOW*(Mused*(1+Mres))                                                    #N
-
-
-
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
 print("Operational Empty Weight =", WOE)
-#print("R =",R)
-#print("eta_engine = ", eta_eng)
-#print("eta_p", eta_p)
-#print("e_f = ",e_f)
-print("CL =",CL)
-print("CD =", CD)
-#print("Rlost =", R_lost, "[m]")
-#print("PSFC =", PSFC)
-#print("Wpl =", WPLtot, "[N]")
