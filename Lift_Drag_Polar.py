@@ -34,3 +34,4 @@ def C_D_calc(AR, W, rho, V, C_D_0):
 
 print(C_D_calc(A, MTOW, rho, V_cruise, Cd0))
 print(C_L_calc(MTOW, rho, V_cruise))
+
