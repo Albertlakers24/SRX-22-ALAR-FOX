@@ -34,7 +34,7 @@ CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
 CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V = 0.0032                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
+ROC_V = 0.0024                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_stall = 52                      #Change with CS25 or Requirement
 
 #CALCULATIONS for the GRAPHS
@@ -66,7 +66,7 @@ plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
 
-#Mass Preliminary Calculation
+'''#Mass Preliminary Calculation
 W_P_design =
 W_S_design =
 MTOW_design =
@@ -101,4 +101,4 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass
+m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
