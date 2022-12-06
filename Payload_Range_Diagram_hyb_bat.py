@@ -14,7 +14,7 @@ t_E = 45 * 60                       #Endurance time
 #Aircraft mass characteristics
 m_oe    =  12400                    #Operational empty weight (reference for now) [kg]
 m_pldes = 100*50                    #Design payload [kg]
-m_mto   = 21500
+m_mto   = 21500                     #Max takeoff mass
 
 #Propulsion characteristics
 m_bat       = 5000                      #battery mass [kg]

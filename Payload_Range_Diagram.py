@@ -2,22 +2,36 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-n_pk =  0.85
-n_ph = 0.85
-PSFC = 0.48*(0.45/(745*3600))
-m_pldes = 100*50
-L_D = 16                                                      #Lift over drag
-e_fk = 42.9 * 10**6
+#mission characteristics
+h_cr = 11000                        #Cruise altitude [m]
+V_cr = 143.89                       #Cruise speed [m/s]
+R_nom = 1852000                     #Nominal Range
+f_con = 5/100                       #fuel trip fraction for contingency
+R_div = 200000                      #Fuel needed for missed approach
+t_E = 45 * 60                       #Endurance time
+
+#Aircraft mass characteristics
+m_oe    =  12400                    #Operational empty weight (reference for now) [kg]
+m_pldes = 100*50                    #Design payload [kg]
+m_mto   = 21500                     #Max takeoff mass
+
+#Propulsion characteristics
+m_bat       = 5000                      #battery mass [kg]
+e_fk         = 42.8 * 10**6
 e_fh = 142 * 10**6
-n_engk = (1/e_fk)*(1/PSFC)
-n_engh = (1/e_fh)*(1/PSFC)
-g = 9.81
-V_cr = 143.89
-h_cr = 11000
-LD_crs = 16.7
-#
-m_oe =  12400                                                    #given                                                    #
-#m_mto  =                                                    #given
+PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
+n_engk    = (1/e_f)*(1/PSFC)          #Engine efficiency (thermodynamic, turboprop)
+n_engh    = 0.95                      #Enine efficiency (electric motor)
+n_pk      = 0.85                      #Propulsive efficiency (turboprop)
+n_ph      = 0.95                      #Propulsive efficiency (electric motor)
+
+#aerodynamic characteristics
+LD     = 17
+LD_crs = 16.7              #Lift over drag (cruise)
+
+
+
+
 # #Point A
 ranges1 = [0]
 plmasses1 = [m_pldes]
