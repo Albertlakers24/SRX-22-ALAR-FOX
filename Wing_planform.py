@@ -14,7 +14,8 @@ Sw = 61                               # main wing area [m^2], change value base 
 a_cruise = np.sqrt(gamma*specific_gas_constant*T)          # Speed of sound at cruise altitude  [m/s]
 M_cruise = V_cruise / a_cruise         # Mach number during cruise
 M_dd = M_cruise + 0.03                 # Drag-divergence Mach number
-taper = 0.45                           # Taper ratio (from 0 to 1), 0.45 for unswept wing. check Raymer
+taper = 0.45                           # Taper ratio (from 0 to 1), optimum taper is 0.45 for unswept
+                                       # wing to achieve elliptical lift dist. check Raymer
 
 
 # for simple tapered wing, used for deciding on the airfoil
@@ -26,6 +27,7 @@ if switch == 1:
     t_c_ratio = min(0.18, ((M_cross-M_dd)-0.115*(C_Lhat**1.5))) # thickness to chord ratio
     c_mac = (2/3)*c_r*((1+taper+taper**2)/(1+taper))  # length of MAC
     y_mac = 0.5*(1/3)*(1+2*taper)/(1+taper)*b       # Spanwise location of MAC
+
     #Printing results
     print("t_c_ratio: ", t_c_ratio)
     print("Pressure [Pa]:", p)
@@ -58,8 +60,7 @@ if switch == 2:                         # For double tapered wing
     y_mac_outer = (b/2*(1-eta_k))/3*((1+2*taper_outer)/(1+taper_outer))+(b/2*eta_k) # spanwise location of MAC of outer wing [m]
     y_mac = (y_mac_inner * Sw_inner + y_mac_outer * Sw_outer) / Sw              # spanwise location of MAC of wing [m]
 
-    #add MAC location
-    #add MAC length
+
     # Printing results
     print("root chord length [m]", c_r)
     print("kink chord length [m]", c_k)
