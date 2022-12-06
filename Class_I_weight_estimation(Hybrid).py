@@ -105,14 +105,14 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 print(E_total_500/10**6,"MJ, 500Nmi")
 print(E_total_full/10**6,"MJ, Equivalent Range")
 
-E_nc = 0 * E_total_full
+E_nc = 0.3 * E_total_full
 He = E_nc / E_total_full        #Energy of non consumable(battery) / Total Energy
 print(E_nc/10**6,"MJ for non consumable")
 print((E_total_full - E_nc)/10**6,"MJ for consumable")
 eta_stt = 0.85 * 0.45       #Efficiency chain from shaft-to-thrust
 eta_btt = 0.95 * 0.75       #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
-NoD_em = 2                 #Number of electric motor engines
+NoD_em = 4                 #Number of electric motor engines
 P_ice = (E_total_full - E_nc)/ (eta_stt * t_total_full * NoD_ice)
 P_em = E_nc/ (eta_btt * t_total_full * NoD_em)
 print(P_ice/1000,"kW for ICE per engine")
@@ -120,7 +120,7 @@ print(P_em/1000,"kW for Electric Battery per engine")
 #Degree of Hybridization of Power(Hp)
 # Choice between Parallel and Series needs to be made
 #If Parallel:
-H_p_para = P_em / P_max
+H_p_para = P_em*NoD_em / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")
 '''#If Series:
 H_p_ser = P_em_max / P_ice_max'''
@@ -130,10 +130,10 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_total_500
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = (a * MTOW_design + b)/g         #Maximum Takeoff Mass
-MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
+m_OE = (a * MTOW_design + b)/g - m_propulsion        #Maximum Takeoff Mass
+m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
 print(m_fuel_ice, "Fuel Mass(kg)")
 print(m_bat,"Battery Mass(kg)")
 print(m_OE, "Operational Empty mass without Engine(kg)")
-print(MTOW, "Calculated MTOW (kg)")
+print(m_MTOW, "Calculated MTOW (kg)")
 print(MTOW_design/g, "MTOW Design(kg)")
