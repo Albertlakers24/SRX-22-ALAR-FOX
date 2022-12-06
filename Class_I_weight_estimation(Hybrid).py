@@ -17,7 +17,7 @@ rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
 rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
 rho_cruise = rho_cruise_rho0 * rho_0
-eff_prop = 0.8              #Change with Literature
+eff_prop = 0.85              #Change with Literature
 W_S = np.arange(1,3500,1)
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
@@ -35,7 +35,7 @@ CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0032                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_stall = 100                      #Change with CS25 or Requirement
+V_stall = 52                      #Change with CS25 or Requirement
 
 #CALCULATIONS for the GRAPHS
 W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
@@ -48,11 +48,11 @@ W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(
 # Climb Gradent Constraint
 W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + CD_to/CL_to)*(np.sqrt((2/rho_1524)*(1/CL_to))))
 #Stall Constraint
-W_S_stall = 1/2 * rho_0 * V_stall**2 * CL_max
+W_S_stall = 1/2 * rho_1524 * V_stall**2 * CL_max
 
-plt.vlines(W_S_stall,0,0.4,'b',label="V_stall")
+plt.vlines(W_S_stall,0,0.5,'b',label="V_stall")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
-plt.vlines(W_S_land,0,0.4,'k',label ="Landing")
+plt.vlines(W_S_land,0,0.5,'k',label ="Landing")
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
@@ -67,7 +67,6 @@ plt.grid()
 plt.show()
 
 '''#Mass Preliminary Calculation
-MTOW_design=
 W_P_design =
 W_S_design =
 P_max = MTOW_design / W_P_design
