@@ -3,7 +3,7 @@ import scipy as sp
 from Class_I_Weight_Estimation import MTOW,V_cruise
 from Lift_Drag_Polar import p, T, specific_gas_constant, b
 #Switch for simple/double tapered wing
-switch = 2                            # put 1 for simple tapered, 2 for double tapered
+switch = 1                            # put 1 for simple tapered, 2 for double tapered
 
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
@@ -50,7 +50,7 @@ if switch == 2:                         # For double tapered wing
     c_t = c_k * taper_outer             # chord length at tip
     c_mac_inner = 2/3*c_r*(1+taper_inner+taper_inner**2)/(1+taper_inner)        # MAC of inner wing [m]
     c_mac_outer = 2/3*c_r*(1+taper_outer+taper_outer**2)/(1+taper_outer)        # MAC of outer wing [m]
-    Sw_inner = b/4*eta_k*(c_r)*(1+taper_inner)                                  # inner wing area [m]
+    Sw_inner = b/2*eta_k*(c_r)*(1+taper_inner)                                  # inner wing area [m]
     Sw_outer = Sw - Sw_inner                                                    # outer wing area [m]
     c_mac = (c_mac_inner * Sw_inner + c_mac_outer * Sw_outer) / Sw              # MAC of wing [m]
     y_mac_inner = (b/2*eta_k)/3*((1+2*taper_inner)/(1+taper_inner))             # spanwise location of MAC of inner wing [m]
@@ -69,7 +69,7 @@ if switch == 2:                         # For double tapered wing
     print("Outer wing area  [m]", Sw_outer)
     print("MAC length  [m]", c_mac)
     print("spanwise position of inner wing MAC  [m]", y_mac_inner)
-    print("spanwise position of inner wing MAC  [m]", y_mac_outer)
+    print("spanwise position of outer wing MAC  [m]", y_mac_outer)
     print("spanwise position of total wing MAC  [m]", y_mac)
 
 
