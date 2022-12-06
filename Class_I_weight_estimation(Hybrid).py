@@ -34,13 +34,13 @@ CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
 CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V = 0.0032                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
+ROC_V = 0.0024                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_stall = 52                      #Change with CS25 or Requirement
 
 #CALCULATIONS for the GRAPHS
 W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5915)/(2*0.95) #Change to CS25 regulation
+W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
@@ -67,21 +67,28 @@ plt.grid()
 plt.show()
 
 #Mass Preliminary Calculation
-W_P_design =
-W_S_design =
-MTOW_design =
-P_max = MTOW_design / W_P_design
-S = MTOW_design / W_S_design
+#W_P_design =
+#W_S_design =
+MTOW_design = 169800                    #N
+#P_max = MTOW_design / W_P_design
+#S = MTOW_design / W_S_design
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
-t_cruise =
-t_climb =
-t_descent =
+t_cruise = 19650
+t_climb1 = 222
+t_climb2 = 600
+t_climb3 = 975
+t_descent1 = 503
+t_descent2 = 377
 delta_v = V_cruise
-E_total_climb = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_climb + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*t_climb
-E_total_cruise = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise
-E_total_descent = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_descent + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*t_descent
+E_total_climb1 = (MTOW_design*71.7)/ (Cl_cruise/Cd_cruise) * t_climb1 + (MTOW_design/g * 72**2) + MTOW_design*6.8*t_climb1
+E_total_climb2 = (MTOW_design*107.9)/ (Cl_cruise/Cd_cruise) * t_climb2 + (MTOW_design/g * 36**2) + MTOW_design*5.08*t_climb2
+E_total_climb3 = (MTOW_design*107.9)/ (Cl_cruise/Cd_cruise) * t_climb3 + MTOW_design*4.06*t_climb3
+E_total_cruise = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise + (MTOW_design/g * 33.4**2)
+E_total_descent1 = (MTOW_design*138.9)/ (Cl_cruise/Cd_cruise) * t_descent1 + (MTOW_design/g * 2.57**2) + MTOW_design*10.89*t_descent1
+E_total_descent2 = (MTOW_design*103)/ (Cl_cruise/Cd_cruise) * t_descent2 + (MTOW_design/g * 36**2) + MTOW_design*8.08*t_descent2
 E_total = E_total_climb+E_total_descent+E_total_cruise
-E_nc =
+print(E_total)
+'''E_nc =
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 eta_stt = 0.85              #Efficiency chain from shaft-to-thrust
 eta_btt = 0.95              #Efficiency chain from battery-to-thrust
@@ -96,9 +103,9 @@ H_p_para = P_em_max / P_max
 #If Series:
 H_p_ser = P_em_max / P_ice_max
 tf =                        #Trap fuel time step
-BSFC=                       #Brake-specific fuel consumption
+BSFC= 0.48*(0.45/(745*3600)) #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
-E_bat = 2.7*10**6           #Total Battery Energy
+E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass
+m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
