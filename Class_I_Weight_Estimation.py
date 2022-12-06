@@ -50,10 +50,10 @@ eta_eng_prop = (1/e_f)*(1/PSFC)                     # thermodynamic efficiency o
 eta_eng_jet = (V_cruise/TSFC)*(1/e_f)*(1/eta_p)     # thermodynamic efficiency of engine jet
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
-A = 12                          #- aspect ratio -> high A for slender wing
-Cfe = 0.003                     #- equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S = 6                      #- (6.0-6.2) wetted area ratios -> depending on airframe structure
-eta_eng = eta_eng_prop          #- engine efficiency             (TYPES: jet, propeller)
+A = 12                          #- ATR72 value aspect ratio -> high A for slender wing
+Cfe = 0.0045                    #- (0.0045-0.005) equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Swet_S = 6.1                    #- (6.0-6.2) wetted area ratios -> depending on airframe structure
+eta_eng = 0.45                  #- engine efficiency             (TYPES: jet, propeller)
 a =    a_p                      #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =       b_p                   #N linear regression for OEW     (TYPES: turboprop, turbojet)
 
@@ -87,3 +87,9 @@ WF = MTOW*(Mused*(1+Mres))                                                    #N
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
 print("Operational Empty Weight =", WOE)
+print("WPLtot =", WPLtot)
+print("e=", e)
+print("Cdo=", Cd0)
+print("eta_eng =", eta_eng)
+print("R_lost=", R_lost)
+print("m_fuel_MTO=", mfuel_MTO_FULL)
