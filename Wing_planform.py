@@ -42,8 +42,8 @@ if switch == 2:                         # For double tapered wing
     # c_r = 2*Sw/((1+taper)*b)
     eta_k = 0.4                         # relative span position of kink, need to determine this value later
     y_k = b * eta_k / 2                 # Spanwise position of the kink
-    taper_inner = 1                     # Taper ratio of the inner wing
-    taper_outer = 0.5                   # Taper ratio of the outer wing
+    taper_inner = 1                     # Taper ratio of the inner wing [to be changed]
+    taper_outer = 0.5                   # Taper ratio of the outer wing [to be changed]
     c_r = (2*Sw/b) / ((eta_k*(1-taper_outer))+taper_inner+taper_outer)
     c_k = c_r * taper_inner             # chord length at kink
     c_t = c_k * taper_outer             # chord length at tip
