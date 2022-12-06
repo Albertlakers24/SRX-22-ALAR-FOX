@@ -66,22 +66,27 @@ plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
 
-'''#Mass Preliminary Calculation
+#Mass Preliminary Calculation
 W_P_design =
 W_S_design =
+MTOW_design =
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
-t_toal =
 t_cruise =
+t_climb =
+t_descent =
 delta_v = V_cruise
+E_total_climb = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_climb + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*t_climb
+E_total_cruise = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise
+E_total_descent = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_descent + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*t_descent
+E_total = E_total_climb+E_total_descent+E_total_cruise
 E_nc =
-E_total = (MTOW_design*V_cruise)/ (Cl_cruise/Cd_cruise) * t_cruise + (MTOW_design/g * delta_v**2) + MTOW_design*ROC*(t_total - t_cruise)
 He = E_nc / E_total         #Energy of non consumable(battery) / Total Energy
 eta_stt = 0.85              #Efficiency chain from shaft-to-thrust
 eta_btt = 0.95              #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
-NoD_em =                    #Number of electric motor engines
+NoD_em = 4                   #Number of electric motor engines
 P_ice = (E_total - E_nc)/ (eta_stt * t_toal * NoD_ice)
 P_em = E_nc/ (eta_btt * t_toal * NoD_em)
 #Degree of Hybridization of Power(Hp)
@@ -92,8 +97,8 @@ H_p_para = P_em_max / P_max
 H_p_ser = P_em_max / P_ice_max
 tf =                        #Trap fuel time step
 BSFC=                       #Brake-specific fuel consumption
-ddp =                       #Deep discharge protection
+ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
+m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass
