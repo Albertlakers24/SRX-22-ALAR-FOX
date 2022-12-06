@@ -35,8 +35,6 @@ CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0032                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-MTOW_design=
-V_stall = np.sqrt(1/2 * rho_cruise * CL_max
 V_stall = 45                      #Change with CS25 or Requirement
 
 #CALCULATIONS for the GRAPHS
