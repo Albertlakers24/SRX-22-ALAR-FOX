@@ -40,7 +40,7 @@ V_stall = 52                      #Change with CS25 or Requirement
 #CALCULATIONS for the GRAPHS
 W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5915)/(2*0.95) #Change to CS25 regulation
+W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
@@ -68,8 +68,8 @@ plt.show()
 
 '''#Mass Preliminary Calculation
 W_P_design =
-W_S_design =
-MTOW_design =
+W_S_design = 
+MTOW_design = 169800                    #N
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
 #Degree of Hybridization of Energy (He) *Could be defined by each split point or total journey
@@ -98,7 +98,7 @@ H_p_ser = P_em_max / P_ice_max
 tf =                        #Trap fuel time step
 BSFC=                       #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
-E_bat = 2.7*10**6           #Total Battery Energy
+E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
 m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
