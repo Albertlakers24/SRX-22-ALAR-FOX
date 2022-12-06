@@ -39,11 +39,14 @@ b_p = 1439                      #N turboprop
 b_j = 1782.3                    #N turbojet
 Psi = 0.0075                    #- parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #- span efficiency factor (value based on Roelof reader p.46)
+m_tank = 8.375                  #kg
+Number_tank = 31
+
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
 e_f = e_lh2*1000000             #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
-
+W_tanks = m_tank*g*Number_tank  #N
 
 #Intermediate calculations
 eta_eng_prop = (1/e_f)*(1/PSFC)                     # thermodynamic efficiency of engine turbo/piston
@@ -81,8 +84,8 @@ WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N
 #OUTPUTS
 
 WPLtot = WPAX + WPAXBAGGAGE                                                   #N
-MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                                      #N
-WOE = a*MTOW + b                                                              #N
+MTOW = (b +W_tanks + WPLtot)/(1-a-Mused*(1+Mres))                                      #N
+WOE = a*MTOW + b +W_tanks                                                     #N
 WF = MTOW*(Mused*(1+Mres))                                                    #N
 print("MTOW =", MTOW)
 print("Fuel weight =", WF)
@@ -98,6 +101,7 @@ print(eta_eng)
 print(eta_p)
 print(e_f)
 print(CL/CD)
+
 
 
 
