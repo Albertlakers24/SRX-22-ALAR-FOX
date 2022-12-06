@@ -21,18 +21,18 @@ W_S = np.arange(1,3000,1)
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
-A =                             #Aspect Ratio (12-14)
+A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e = 1/(np.pi*A*Psi+(1/phi))
-Cfe =                           #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S =                        #(6.0-6.2) wetted area ratios -> depending on airframe structure
+Cfe = 0.0045                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
-CL_max =                        #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
-CL_to =                         #Change with Estimate (1.9-3.3)
+CL_max = 1.7                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
+CL_to = 1.9                        #Change with Estimate (1.7-2.1)
 CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
-CL_land =                       #Change with Estimate (1.7-2.1)
-TOP =                           #Change with Literature Reference to slide (420-460) -> from Raymer graph
-ROC =                           #Change with CS25 and literature or Requirement (Rate of Climb)
+CL_land =  2.6                  #Change with Estimate (1.9-3.3)
+TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
+ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V =                         #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_stall =                       #Change with CS25 or Requirement
 W_S = np.arange(1,1500,1)
