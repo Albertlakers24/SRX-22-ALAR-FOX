@@ -32,6 +32,16 @@ def C_D_calc(AR, W, rho, V, C_D_0):
     C_D = C_D_0 + C_L_calc(W, rho, V)**2 / (np.pi * e * AR)
     return C_D, rho
 
-print(C_D_calc(A, MTOW, rho, V_cruise, Cd0))
-print(C_L_calc(MTOW, rho, V_cruise))
+print("CD: ", C_D_calc(A, MTOW, rho, V_cruise, Cd0))
+print("CL: ", C_L_calc(MTOW, rho, V_cruise))
 
+def C_L_alpha(C_l_alpha, M, d, max_sweep, S_ratio):
+    beta = 1 - M**2
+    eta = C_l_alpha / (2 * np.pi) / np.sqrt(beta)
+    F = 1.07 * (1 + d / b) ** 2
+    C_L_alpha = (2 * np.pi * A) / (2 + np.sqrt(4 + (A**2 * beta)/eta**2)*(1 + np.tan(max_sweep)**2/beta)) * S_ratio * F
+    return C_L_alpha
+
+def C_L_max(C_l_max, quarter_sweep):
+    C_L_max = 0.9 * C_l_max * np.cos(quarter_sweep)
+    return C_L_max
