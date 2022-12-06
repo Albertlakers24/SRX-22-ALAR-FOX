@@ -48,14 +48,14 @@ if switch == 2:                         # For double tapered wing
     c_r = (2*Sw/b) / ((eta_k*(1-taper_outer))+taper_inner+taper_outer)
     c_k = c_r * taper_inner             # chord length at kink
     c_t = c_k * taper_outer             # chord length at tip
-    c_mac_inner = 2/3*c_r*(1+taper_inner+taper_inner**2)/(1+taper_inner)
-    c_mac_outer = 2/3*c_r*(1+taper_outer+taper_outer**2)/(1+taper_outer)
-    Sw_inner = b/4*eta_k*(c_r)*(1+taper_inner)
-    Sw_outer = Sw - Sw_inner
-    c_mac = (c_mac_inner * Sw_inner + c_mac_outer * Sw_outer) / Sw
-    y_mac_inner = (b/2*eta_k)/3*((1+2*taper_inner)/(1+taper_inner))
-    y_mac_outer = (b/2*(1-eta_k))/3*((1+2*taper_outer)/(1+taper_outer))+(b/2*eta_k)
-    y_mac = (y_mac_inner * Sw_inner + y_mac_outer * Sw_outer) / Sw
+    c_mac_inner = 2/3*c_r*(1+taper_inner+taper_inner**2)/(1+taper_inner)        # MAC of inner wing [m]
+    c_mac_outer = 2/3*c_r*(1+taper_outer+taper_outer**2)/(1+taper_outer)        # MAC of outer wing [m]
+    Sw_inner = b/4*eta_k*(c_r)*(1+taper_inner)                                  # inner wing area [m]
+    Sw_outer = Sw - Sw_inner                                                    # outer wing area [m]
+    c_mac = (c_mac_inner * Sw_inner + c_mac_outer * Sw_outer) / Sw              # MAC of wing [m]
+    y_mac_inner = (b/2*eta_k)/3*((1+2*taper_inner)/(1+taper_inner))             # spanwise location of MAC of inner wing [m]
+    y_mac_outer = (b/2*(1-eta_k))/3*((1+2*taper_outer)/(1+taper_outer))+(b/2*eta_k) # spanwise location of MAC of outer wing [m]
+    y_mac = (y_mac_inner * Sw_inner + y_mac_outer * Sw_outer) / Sw              # spanwise location of MAC of wing [m]
 
     #add MAC location
     #add MAC length
