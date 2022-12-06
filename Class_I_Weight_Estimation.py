@@ -23,7 +23,7 @@ PAX = 50                        #Number of passengers
 Mres = 0.25                     #-
 
 #Constants depending on the aircraft
-e_kero = 42.9                   #MJ/kg Specific Energy Kerosene
+e_kero = 46                     #MJ/kg Specific Energy Kerosene
 e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
 e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
 e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
@@ -93,3 +93,12 @@ print("Cdo=", Cd0)
 print("eta_eng =", eta_eng)
 print("R_lost=", R_lost)
 print("m_fuel_MTO=", mfuel_MTO_FULL)
+print("Req =",R)
+print(eta_eng)
+print(eta_p)
+print(e_f)
+print(CL/CD)
+
+
+
+
