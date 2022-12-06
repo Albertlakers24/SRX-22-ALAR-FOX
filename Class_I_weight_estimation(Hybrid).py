@@ -68,7 +68,7 @@ plt.grid()
 plt.show()
 
 #Mass Preliminary Calculation
-W_P_design = 0.0610
+W_P_design = 0.042
 W_S_design = 2340
 m_propulsion = 1074.5
 MTOW_design = 169800                    #N
@@ -103,14 +103,14 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 print(E_total_500/10**6,"MJ, 500Nmi")
 print(E_total_full/10**6,"MJ, Equivalent Range")
 
-E_nc = 0.2 * E_total_full
+E_nc = 0 * E_total_full
 He = E_nc / E_total_full        #Energy of non consumable(battery) / Total Energy
 print(E_nc/10**6,"MJ for non consumable")
 print((E_total_full - E_nc)/10**6,"MJ for consumable")
-eta_stt = 0.75 * 0.45       #Efficiency chain from shaft-to-thrust
+eta_stt = 0.85 * 0.45       #Efficiency chain from shaft-to-thrust
 eta_btt = 0.95 * 0.75       #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
-NoD_em = 4                  #Number of electric motor engines
+NoD_em = 2                 #Number of electric motor engines
 P_ice = (E_total_full - E_nc)/ (eta_stt * t_total_full * NoD_ice)
 P_em = E_nc/ (eta_btt * t_total_full * NoD_em)
 print(P_ice/1000,"kW for ICE per engine")
@@ -130,7 +130,7 @@ m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_total_500
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
 m_OE = 102.21*(MTOW_design/g)**(0.5497)          #Maximum Takeoff Mass
 MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
-print(m_fuel_ice, "Engine Mass(kg)")
+print(m_fuel_ice, "Fuel Mass(kg)")
 print(m_bat,"Battery Mass(kg)")
 print(m_OE, "Operational Empty mass without Engine(kg)")
 print(MTOW, "Calculated MTOW (kg)")
