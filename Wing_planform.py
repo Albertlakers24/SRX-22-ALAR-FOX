@@ -3,7 +3,7 @@ import scipy as sp
 from Class_I_Weight_Estimation import MTOW,V_cruise
 from Lift_Drag_Polar import p, T, specific_gas_constant, b
 #Switch for simple/double tapered wing
-switch = 1                             # put 1 for simple tapered, 2 for double tapered
+switch = 2                             # put 1 for simple tapered, 2 for double tapered
 
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
@@ -50,9 +50,9 @@ if switch == 2:                         # For double tapered wing
     #add MAC location
     #add MAC length
     # Printing results
-    print("cr", c_r)
-    print("ck", c_k)
-    print("ct", c_t)
+    print("root chord length [m]", c_r)
+    print("kink chord length [m]", c_k)
+    print("tip chord length  [m]", c_t)
 
 
 
