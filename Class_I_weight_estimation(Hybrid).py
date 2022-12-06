@@ -105,7 +105,7 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 print(E_total_500/10**6,"MJ, 500Nmi")
 print(E_total_full/10**6,"MJ, Equivalent Range")
 
-E_nc = 0.3 * E_total_full
+E_nc = 0 * E_total_full
 He = E_nc / E_total_full        #Energy of non consumable(battery) / Total Energy
 print(E_nc/10**6,"MJ for non consumable")
 print((E_total_full - E_nc)/10**6,"MJ for consumable")
