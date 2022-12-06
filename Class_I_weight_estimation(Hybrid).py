@@ -14,10 +14,11 @@ s_takeoff_1524 = 1370           #Takeoff Distance at 1524 m above mean sea-level
 s_landing_1524 = 1370           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 rho_0= 1.225                    #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
 rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
+rho_1524_rho0 = rho_1524/rho_0
 rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
 rho_cruise = rho_cruise_rho0 * rho_0
 eff_prop = 0.8              #Change with Literature
-W_S = np.arange(1,3000,1)
+W_S = np.arange(1,3500,1)
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
@@ -33,20 +34,19 @@ CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
 CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V =                         #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_stall =                       #Change with CS25 or Requirement
-W_S = np.arange(1,1500,1)
+ROC_V = 0.0032                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
+V_stall = 100                      #Change with CS25 or Requirement
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to * rho_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_0 * s_landing/0.5915)/(2*0.95) #Change to CS25 regulation
+W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5915)/(2*0.95) #Change to CS25 regulation
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
-W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
+W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + CD_to/CL_to)*(np.sqrt((2/rho_0)*(1/CL_to))))
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + CD_to/CL_to)*(np.sqrt((2/rho_1524)*(1/CL_to))))
 #Stall Constraint
 W_S_stall = 1/2 * rho_0 * V_stall**2 * CL_max
 
@@ -56,15 +56,17 @@ plt.vlines(W_S_land,0,0.4,'k',label ="Landing")
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
-plt.xlim(0,1500)
+plt.xlim(0,3500)
 plt.ylim(0,0.4)
-plt.xticks(np.arange(0,1501,500))
-plt.yticks(np.arange(0,0.41,0.05))
+plt.xticks(np.arange(0,3501,500))
+plt.yticks(np.arange(0,0.51,0.05))
+plt.xlabel("W/S (N/m^2)")
+plt.ylabel("W/P (N/W)")
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
 
-#Mass Preliminary Calculation
+'''#Mass Preliminary Calculation
 MTOW_design=
 W_P_design =
 W_S_design =
@@ -95,4 +97,4 @@ ddp =                       #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_toal
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass
+m_OE = m_fuel_ice + m_bat + m_payload + 0.0009*MTOW_design**2 - 11.862*MTOW_design +49013           #Maximum Takeoff Mass'''
