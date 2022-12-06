@@ -37,6 +37,8 @@ TOP = 430                       #Change with Literature Reference to slide (420-
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0024                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_stall = 52                      #Change with CS25 or Requirement
+a = 0.5464
+b = 1439
 
 #CALCULATIONS for the GRAPHS
 W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
@@ -128,7 +130,7 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_total_500
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = 102.21*(MTOW_design/g)**(0.5497)          #Maximum Takeoff Mass
+m_OE = (a * MTOW_design + b)/g         #Maximum Takeoff Mass
 MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
 print(m_fuel_ice, "Fuel Mass(kg)")
 print(m_bat,"Battery Mass(kg)")
