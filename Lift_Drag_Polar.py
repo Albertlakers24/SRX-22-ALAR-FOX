@@ -32,8 +32,8 @@ def C_D_calc(AR, W, rho, V, C_D_0):
     C_D = C_D_0 + C_L_calc(W, rho, V)**2 / (np.pi * e * AR)
     return C_D, rho
 
-print(C_D_calc(A, MTOW, rho, V_cruise, Cd0))
-print(C_L_calc(MTOW, rho, V_cruise))
+print("CD: ", C_D_calc(A, MTOW, rho, V_cruise, Cd0))
+print("CL: ", C_L_calc(MTOW, rho, V_cruise))
 
 def C_L_alpha(C_l_alpha, M, d, max_sweep, S_ratio):
     beta = 1 - M**2
