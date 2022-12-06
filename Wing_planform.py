@@ -42,6 +42,7 @@ if switch == 2:                         # For double tapered wing
 
     # c_r = 2*Sw/((1+taper)*b)
     eta_k = 0.4                         # relative span position of kink, need to determine this value later
+                                        # Depending on the postition of the propellor
     y_k = b * eta_k / 2                 # Spanwise position of the kink
     taper_inner = 1                     # Taper ratio of the inner wing [to be changed]
     taper_outer = 0.5                   # Taper ratio of the outer wing [to be changed]
