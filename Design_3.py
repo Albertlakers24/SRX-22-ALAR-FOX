@@ -9,7 +9,7 @@ motor_eff = 0.95
 prop_eff = 0.75
 
 #FC efficiencies
-FC_eff = 0.65
+FC_eff = 0.6
 
 #Generator efficiencies
 turb_eff = 0.47
@@ -24,8 +24,6 @@ def total_eff(num_inverters, what_eff):
     if what_eff == 2:
         return generator_total_eff
 
-print(total_eff(2, 1), total_eff(2, 2))
-
 E_500_nmi = 10354 #MJ
 E_500_req = E_500_nmi / total_eff(2, 1)
 H2_E_density = 120 #MJ/kg
@@ -34,13 +32,14 @@ H2_density = 66.31 #kg/m3
 volume_H2_500 = mass_H2_500 / H2_density
 ratio_tank = 67 / 150
 mass_tanks = mass_H2_500 * ratio_tank
-print(mass_tanks)
+mass_H2_total_500 = mass_tanks + mass_H2_500
+print(f"For the 500 nmi, mission, we need {mass_H2_total_500} kg and {volume_H2_500} m3 of H2")
 
 #FC mass
-FC_mass_ratio = 11 #kW/kg
+FC_mass_ratio = 3 #kW/kg
 max_power_needed = 4032 #kW
 FC_mass = max_power_needed / FC_mass_ratio
-
+print(FC_mass)
 #Proppeler specs
 prop_mass_ratio = 5.22 #kW/kg
 prop_mass = max_power_needed / prop_mass_ratio
@@ -57,7 +56,6 @@ jet_density = 820 #kg/m3
 volume_H2_500 = mass_H2_500 / H2_density
 ratio_tank = 67 / 150
 mass_tanks = mass_H2_500 * ratio_tank
-print(mass_tanks)
 
 #Give ratio of H2 / fuel
 def perfect_ratio(ratio):
@@ -65,6 +63,13 @@ def perfect_ratio(ratio):
     E_Fuel = (1 - ratio) * E_1000 / total_eff(2, 2)
     mass_H2 = E_H2 / H2_E_density
     mass_fuel = E_Fuel / jet_E_density
-
-
+    volume_H2 = mass_H2 / H2_density
+    volume_fuel = mass_fuel / jet_density
+    mass_H2_tank = mass_H2 * ratio_tank
+    mass_H2_total = mass_H2 + mass_H2_tank
+    print(f"Mass fuel is {mass_fuel}, volume is {volume_fuel}",
+         f"Mass H2 + tanks is {mass_H2_total}, volume is {volume_H2}")
+perfect_ratio(1)
+# for i in np.arange(0, 1.01, 0.01):
+#     perfect_ratio(i)
 
