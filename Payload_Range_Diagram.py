@@ -2,22 +2,22 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-n_pk =  0.85
-n_ph = 0.85
+n_pk =  0.85                        #-
+n_ph = 0.85                         #-
 PSFC = 0.48*(0.45/(745*3600))
-m_pldes = 100*50
-L_D = 16                                                      #Lift over drag
-e_fk = 42.9 * 10**6
-e_fh = 142 * 10**6
-n_engk = (1/e_fk)*(1/PSFC)
-n_engh = (1/e_fh)*(1/PSFC)
-g = 9.81
-V_cr = 143.89
-h_cr = 11000
-LD_crs = 16.7
+m_pldes = 50*240*0.453592           #kg
+L_D = 16                            #Lift over drag
+e_fk = 46 * 10**6                   #J/kg
+e_fh = 142 * 10**6                  #J/kg
+n_engk = 0.45                       #- (1/e_fk)*(1/PSFC)
+n_engh = 0.3                        #- (1/e_fh)*(1/PSFC)
+g = 9.80665                         #m/s^2
+V_cr = 141                          #m/s
+h_cr = 8534                         #m
+LD_crs = 16.7                       #-
 #
-m_oe =  12400                                                    #given                                                    #
-#m_mto  =                                                    #given
+m_oe =  12981                   #kg             GIVEN
+#m_mto  =
 # #Point A
 ranges1 = [0]
 plmasses1 = [m_pldes]
@@ -34,27 +34,27 @@ plmasses1 = [m_pldes]
 #print(ranges)
 
 #Point C (Design Range)
-f_con = 5/100
-R_div = 200000
-t_E = 45 * 60
-R_lost1 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
+f_con = 5/100                                                       #-
+R_div = 185200                                                      #m
+t_E = 45 * 60                                                       #s
+R_lost1 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))          #m
 print(R_lost1)
-R_nom1 = 1852000
+R_nom1 = 1852000                                                    #m
 R_eq1 = ((R_nom1 + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 print(R_eq1)
 R_aux1 = R_eq1 - R_nom1
 print(R_aux1)
-m_mto = 21500
-m_f = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_ph * (e_fh /g) * (L_D))))
-R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_f)/(m_oe + m_pldes))) - R_aux1
-print("Rc", R_c1)
+m_mto = 21123                                                       #kg     GIVEN
+m_f = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_pk * (e_fk /g) * (L_D))))           #mto*()
+R_c1 = (n_engk * n_pk * (L_D) * (e_fk /g) * np.log((m_oe + m_pldes + m_f)/(m_oe + m_pldes))) - R_aux1
+print("Rc=", R_c1)
 ranges1 = np.append(ranges1, [R_c1])
 plmasses1 = np.append(plmasses1, [m_pldes])
 
 #Point D (Ferry Range)
 
-R_d1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe  + m_f)/(m_oe ))) - R_aux1
-print(R_d1)
+R_d1 = (n_engk * n_pk * (L_D) * (e_fk /g) * np.log((m_oe  + m_f)/(m_oe ))) - R_aux1
+print("R_d1=", R_d1)
 
 ranges1 = np.append(ranges1, [R_d1])
 plmasses1 = np.append(plmasses1, [0])

@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib as plt
 # Outputs: MTOW OEW and WF
 # Relationships: MTOW = WOE + WF + WPL
 # Relationships: MTOW = WE + WF + WPLtot + Wtfo
@@ -86,12 +86,14 @@ WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N
 #OUTPUTS
 
 WPLtot = WPAX + WPAXBAGGAGE                                                   #N
-MTOW = (b + WPLtot +W_tanks)/(1-a-Mused*(1+Mres))                            #N    take out W-tanks for JetA       + W_tanks
+MTOW = (b + WPLtot +W_tanks)/(1-a-Mused*(1+Mres))                             #N    take out W-tanks for JetA       + W_tanks
+#MTOW = (b + WPLtot +W_tanks)/(1-a-Mused*(1))
 WOE = a*MTOW + b +W_tanks                                                     #N    take out W_tanks for JetA
-WF = MTOW*(Mused*(1+Mres))                                                    #N
-print("MTOW =", MTOW)
-print("Fuel weight =", WF)
-print("Operational Empty Weight =", WOE)
+WF = MTOW*(Mused*(1+Mres)) #- Mres*Mused*MTOW                         #N
+
+print("MTOW =", MTOW, "N")
+print("Fuel weight =", WF, "N")
+print("Operational Empty Weight =", WOE, "N")
 print("WPLtot =", WPLtot)
 print("e=", e)
 print("Cdo=", Cd0)
@@ -103,8 +105,5 @@ print(eta_eng)
 print(eta_p)
 print(e_f)
 print(CL/CD)
-
-
-
-
+print("reserve fuel =", MTOW*Mused*Mres)
 
