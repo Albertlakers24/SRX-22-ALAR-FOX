@@ -72,7 +72,8 @@ plt.show()
 #Mass Preliminary Calculation
 W_P_design = 0.042
 W_S_design = 2340
-m_propulsion = 1074.5
+m_turboprop = 1074.5
+m_em = 50
 MTOW_design = 169800                    #N
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
@@ -130,8 +131,9 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_total_500
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
-m_OE = (a * MTOW_design + b)/g - m_propulsion        #Maximum Takeoff Mass
-m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
+m_OE = (a * MTOW_design + b)/g - m_turboprop        #Maximum Takeoff Mass
+m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_turboprop
+m_propulsion = m_turboprop + m_em*NoD_em
 print(m_fuel_ice, "Fuel Mass(kg)")
 print(m_bat,"Battery Mass(kg)")
 print(m_OE, "Operational Empty mass without Engine(kg)")
