@@ -35,12 +35,12 @@ eta_p_twin = 0.82               #- propulsive efficiency - twin engine props
 eta_p_turbo = 0.85              #- propulsive efficiency - regional turboprops
 a_p = 0.5464                    #- turboprop     WE = a*MTOW+b
 a_j = 0.4985                    #- turbojet
-b_p = 1439                      #N turboprop
-b_j = 1782.3                    #N turbojet
+b_p = 1439*g                    #N turboprop
+b_j = 1782.3*g                  #N turbojet
 Psi = 0.0075                    #- parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #- span efficiency factor (value based on Roelof reader p.46)
 m_tank = 8.375                  #kg
-Number_tank = 50
+Number_tank = 60
 
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
@@ -86,7 +86,7 @@ WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N
 #OUTPUTS
 
 WPLtot = WPAX + WPAXBAGGAGE                                                   #N
-MTOW = (b + WPLtot + W_tanks)/(1-a-Mused*(1+Mres))                            #N    take out W-tanks for JetA
+MTOW = (b + WPLtot +W_tanks)/(1-a-Mused*(1+Mres))                            #N    take out W-tanks for JetA       + W_tanks
 WOE = a*MTOW + b +W_tanks                                                     #N    take out W_tanks for JetA
 WF = MTOW*(Mused*(1+Mres))                                                    #N
 print("MTOW =", MTOW)
