@@ -13,7 +13,7 @@ l_lav = 0.914
 w_lav = 0.914
 l_galley = 0.762
 w_galley = 0.914
-seat_pitch = 1
+l_seat = 0.76          # seat pitch [m]
 
 # Design choices
 n_SA = 4           # Number of seats abreast
@@ -38,10 +38,10 @@ else:
 
 # Basic Length/Dimensions calculations
 D_eff = np.sqrt(height*D_inner)             # effective (inner) diameter [m]
-l_t = 1.6 * D_eff                           # Length of tail [m]
 l_cabin = n_row * k_cabin                   # Length of the cabin [m]
 skin_thickness = 0.084 + 0.045 * D_eff      # fuselage skin thickness [m]
 D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
+l_t = 1.6 * D_outer                         # Length of tail [m]
 
 fuel_at_belly = True
 
@@ -50,9 +50,13 @@ if fuel_at_belly == True:
 else:
     l_tank = 4                                      # Length of the fuel tank as fuselage section
 l_f = l_cabin + l_t + l_cp + l_tank                 # length of the fuselage [m]
-fineness_ratio = l_f/D_eff                          # Fineness ratio
-l_nc = 2 * D_eff                                    # length of the nose cone [m]
-l_tc = 3 * D_eff                                    # length of the tail cone
+fineness_ratio = l_f/D_outer                        # Fineness ratio
+l_nc = 1.7 * D_eff                                  # length of the nose cone [m] (Schmitt)
+l_tc = 3.5 * D_eff                                  # length of the tail cone [m] (Schmitt)
+l_pax = l_seat * n_row                              # length of the passenger seating area [m]
+l_constant_cross_section = l_f - l_nc - l_tc        # length of the cross section with constant cross section [m]
+theta_tc = np.arctan(D_outer/l_tc)*180/np.pi
+
 # Skin Drag Computation
 
 
@@ -62,12 +66,17 @@ l_tc = 3 * D_eff                                    # length of the tail cone
 
 
 #printing results
-print("N_row:", n_row)
-print("N_SA:", n_SA)
+print(n_row, "rows")
+print(n_SA, "seats abreast")
 print("D_in [m]:", D_inner)
 print("D_out [m]:", D_outer)
 print("skin thickness [m]:", skin_thickness)
-print("L_tank [m]:", l_tank)
+print("l_tank [m]:", l_tank)
 print("l_fuselage [m]:", l_f)
+print("l_nosecone [m]", l_nc)
+print("l_tailcone [m]", l_tc)
+print("l_PAX [m]", l_pax)
+print("l_constant cross section [m]", l_constant_cross_section)
 print("Fineness Ratio: ", fineness_ratio)
+print("tail angle [deg]", theta_tc)
 
