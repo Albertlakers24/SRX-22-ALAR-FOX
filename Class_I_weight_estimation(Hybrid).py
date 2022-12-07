@@ -106,13 +106,13 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 
 print(np.round(E_total_500/10**6,5),"MJ, 500Nmi")
 print(np.round(E_total_full/10**6,5),"MJ, Equivalent Range")
-'''print(E_total_climb1/10**6, "MJ Climb1")
+print(E_total_climb1/10**6, "MJ Climb1")
 print(E_total_climb2/10**6, "MJ Climb2")
 print(E_total_climb3/10**6, "MJ Climb3")
 print(E_total_cruise_full/10**6, "MJ Cruise 500nmi")
-print(E_total_cruise_full/10**6, "MJ Cruise full")'''
+print(E_total_cruise_full/10**6, "MJ Cruise full")
 
-E_nc = 0 * E_total_full
+E_nc = 0.2 * E_total_full
 He = E_nc / E_total_full        #Energy of non consumable(battery) / Total Energy
 #print(E_nc/10**6,"MJ for non consumable")
 #print((E_total_full - E_nc)/10**6,"MJ for consumable")
@@ -121,19 +121,19 @@ eta_fuel_cell = 0.75 * 0.95 #Efficiency chain from shaft-to-thrust (fuel cell)
 eta_btt = 0.95 * 0.75        #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
 NoD_em = 6                 #Number of electric motor engines
-#P_ice = (E_total_full - E_nc)/ (eta_stt * t_total_full * NoD_ice)
-#P_em = E_nc/ (eta_btt * t_total_full * NoD_em)
-P_ice_climb1 = (E_total_climb1)/ (eta_stt * t_climb1 * NoD_ice)
+P_ice = (E_total_full - E_nc)/ (eta_stt * t_total_full * NoD_ice)
+P_em = E_nc/ (eta_btt * t_total_full * NoD_em)
+'''P_ice_climb1 = (E_total_climb1)/ (eta_stt * t_climb1 * NoD_ice)
 P_ice_climb2 = (E_total_climb2)/ (eta_stt * t_climb2 * NoD_ice)
 P_ice_climb3 = (E_total_climb3)/ (eta_stt * t_climb3 * NoD_ice)
 P_ice_cruise_500 = (E_total_cruise_500)/ (eta_stt * t_cruise_500 * NoD_ice)
 P_ice_cruise_full = (E_total_cruise_full)/ (eta_stt * t_cruise_full * NoD_ice)
-print(np.round(P_ice_climb1/10**3), "kW Climb1")
-print(np.round(P_ice_climb2/10**3), "kW Climb2")
-print(np.round(P_ice_climb3/10**3), "kW Climb3")
-print(np.round(P_ice_cruise_500/10**3), "kW Cruise 500nmi")
-print(np.round(P_ice_cruise_full/10**3), "kW Cruise full")
-'''
+print(np.round(P_ice_climb1/10**3-1700), "kW Climb1")
+print(np.round(P_ice_climb2/10**3-1700), "kW Climb2")
+print(np.round(P_ice_climb3/10**3-1700), "kW Climb3")
+print(np.round(P_ice_cruise_500/10**3-1700), "kW Cruise 500nmi")
+print(np.round(P_ice_cruise_full/10**3-1700), "kW Cruise full")'''
+
 print(P_ice/1000,"kW for ICE per engine")
 print(P_em/1000,"kW for Electric Battery per engine")
 #Degree of Hybridization of Power(Hp)
@@ -158,4 +158,4 @@ print(m_OE, "Operational Empty mass without Engine(kg)")
 print(m_propulsion, "Propulsion Mass (kg)")
 print(m_MTOW, "Calculated MTOW (kg)")
 print(MTOW_design/g, "MTOW Design(kg)")
-print(np.round(m_MTOW - MTOW_design/g,4), "Difference between hybrid and original design")'''
+print(np.round(m_MTOW - MTOW_design/g,4), "Difference between hybrid and original design")
