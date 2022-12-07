@@ -3,8 +3,7 @@ import numpy as np
 E_500_nmi = 10354 #MJ
 E_1000 = 29186
 max_power_needed = 4032 #kW
-#Ratio of H2 / fuel
-ratio = 1
+ratio = 1 #Ratio of H2 / fuel
 
 #Constants
 lbs_to_kg = 0.45359237
@@ -19,7 +18,7 @@ prop_eff = 0.75
 FC_eff = 0.6
 
 #Generator efficiencies
-turb_eff = 0.47
+turb_eff = 0.39
 generator_eff = 0.97
 
 #Total efficiencies
