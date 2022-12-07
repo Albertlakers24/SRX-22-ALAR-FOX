@@ -74,7 +74,7 @@ W_P_design = 0.0468
 W_S_design = 3112
 m_turboprop = 1074.5
 m_em = 50
-MTOW_design = 248315                    #N
+MTOW_design = 207146                    #N
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
 #print(P_max/1000, "kW Max Power")
@@ -104,7 +104,7 @@ E_total_500 = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent
 E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent1 +E_total_descent2 +E_total_cruise_full
 
 print(np.round(E_total_500/10**6,5),"MJ, 500Nmi")
-print(np.round(E_total_full/10**6),"MJ, Equivalent Range")
+print(np.round(E_total_full/10**6,5),"MJ, Equivalent Range")
 '''print(E_total_climb1/10**6, "MJ Climb1")
 print(E_total_climb2/10**6, "MJ Climb2")
 print(E_total_climb3/10**6, "MJ Climb3")
@@ -116,16 +116,17 @@ He = E_nc / E_total_full        #Energy of non consumable(battery) / Total Energ
 #print(E_nc/10**6,"MJ for non consumable")
 #print((E_total_full - E_nc)/10**6,"MJ for consumable")
 eta_stt = 0.85 * 0.45       #Efficiency chain from shaft-to-thrust
+eta_fuel_cell = 0.7 * 0.95 * 0.99
 eta_btt = 0.95 * 0.75       #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
 NoD_em = 4                 #Number of electric motor engines
 P_ice = (E_total_full - E_nc)/ (eta_stt * t_total_full * NoD_ice)
 P_em = E_nc/ (eta_btt * t_total_full * NoD_em)
-P_ice_climb1 = (E_total_climb1)/ (eta_stt * t_climb1 * NoD_ice)
-P_ice_climb2 = (E_total_climb2)/ (eta_stt * t_climb2 * NoD_ice)
-P_ice_climb3 = (E_total_climb3)/ (eta_stt * t_climb3 * NoD_ice)
-P_ice_cruise_500 = (E_total_cruise_500)/ (eta_stt * t_cruise_500 * NoD_ice)
-P_ice_cruise_full = (E_total_cruise_full)/ (eta_stt * t_cruise_full * NoD_ice)
+P_ice_climb1 = (E_total_climb1)/ (eta_fuel_cell * t_climb1 * NoD_ice)
+P_ice_climb2 = (E_total_climb2)/ (eta_fuel_cell * t_climb2 * NoD_ice)
+P_ice_climb3 = (E_total_climb3)/ (eta_fuel_cell * t_climb3 * NoD_ice)
+P_ice_cruise_500 = (E_total_cruise_500)/ (eta_fuel_cell * t_cruise_500 * NoD_ice)
+P_ice_cruise_full = (E_total_cruise_full)/ (eta_fuel_cell * t_cruise_full * NoD_ice)
 print(np.round(P_ice_climb1/10**3), "kW Climb1")
 print(np.round(P_ice_climb2/10**3), "kW Climb2")
 print(np.round(P_ice_climb3/10**3), "kW Climb3")
