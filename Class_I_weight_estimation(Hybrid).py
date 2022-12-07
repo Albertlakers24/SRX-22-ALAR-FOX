@@ -29,16 +29,16 @@ Cfe = 0.0045                     #equivalent skin friction coefficient -> depend
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
-CL_max = 1.7                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
-CL_to = 1.9                        #Change with Estimate (1.7-2.1)
+CL_max = 1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
+CL_to = 2.1                        #Change with Estimate (1.7-2.1)
 CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
 CL_land =  2.6                  #Change with Estimate (1.9-3.3)
 TOP = 430                       #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 10.2                      #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0024                  #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_stall = 52                      #Change with CS25 or Requirement
+V_stall = 52                     #Change with CS25 or Requirement
 a = 0.5464
-b = 1439
+b = 1439*g
 
 #CALCULATIONS for the GRAPHS
 W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
@@ -49,7 +49,7 @@ W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise*
 # Rate of Climb Constraint
 W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + CD_to/CL_to)*(np.sqrt((2/rho_1524)*(1/CL_to))))
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
 #Stall Constraint
 W_S_stall = 1/2 * rho_1524 * V_stall**2 * CL_max
 
@@ -70,11 +70,11 @@ plt.grid()
 plt.show()
 
 #Mass Preliminary Calculation
-W_P_design = 0.042
-W_S_design = 2340
+W_P_design = 0.0394
+W_S_design = 2616
 m_turboprop = 1074.5
 m_em = 50
-MTOW_design = 169800                    #N
+MTOW_design = 248315                    #N
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
 print(P_max/1000, "kW Max Power")
@@ -132,10 +132,11 @@ E_bat = 2.7*10**6           #Total Battery Energy per piece
 m_fuel_ice = (1+tf)*P_ice*NoD_ice*BSFC*t_total_500
 m_bat = (1+ddp) * (E_nc/(eta_btt*E_bat))
 m_OE = (a * MTOW_design + b)/g - m_turboprop        #Maximum Takeoff Mass
-m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_turboprop
 m_propulsion = m_turboprop + m_em*NoD_em
+m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
 print(m_fuel_ice, "Fuel Mass(kg)")
 print(m_bat,"Battery Mass(kg)")
 print(m_OE, "Operational Empty mass without Engine(kg)")
+print(m_propulsion, "Propulsion Mass (kg)")
 print(m_MTOW, "Calculated MTOW (kg)")
 print(MTOW_design/g, "MTOW Design(kg)")
