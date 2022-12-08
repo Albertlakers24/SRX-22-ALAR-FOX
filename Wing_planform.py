@@ -13,24 +13,27 @@ M_cross = 0.935                        # Technology factor for supercritical air
 # Masses for Aircraft
 if prop_type == 1:
     MTOW = 19314    # LH2 combustion in kg
+    Sw = 63.3       #main wing area [m^2],
 if prop_type == 2:
     MTOW = 21207    # LH2-kerosene fuel cell in kg
+    Sw = 63.3       # main wing area [m^2]
 if prop_type == 3:
     MTOW = 20434    # LH2 fuel cell in kg
+    Sw = 63.3       # main wing area [m^2]
 if prop_type == 4:
     MTOW = 23000    # Hybrid Electric in kg--> to be updated!!
+    Sw = 63.3   # To be updated!!
 
 # Mission charecteristics
 V_cruise = 141.471   # in m/s
 
 #Calculation
-Sw = 61                               # main wing area [m^2], change value base this on class I est.
+#Sw = 61                               # main wing area [m^2], change value base this on class I est.
 a_cruise = np.sqrt(gamma*specific_gas_constant*T)          # Speed of sound at cruise altitude  [m/s]
 M_cruise = V_cruise / a_cruise         # Mach number during cruise
 M_dd = M_cruise + 0.03                 # Drag-divergence Mach number
 taper = 0.45                           # Taper ratio (from 0 to 1), optimum taper is 0.45 for unswept
                                        # wing to achieve elliptical lift dist. check Raymer
-
 
 # for simple tapered wing, used for deciding on the airfoil
 if switch == 1:
