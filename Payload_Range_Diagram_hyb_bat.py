@@ -43,14 +43,8 @@ plmasses3 = [m_plmax]
 
 #Design Point B
 m_fB = m_mto - m_oe - m_plmax - m_bat
-# m_fhB = ratio_h *m_fB
-# m_fkB  = ratio_k*m_fB
-# print(m_f)
-#R_b1 = n_engh * n_ph * (L_D) * (e_fh/g) * np.log((m_oe + m_plmax + m_fB)/(m_oe + m_plmax))
-#R_b3 = ((n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_fhB)/(m_oe + m_pldes))) +  (n_engk * n_pk * (L_D) * (e_fk /g) * np.log((m_oe + m_pldes + m_fkB)/(m_oe + m_pldes))))
 R_fB = (n_eng_tp * n_p_tp * (LD) * (e_f /g) *  np.log((m_oe + m_plmax + m_fB) / (m_oe + m_plmax)))        #Brequet range equation (fuel)
 R_bB = (n_eng_em * n_p_em * (LD) * (e_bat /g) * ((m_bat / (m_oe + m_plmax + m_bat)))     )                 #Brequet range equation (battery)
-
 
 R_lostB3 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eqB3 = ((R_fB + R_bB+ R_lostB3)*(1+f_con))  + (1.2*R_div) + (t_E * V_cr)
