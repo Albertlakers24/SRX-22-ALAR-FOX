@@ -92,13 +92,13 @@ L_D_cruise = 16.7
 L_D_to = CL_to/CD_to
 L_D_land = CL_land/ CD_to
 tf =  0                     #Trap fuel time step
-BSFC= 1/(43*10**6)   #Brake-specific fuel consumption
+BSFC= 1/(43*10**6 * 0.45)   #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
-eta_stt = 0.85 * 0.45       #Efficiency chain from shaft-to-thrust
+eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
 eta_fuel_cell = 0.85 * 0.95 #Efficiency chain from shaft-to-thrust (fuel cell)
 eta_btt = 0.95 * 0.85        #Efficiency chain from battery-to-thrust
-NoD_ice = 1                 #Number of turboprop engines
+NoD_ice = 2                 #Number of turboprop engines
 NoD_em = 2                 #Number of electric motor engines
 
 #Initial Climb
@@ -164,7 +164,7 @@ P_em = E_nc_total/ (eta_btt * t_total_full * NoD_em)
 H_p_para = P_em*NoD_em / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")
 
-''''# Mass Calculation
+# Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_bat = (1+ddp) * (E_nc_total/(eta_btt*E_bat))
 m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
@@ -178,9 +178,4 @@ print(np.round(m_OE,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOW (kg)")
 print(np.round(MTOW_design/g,0), "MTOW Design(kg)")
-print(np.round((m_MTOW/(MTOW_design/g))-1,2), "Difference between hybrid and original design")'''
-print(P_ice_climb1/1000)
-print(P_ice_climb2/1000)
-print(P_ice_climb3/1000)
-print(P_ice_cruise_full/1000)
-print(P_ice_cruise_500/1000)
+print(np.round((m_MTOW/(MTOW_design/g))-1,2), "Difference between hybrid and original design")
