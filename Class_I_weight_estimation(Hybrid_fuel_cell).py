@@ -134,8 +134,8 @@ E_total_cruise_500 = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_500 + (MTO
 E_total_cruise_full = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_full + (MTOW_climb_3/g * 33.4**2)/2
 E_fuelcell_cruise_500 = 1 * E_total_cruise_500     #Change %
 E_c_cruise_500 = E_total_cruise_500 - E_fuelcell_cruise_500
-E_c_cruise_full = (E_total_cruise_full - E_fuelcell_cruise_500) * 0.25
-E_fuelcell_cruise_full = E_fuelcell_cruise_500  + (E_total_cruise_full - E_fuelcell_cruise_500) * 0.75 #Change %
+E_c_cruise_full = (E_total_cruise_full - E_fuelcell_cruise_500) * 0
+E_fuelcell_cruise_full = E_fuelcell_cruise_500  + (E_total_cruise_full - E_fuelcell_cruise_500) * 1 #Change %
 P_ice_cruise_500 = (E_c_cruise_500)/ (eta_stt * t_cruise_500 * NoD_ice)
 P_ice_cruise_full = (E_c_cruise_full)/ (eta_stt * t_cruise_full * NoD_ice)
 P_fuelcell_cruise_500 = (E_fuelcell_cruise_500)/ (eta_fuel_cell * t_cruise_500 * NoD_ice)
@@ -175,9 +175,9 @@ P_fuelcell_total = P_fuelcell_climb1 + P_fuelcell_climb2 + P_fuelcell_climb3 + P
 m_fuelcell_struc = (P_fuelcell_climb1 / 1000)/3
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_lh2 = m_fuelcell_climb1 + m_fuelcell_climb2 + m_fuelcell_climb3 + m_fuelcell_descent1 + m_fuelcell_descent2 + m_fuelcell_cruise_full
-m_propulsion = m_turboprop*NoD_ice
 m_generator = 127 + 335
-m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc + m_generator
+m_propulsion = m_turboprop*NoD_ice + m_fuelcell_struc
+m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
 print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_lh2,0),"LH2 Mass(kg)")

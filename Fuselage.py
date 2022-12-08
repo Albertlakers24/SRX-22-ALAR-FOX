@@ -41,18 +41,19 @@ D_eff = np.sqrt(height*D_inner)             # effective (inner) diameter [m]
 l_cabin = n_row * k_cabin                   # Length of the cabin [m]
 skin_thickness = 0.084 + 0.045 * D_eff      # fuselage skin thickness [m]
 D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
-l_t = 1.6 * D_outer                         # Length of tail [m]
 
-fuel_at_belly = True
+
+fuel_at_belly = False
 
 if fuel_at_belly == True:
     l_tank = 0
 else:
-    l_tank = 4                                      # Length of the fuel tank as fuselage section
-l_f = l_cabin + l_t + l_cp + l_tank                 # length of the fuselage [m]
-fineness_ratio = l_f/D_outer                        # Fineness ratio
-l_nc = 1.7 * D_eff                                  # length of the nose cone [m] (Schmitt)
-l_tc = 3.5 * D_eff                                  # length of the tail cone [m] (Schmitt)
+    l_tank = 2.1                                 # Length of the fuel tank as fuselage section
+l_t = 1.6 * D_outer + l_tank                      # Length of tail [m]
+l_f = l_cabin + l_t + l_cp                        # length of the fuselage [m]
+fineness_ratio = l_f/D_outer                      # Fineness ratio
+l_nc = 1.2 * D_eff                                # length of the nose cone [m]
+l_tc = 3 * D_eff                                  # length of the tail cone [m]
 l_pax = l_seat * n_row                              # length of the passenger seating area [m]
 l_constant_cross_section = l_f - l_nc - l_tc        # length of the cross section with constant cross section [m]
 theta_tc = np.arctan(D_outer/l_tc)*180/np.pi
@@ -76,7 +77,11 @@ print("l_fuselage [m]:", l_f)
 print("l_nosecone [m]", l_nc)
 print("l_tailcone [m]", l_tc)
 print("l_PAX [m]", l_pax)
+print("l_cabin [m]", l_cabin)
+print("l_tail [m]", l_t)
 print("l_constant cross section [m]", l_constant_cross_section)
+print("tail cone angle [deg]", theta_tc)
+print("===================================================")
 print("Fineness Ratio: ", fineness_ratio)
-print("tail angle [deg]", theta_tc)
+
 
