@@ -1,5 +1,5 @@
 import numpy as np
-import scipy as sp
+#import scipy as sp
 from Class_I_Weight_Estimation import MTOW,V_cruise
 from Lift_Drag_Polar import p, T, specific_gas_constant, b
 #Switch for simple/double tapered wing
