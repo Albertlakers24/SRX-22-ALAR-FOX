@@ -1,13 +1,27 @@
 import numpy as np
 #import scipy as sp
-from Class_I_Weight_Estimation import MTOW,V_cruise
+#from Class_I_Weight_Estimation import MTOW,V_cruise
 from Lift_Drag_Polar import p, T, specific_gas_constant, b
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
-
+prop_type = 3                        # put 1 for LH2 combustion, 2 for LH2-kerosene hybrid, 3 for LH2 fuel cell, 4 for Hybrid Electric
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
+
+
+# Masses for Aircraft
+if prop_type == 1:
+    MTOW = 19314    # LH2 combustion in kg
+if prop_type == 2:
+    MTOW = 21207    # LH2-kerosene fuel cell in kg
+if prop_type == 3:
+    MTOW = 20434    # LH2 fuel cell in kg
+if prop_type == 4:
+    MTOW = 23000    # Hybrid Electric in kg--> to be updated!!
+
+# Mission charecteristics
+V_cruise = 141.471   # in m/s
 
 #Calculation
 Sw = 61                               # main wing area [m^2], change value base this on class I est.
