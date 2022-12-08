@@ -2,79 +2,87 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+g = 9.81
+
+# Propulsion charecteristics
 n_pk =  0.85
 n_ph = 0.85
 PSFC = 0.48*(0.45/(745*3600))
-m_pldes = 8124
-L_D = 16                                                      #Lift over drag
 e_fk = 42.9 * 10**6
 e_fh = 142 * 10**6
 n_engk = (1/e_fk)*(1/PSFC)
 n_engh = (1/e_fh)*(1/PSFC)
-g = 9.81
+
+
+#Aerodynamic Charecteristics
+LD_crs = 16.7
+L_D = 16          #Lift over drag
+
+# Mission Charecteristics
 V_cr = 143.89
 h_cr = 11000
-LD_crs = 16.7
-m_mto = 28014
-m_plmax = m_pldes*1.1
-m_oe =  16746
-R = 1852000
-#given                                                    #
-                                                 #given
-points = []
-# #Point A
-ranges1 = [0]
-plmasses1 = [m_plmax]
-points.append('A')
-#Point B (Range at Max Payload)
+R = 1852000  # Design range - 1000nmi
 f_con = 5/100
 R_div = 200000
 t_E = 45 * 60
-#m_f = m_mto * (1 - np.exp(-R / (n_engh * n_ph * (e_fh /g) * (L_D))))
+
+# Masses Aircraft
+m_mto = 28014
+m_oe =  16746
+m_pldes = 8124
+m_plmax = m_pldes*1.1
+
+
+# #Point A
+ranges1 = [0]
+plmasses1 = [m_plmax]
+
+#Point B (Range at Max Payload)
+
+#m_fB = m_mto * (1 - np.exp(-R / (n_engh * n_ph * (e_fh /g) * (L_D))))
 m_fB = m_mto - m_oe - m_plmax
-# print(m_f)
+
 R_b1 = n_engh * n_ph * (L_D) * (e_fh/g) * np.log((m_oe + m_plmax + m_fB)/(m_oe + m_plmax))
 R_lostB = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
-print(R_lostB)
-#R_nomB = 1852000
 R_eqB = ((R_b1 + R_lostB)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
-print(R_eqB)
 R_auxB = R_eqB - R_b1
-print(R_auxB)
 R_b = R_b1 - R_auxB
 
 ranges1 = np.append(ranges1, [R_b])
 plmasses1 = np.append(plmasses1, [m_plmax])
-points.append('B')
-#
-print(ranges1)
+
+#print(ranges1)
+#print(R_auxB)
+#print(R_eqB)
+#print(R_lostB)
 
 #Point C (Design Range)
-f_con = 5/100
-R_div = 200000
-t_E = 45 * 60
+# f_con = 5/100 # --> Added this up - uncomment if we have diff values for B&C
+# R_div = 200000
+# t_E = 45 * 60
 R_lost1 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
-print(R_lost1)
 R_nom1 = 1852000
 R_eq1 = ((R_nom1 + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
-print(R_eq1)
 R_aux1 = R_eq1 - R_nom1
-print(R_aux1)
 m_fC = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_ph * (e_fh /g) * (L_D))))
-print("mf" ,m_fC)
 R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_fC)/(m_oe + m_pldes))) - R_aux1
-print("Rc", R_c1)
+
 ranges1 = np.append(ranges1, [R_c1])
 plmasses1 = np.append(plmasses1, [m_pldes])
-points.append('C')
-#Point D (Ferry Range)
 
+#print("Rc", R_c1)
+#print("mf" ,m_fC)
+#print(R_eq1)
+#print(R_aux1)
+#print(R_lost1)
+
+#Point D (Ferry Range)
 R_d1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe  + m_fC)/(m_oe ))) - R_aux1
-print(R_d1)
 
 ranges1 = np.append(ranges1, [R_d1])
 plmasses1 = np.append(plmasses1, [0])
-points.append('D')
+
+#print(R_d1)
 
 #Constructing the actual plot
 
@@ -83,9 +91,9 @@ plt.plot(ranges1, plmasses1, color='green', linewidth=2,
          marker='o', markerfacecolor='green', markersize=5)
 
 
-print(ranges1)
-print(plmasses1)
-print(points)
+# print(ranges1)
+# print(plmasses1)
+# print(points)
 # naming the x axis
 plt.xlabel('Range (m)')
 # naming the y axis
