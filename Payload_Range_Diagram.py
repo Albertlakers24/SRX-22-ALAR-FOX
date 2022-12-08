@@ -22,16 +22,15 @@ m_oe =  12400                                                    #given         
 ranges1 = [0]
 plmasses1 = [m_pldes]
 #Point B (Range at Max Payload)
-# m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
-#
-# R_b = n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_pl))
-#
-# m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
-#
-# ranges = np.append(ranges, [R_b])
-# plmasses = np.append(plmasses, [m_pl])
 
-#print(ranges)
+R_b = n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_pl))
+#
+m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
+#
+ranges = np.append(ranges, [R_b])
+plmasses = np.append(plmasses, [m_pl])
+
+print(ranges)
 
 #Point C (Design Range)
 f_con = 5/100
@@ -87,16 +86,17 @@ plt.show()
 ranges2 = [0]
 plmasses2 = [m_pldes]
 #Point B (Range at Max Payload)
-# m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
-#
 # R_b = n_eng * n_p * (L/D) * (e_f /g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_pl))
 #
 # m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
 #
-# ranges = np.append(ranges, [R_b])
-# plmasses = np.append(plmasses, [m_pl])
 
-#print(ranges)
+#m_f = m_mto * (1 - np.exp(-R_b / (n_eng * n_p * (e_f /g) * (L/D))))
+
+ranges = np.append(ranges, [R_b])
+plmasses = np.append(plmasses, [m_pl])
+
+print(ranges)
 
 #Point C (Design Range)
 ratio_h = np.linspace(0.0, 1.0, num=21)
