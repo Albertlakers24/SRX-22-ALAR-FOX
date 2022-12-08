@@ -12,12 +12,13 @@ R_div = 200000                      #Fuel needed for missed approach
 t_E = 45 * 60                       #Endurance time
 
 #Aircraft mass characteristics
-m_oe    =  12400                    #Operational empty weight (reference for now) [kg]
-m_pldes = 100*50                    #Design payload [kg]
-m_mto   = 21500
+m_oe    =  15454                    #Operational empty weight (reference for now) [kg]
+m_pldes = 8124                    #Design payload [kg]
+m_mto   = 30000
+m_plmax = m_pldes*1.25
 
 #Propulsion characteristics
-m_bat       = 5000                      #battery mass [kg]
+m_bat       = 2600                      #battery mass [kg]
 e_f         = 42.8 * 10**6
 e_bat       = 2.7 * 10**6
 PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
@@ -36,39 +37,51 @@ m_f     = 0.8 * (m_mto * (1 - np.exp(-R_nom / (n_eng_tp * n_p_tp * (e_f /g) * (L
 
 #Lists
 
-ranges = [0]
-plmasses = [m_pldes]
+#Design Point A
+ranges3 = [0]
+plmasses3 = [m_plmax]
+
+#Design Point B
+m_fB = m_mto - m_oe - m_plmax - m_bat
+R_fB = (n_eng_tp * n_p_tp * (LD) * (e_f /g) *  np.log((m_oe + m_plmax + m_fB) / (m_oe + m_plmax)))        #Brequet range equation (fuel)
+R_bB = (n_eng_em * n_p_em * (LD) * (e_bat /g) * ((m_bat / (m_oe + m_plmax + m_bat)))     )                 #Brequet range equation (battery)
+
+R_lostB3 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
+R_eqB3 = ((R_fB + R_bB+ R_lostB3)*(1+f_con))  + (1.2*R_div) + (t_E * V_cr)
+R_auxB3 = R_eqB3 - R_fB - R_bB
+R_b = R_fB + R_bB - R_auxB3
+
+ranges3 = np.append(ranges3, [R_b])
+plmasses3 = np.append(plmasses3, [m_plmax])
 
 
-
+#point C (design range)
 #range equations
 R_lost          = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eq            = ((R_nom + R_lost)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)                                         #Equivalent range
 R_aux           = R_eq - R_nom                                                                                      #Auxilary range
 R_f             = (n_eng_tp * n_p_tp * (LD) * (e_f /g) *  np.log((m_oe + m_pldes + m_f) / (m_oe + m_pldes)))        #Brequet range equation (fuel)
-R_f_ferry       = (n_eng_tp * n_p_tp * (LD) * (e_f /g) *  np.log((m_oe + m_f) / (m_oe)))                            #Brequet range equation (fuel)
 R_b             = (n_eng_em * n_p_em * (LD) * (e_bat /g) * ((m_bat / (m_oe + m_pldes + m_bat)))     )                 #Brequet range equation (battery)
-R_b_ferry       = (n_eng_em * n_p_em * (LD) * (e_bat /g) * ((m_bat / (m_oe + m_bat)))     )                           #Brequet range equation (battery)
 
 R_c             = R_f + R_b - R_aux
 
-#point C (design range)
-ranges = np.append(ranges, [R_c])
-plmasses = np.append(plmasses, [m_pldes])
+ranges3 = np.append(ranges3, [R_c])
+plmasses3 = np.append(plmasses3, [m_pldes])
 
 #Point D (Ferry Range)
-
+R_f_ferry       = (n_eng_tp * n_p_tp * (LD) * (e_f /g) *  np.log((m_oe + m_f) / (m_oe)))                            #Brequet range equation (fuel)
+R_b_ferry       = (n_eng_em * n_p_em * (LD) * (e_bat /g) * ((m_bat / (m_oe + m_bat)))     )                           #Brequet range equation (battery)
 R_d = R_f_ferry + R_b_ferry - R_aux
 
 
-ranges = np.append(ranges, [R_d])
-plmasses = np.append(plmasses, [0])
+ranges3 = np.append(ranges3, [R_d])
+plmasses3 = np.append(plmasses3, [0])
 
 
 #Constructing the actual plot
 
 # plotting the points
-plt.plot(ranges, plmasses, color='green', linewidth=3,
+plt.plot(ranges3, plmasses3, color='green', linewidth=3,
          marker='o', markerfacecolor='blue', markersize=12)
 
 
