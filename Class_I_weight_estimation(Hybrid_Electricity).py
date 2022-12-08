@@ -165,11 +165,11 @@ H_p_para = P_em*NoD_em / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")
 
 # Mass Calculation
-m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_500
+m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_bat = (1+ddp) * (E_nc_total/(eta_btt*E_bat))
-m_OE = (a * MTOW_design/g + b)
 m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
-m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat + m_propulsion
+m_OE = (a * MTOW_design/g + b) + m_propulsion
+m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat
 print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_bat,0),"Battery Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
@@ -178,4 +178,4 @@ print(np.round(m_OE,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOW (kg)")
 print(np.round(MTOW_design/g,0), "MTOW Design(kg)")
-print(np.round((m_MTOW/(MTOW_design/g)),2), "% Difference between hybrid and original design")
+print(np.round((m_MTOW/(MTOW_design/g))-1,2), "Difference between hybrid and original design")
