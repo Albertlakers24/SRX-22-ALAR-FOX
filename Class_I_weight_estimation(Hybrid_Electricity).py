@@ -5,16 +5,20 @@ g = 9.80665
 lambda_trop = -6.5/1000
 R = 287.0528
 V_cruise = 280 * 0.51444444     #knt -> m/s (TAS)
-h_cruise = 200*100 * 0.3048     #m
-s_takeoff_1524 = 1315           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-s_landing_1524 = 1315           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
+h_cruise = 280*100 * 0.3048     #m
+s_takeoff_1524 = 1372           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
+s_landing_1524 = 1372           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 rho_0= 1.225                    #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
 rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
 rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
 rho_cruise = rho_cruise_rho0 * rho_0
 eff_prop = 0.85                 #Change with Literature
-m_payload = 8124
+PAX = 50
+WPAX = 200*0.453592*PAX*g + 3*190*0.453592*g                                  #N
+WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N Crew is bagageless
+m_payload = (WPAX + WPAXBAGGAGE) / g
+
 W_S = np.arange(1,5000,1)
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
@@ -30,9 +34,9 @@ CL_to = 2.1                        #Change with Estimate (1.7-2.1)
 CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 CD_land = Cd0 + (CL_to**2 /(np.pi * A* e))
-TOP = 500                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
-ROC = 6.88                         #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
+TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
+ROC = 10.2                         #Change with CS25 and literature or Requirement (Rate of Climb)
+ROC_V = 0.0032                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_approach = 141* 0.514444         #Change with CS25 or Requirement
 a = 0.5088
 b = 1199.7
@@ -62,6 +66,7 @@ plt.xticks(np.arange(0,5001,500))
 plt.yticks(np.arange(0,0.5,0.05))
 plt.xlabel("W/S (N/m^2)")
 plt.ylabel("W/P (N/W)")
+plt.title("Loading Diagram of Novel Regional Aircraft")
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
@@ -72,7 +77,7 @@ W_S_design = 3767
 m_turboprop = 1074.5/2
 m_em = 50
 m_propeller = 17
-MTOW_design = 274732                   #N
+MTOW_design = 21123 * g                  #N
 P_max = MTOW_design / W_P_design
 S = MTOW_design / W_S_design
 print(P_max/1000, "kW Max Power")
@@ -169,12 +174,14 @@ m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m
 m_bat = (1+ddp) * (E_nc_total/(0.95*E_bat))
 m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
 m_OE = (a * MTOW_design/g + b) + m_propulsion
+m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat
 print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_bat,0),"Battery Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
 print(np.round(m_bat+m_fuel_ice,0),"Fuel + Battery mass")
-print(np.round(m_OE,0), "Operational Empty mass without Engine(kg)")
+print(np.round(m_OE,0), "Operational Empty mass with Engine(kg)")
+print(np.round(m_OE_without,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOW (kg)")
 print(np.round(MTOW_design/g,0), "MTOW Design(kg)")

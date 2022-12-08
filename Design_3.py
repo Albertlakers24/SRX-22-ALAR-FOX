@@ -9,7 +9,7 @@ ratio = 1 #Ratio of H2 / fuel
 lbs_to_kg = 0.45359237
 
 #Regular efficiencies
-wire_eff = 0.99
+wire_eff = 0.97
 inverter_eff = 0.995
 motor_eff = 0.95
 prop_eff = 0.75
@@ -93,7 +93,7 @@ elif ratio == 0:
     num_generators = 4
     FC_mass = 0
 mass_gen_turb = num_generators * (280 * lbs_to_kg + 335)
-total_weight = FC_mass + prop_mass + mass_gen_turb + perfect_ratio(ratio) + mass_inverter
+total_weight = FC_mass + prop_mass + mass_gen_turb + mass_inverter# + perfect_ratio(ratio)
 print(total_weight)
 
 # masses = []

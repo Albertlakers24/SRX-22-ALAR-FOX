@@ -18,11 +18,11 @@ def ISA_calculator(h):
     T = T_0 + lapse_rate * h
     p = p_0 * ((T_0 / T) ** ((g_0 * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant * T)
-    return T
-T = ISA_calculator(28000 * 0.3048)
+    return T, rho
+T, rho = ISA_calculator(0 * 0.3048)
 a = np.sqrt(gamma * T * specific_gas_constant)
 M_cruise = V_cruise_ms / a
 rps = 2500 / 60
 D = a / (np.pi * rps) * np.sqrt(M_tip**2 - M_cruise**2)
-print(D)
+print(rho, a)
 
