@@ -16,7 +16,7 @@ V_cr = 143.89
 h_cr = 11000
 LD_crs = 16.7
 m_mto = 28014
-m_plmax = m_pldes*1.3
+m_plmax = m_pldes*1.1
 m_oe =  16746
 R = 1852000
 #given                                                    #
@@ -27,11 +27,22 @@ ranges1 = [0]
 plmasses1 = [m_plmax]
 points.append('A')
 #Point B (Range at Max Payload)
+f_con = 5/100
+R_div = 200000
+t_E = 45 * 60
 #m_f = m_mto * (1 - np.exp(-R / (n_engh * n_ph * (e_fh /g) * (L_D))))
-m_f = m_mto - m_oe - m_plmax
+m_fB = m_mto - m_oe - m_plmax
 # print(m_f)
-R_b = n_engh * n_ph * (L_D) * (e_fh/g) * np.log((m_oe + m_plmax + m_f)/(m_oe + m_plmax))
-#
+R_b1 = n_engh * n_ph * (L_D) * (e_fh/g) * np.log((m_oe + m_plmax + m_fB)/(m_oe + m_plmax))
+R_lostB = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
+print(R_lostB)
+#R_nomB = 1852000
+R_eqB = ((R_b1 + R_lostB)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
+print(R_eqB)
+R_auxB = R_eqB - R_b1
+print(R_auxB)
+R_b = R_b1 - R_auxB
+
 ranges1 = np.append(ranges1, [R_b])
 plmasses1 = np.append(plmasses1, [m_plmax])
 points.append('B')
@@ -49,16 +60,16 @@ R_eq1 = ((R_nom1 + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 print(R_eq1)
 R_aux1 = R_eq1 - R_nom1
 print(R_aux1)
-m_f = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_ph * (e_fh /g) * (L_D))))
-print("mf" ,m_f)
-R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_f)/(m_oe + m_pldes))) - R_aux1
+m_fC = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_ph * (e_fh /g) * (L_D))))
+print("mf" ,m_fC)
+R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_fC)/(m_oe + m_pldes))) - R_aux1
 print("Rc", R_c1)
 ranges1 = np.append(ranges1, [R_c1])
 plmasses1 = np.append(plmasses1, [m_pldes])
 points.append('C')
 #Point D (Ferry Range)
 
-R_d1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe  + m_f)/(m_oe ))) - R_aux1
+R_d1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe  + m_fC)/(m_oe ))) - R_aux1
 print(R_d1)
 
 ranges1 = np.append(ranges1, [R_d1])
