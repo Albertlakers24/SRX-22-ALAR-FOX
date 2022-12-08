@@ -13,10 +13,10 @@ l_lav = 0.914
 w_lav = 0.914
 l_galley = 0.762
 w_galley = 0.914
-l_seat = 0.76          # seat pitch [m]
+l_seat = 0.76      # seat pitch [m]
 
 # Design choices
-n_SA = 4           # Number of seats abreast
+n_SA = 4          # Number of seats abreast
 
 if n_SA == 3:
     n_PAX = 48                  # Number of passengers (46-50)
@@ -43,19 +43,19 @@ skin_thickness = 0.084 + 0.045 * D_eff      # fuselage skin thickness [m]
 D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
 
 
-fuel_at_belly = False
+fuel_at_belly = True
 
 if fuel_at_belly == True:
     l_tank = 0
 else:
-    l_tank = 2.1                                 # Length of the fuel tank as fuselage section
+    l_tank = 2.1                                  # Length of the fuel tank as fuselage section
 l_t = 1.6 * D_outer + l_tank                      # Length of tail [m]
 l_f = l_cabin + l_t + l_cp                        # length of the fuselage [m]
 fineness_ratio = l_f/D_outer                      # Fineness ratio
 l_nc = 1.2 * D_eff                                # length of the nose cone [m]
 l_tc = 3 * D_eff                                  # length of the tail cone [m]
-l_pax = l_seat * n_row                              # length of the passenger seating area [m]
-l_constant_cross_section = l_f - l_nc - l_tc        # length of the cross section with constant cross section [m]
+l_pax = l_seat * n_row                            # length of the passenger seating area [m]
+l_constant_cross_section = l_f - l_nc - l_tc      # length of the cross section with constant cross section [m]
 theta_tc = np.arctan(D_outer/l_tc)*180/np.pi
 
 # Skin Drag Computation
