@@ -4,6 +4,11 @@ kts_to_ms = 0.51444444444444
 V_cruise_ms = V_cruise * kts_to_ms
 M_tip = 0.8
 
+E_500_nmi = 11835 #MJ
+E_1000 = 34943 #MJ
+max_power_needed = 3760 #kW
+power_cruise = 2758 #kW
+
 g_0 = 9.80665
 Molar_mass_air = 0.0289644 #kg/mol
 universal_gas_constant = 8.31432 #N m kmol⁻¹ K⁻¹

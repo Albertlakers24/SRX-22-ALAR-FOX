@@ -1,8 +1,8 @@
 import numpy as np
 #Inputs
-E_500_nmi = 10354 #MJ
-E_1000 = 29186
-max_power_needed = 4032 #kW
+E_500_nmi = 11835 #MJ
+E_1000 = 34943 #MJ
+max_power_needed = 3760 #kW
 ratio = 1 #Ratio of H2 / fuel
 
 #Constants
@@ -93,7 +93,7 @@ elif ratio == 0:
     num_generators = 4
     FC_mass = 0
 mass_gen_turb = num_generators * (280 * lbs_to_kg + 335)
-total_weight = FC_mass + prop_mass + mass_gen_turb + mass_inverter# + perfect_ratio(ratio)
+total_weight = FC_mass + prop_mass + mass_gen_turb + mass_inverter + perfect_ratio(ratio)
 print(total_weight)
 
 # masses = []
