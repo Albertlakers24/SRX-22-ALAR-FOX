@@ -103,7 +103,7 @@ NoD_em = 2                 #Number of electric motor engines
 
 #Initial Climb
 E_total_climb1 = (MTOW_design*72)/ (L_D_to) * t_climb1 + (MTOW_design/g * 72**2)/2 + MTOW_design*6.8*t_climb1
-E_nc_climb1 = 0 * E_total_climb1     #Change %
+E_nc_climb1 = 0.2 * E_total_climb1     #Change %
 E_c_climb1 = E_total_climb1 - E_nc_climb1
 P_ice_climb1 = (E_c_climb1)/ (eta_stt * t_climb1 * NoD_ice)
 m_fuel_climb1 = (1+tf)*P_ice_climb1*NoD_ice*BSFC*t_climb1
@@ -111,7 +111,7 @@ MTOW_climb_1 = MTOW_design - m_fuel_climb1 * g
 
 #Second Climb
 E_total_climb2 = (MTOW_climb_1*108)/ (L_D_cruise) * t_climb2 + (MTOW_climb_1/g * 36**2)/2 + MTOW_climb_1*5.08*t_climb2
-E_nc_climb2 = 0 * E_total_climb2 #Change %
+E_nc_climb2 = 0.2 * E_total_climb2 #Change %
 E_c_climb2 = E_total_climb2 - E_nc_climb2
 P_ice_climb2 = (E_c_climb2)/ (eta_stt * t_climb2 * NoD_ice)
 m_fuel_climb2 = (1+tf)*P_ice_climb2*NoD_ice*BSFC*t_climb2
@@ -119,7 +119,7 @@ MTOW_climb_2 = MTOW_climb_1 - m_fuel_climb2 * g
 
 #3rd Climb
 E_total_climb3 = (MTOW_climb_2*108)/ (L_D_cruise) * t_climb3 + MTOW_climb_2*4.06*t_climb3
-E_nc_climb3 = 0 * E_total_climb3 #Change %
+E_nc_climb3 = 0.2 * E_total_climb3 #Change %
 E_c_climb3 = E_total_climb3 - E_nc_climb3
 P_ice_climb3 = (E_c_climb3)/ (eta_stt * t_climb3 * NoD_ice)
 m_fuel_climb3 = (1+tf)*P_ice_climb3*NoD_ice*BSFC*t_climb3
@@ -128,10 +128,10 @@ MTOW_climb_3 = MTOW_climb_2 - m_fuel_climb3 * g
 #Cruise
 E_total_cruise_500 = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_500 + (MTOW_climb_3/g * 33.4**2)/2
 E_total_cruise_full = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_full + (MTOW_climb_3/g * 33.4**2)/2
-E_nc_cruise_500 = 0 * E_total_cruise_500 #Change %
+E_nc_cruise_500 = 0.2 * E_total_cruise_500 #Change %
 E_c_cruise_500 = E_total_cruise_500 - E_nc_cruise_500
-E_nc_cruise_full = 0 * E_total_cruise_full #Change %
-E_c_cruise_full = E_total_cruise_full - E_nc_cruise_full
+E_nc_cruise_full = E_nc_cruise_500 #0 * E_total_cruise_full #Change %
+E_c_cruise_full = E_total_cruise_full - E_nc_cruise_500
 P_ice_cruise_500 = (E_c_cruise_500)/ (eta_stt * t_cruise_500 * NoD_ice)
 P_ice_cruise_full = (E_c_cruise_full)/ (eta_stt * t_cruise_full * NoD_ice)
 m_fuel_cruise_500 = (1+tf)*P_ice_cruise_500*NoD_ice*BSFC*t_cruise_500
@@ -141,15 +141,15 @@ MTOW_cruise_full = MTOW_climb_3 - m_fuel_cruise_full * g
 
 #Descent 1
 E_total_descent1 = (MTOW_cruise_full*138.9)/ (L_D_cruise) * t_descent1 + (MTOW_cruise_full/g * 25.7**2)/2 - MTOW_cruise_full*10.89*t_descent1
-E_nc_descent1 = 0 * E_total_descent1 #Change %
+E_nc_descent1 = 0.2 * E_total_descent1 #Change %
 E_c_descent1 = E_total_descent1 - E_nc_descent1
 P_ice_descent1 = (E_c_descent1)/ (eta_stt * t_descent1 * NoD_ice)
 m_fuel_descent1 = (1+tf)*P_ice_descent1*NoD_ice*BSFC*t_descent1
-MTOW_descent1 = MTOW_cruise_full - m_fuel_descent1 * g
+MTOW_descent1 = MTOW_cruise_500 - m_fuel_descent1 * g
 
 #Descent 2
 E_total_descent2 = (MTOW_descent1*103)/ (L_D_land) * t_descent2 + (MTOW_descent1/g * 36**2)/2 - MTOW_descent1*8.08*t_descent2
-E_nc_descent2 = 0 * E_total_descent2 #Change %
+E_nc_descent2 = 0.2 * E_total_descent2 #Change %
 E_c_descent2 = E_total_descent2 - E_nc_descent2
 P_ice_descent2 = (E_c_descent2)/ (eta_stt * t_descent2 * NoD_ice)
 m_fuel_descent2 = (1+tf)*P_ice_descent2*NoD_ice*BSFC*t_descent2
@@ -159,13 +159,13 @@ E_total_500 = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent
 E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent1 +E_total_descent2 +E_total_cruise_full
 
 # Hybridnization calculation
-E_nc_total = E_nc_climb1 + E_nc_climb2 + E_nc_climb3 + E_nc_descent1 + E_nc_descent2 + E_nc_cruise_full
+E_nc_total = E_nc_climb1 + E_nc_climb2 + E_nc_climb3 + E_nc_descent1 + E_nc_descent2 + E_nc_cruise_500
 P_em = E_nc_total/ (eta_btt * t_total_full * NoD_em)
 H_p_para = P_em*NoD_em / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")
 
 # Mass Calculation
-m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
+m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_500
 m_bat = (1+ddp) * (E_nc_total/(eta_btt*E_bat))
 m_OE = (a * MTOW_design/g + b)
 m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
@@ -178,4 +178,4 @@ print(np.round(m_OE,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOW (kg)")
 print(np.round(MTOW_design/g,0), "MTOW Design(kg)")
-print(np.round((m_MTOW - MTOW_design/g)/MTOW_design*100,2), "% Difference between hybrid and original design")
+print(np.round((m_MTOW/(MTOW_design/g)),2), "% Difference between hybrid and original design")
