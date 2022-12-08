@@ -2,28 +2,37 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+g = 9.81
+
+# Propulsion charecteristics
 n_pk =  0.85
 n_ph = 0.85
 PSFC = 0.48*(0.45/(745*3600))
-m_pldes = 8124
-L_D = 16                                                      #Lift over drag
 e_fk = 42.9 * 10**6
 e_fh = 142 * 10**6
 n_engk = (1/e_fk)*(1/PSFC)
 n_engh = (1/e_fh)*(1/PSFC)
-g = 9.81
+
+
+#Aerodynamic Charecteristics
+LD_crs = 16.7
+L_D = 16          #Lift over drag
+
+# Mission Charecteristics
 V_cr = 143.89
 h_cr = 11000
-LD_crs = 16.7
-m_mto = 28014
-m_plmax = m_pldes*1.1
-m_oe =  16746
-R = 1852000
+R = 1852000  # Design range - 1000nmi
 f_con = 5/100
 R_div = 200000
 t_E = 45 * 60
-#given                                                    #
-                                                 #given
+
+# Masses Aircraft
+m_mto = 28014
+m_oe =  16746
+m_pldes = 8124
+m_plmax = m_pldes*1.1
+
+
 # #Point A
 ranges1 = [0]
 plmasses1 = [m_plmax]
