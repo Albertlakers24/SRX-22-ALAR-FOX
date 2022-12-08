@@ -75,7 +75,7 @@ plt.show()
 W_P_design = 0.0547
 W_S_design = 3767
 m_turboprop = 1074.5/2
-m_em = 50
+m_em = 13
 m_propeller = 17
 MTOW_design = 21123 * g                  #N
 P_max = MTOW_design / W_P_design
@@ -101,8 +101,7 @@ BSFC= 1/(43*10**6 * 0.45)   #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
-eta_fuel_cell = 0.85 * 0.95 #Efficiency chain from shaft-to-thrust (fuel cell)
-eta_btt = 0.95 * 0.85        #Efficiency chain from battery-to-thrust
+eta_btt = 0.934 * 0.85        #Efficiency chain from battery-to-thrust
 NoD_ice = 2                   #Number of turboprop engines
 NoD_em = 2                 #Number of electric motor engines
 
