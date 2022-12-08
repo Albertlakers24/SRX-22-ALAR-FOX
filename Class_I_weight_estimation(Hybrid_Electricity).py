@@ -155,6 +155,7 @@ P_ice_descent2 = (E_c_descent2)/ (eta_stt * t_descent2 * NoD_ice)
 m_fuel_descent2 = (1+tf)*P_ice_descent2*NoD_ice*BSFC*t_descent2
 MTOW_descent2 = MTOW_descent1 - m_fuel_descent2 * g
 
+
 E_total_500 = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent1 +E_total_descent2 +E_total_cruise_500
 E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descent1 +E_total_descent2 +E_total_cruise_full
 
