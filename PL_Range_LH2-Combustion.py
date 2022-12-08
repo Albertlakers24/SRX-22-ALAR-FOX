@@ -2,37 +2,37 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-g = 9.81
+g = 9.80665
 
 # Propulsion charecteristics
 n_pk =  0.85
 n_ph = 0.85
-PSFC = 0.48*(0.45/(745*3600))
+#PSFC = 0.48*(0.45/(745*3600))
 e_fk = 42.9 * 10**6
 e_fh = 142 * 10**6
-n_engk = (1/e_fk)*(1/PSFC)
-n_engh = (1/e_fh)*(1/PSFC)
-
+n_engk = 0.45
+n_engh = 0.3
+# n_engk = (1/e_fk)*(1/PSFC)
+# n_engh = (1/e_fh)*(1/PSFC)
 
 #Aerodynamic Charecteristics
-LD_crs = 16.7
-L_D = 16          #Lift over drag
+LD_crs = 16.2
+L_D = 16          #Lift over drag ---> CHECK!!!
 
 # Mission Charecteristics
-V_cr = 143.89
-h_cr = 11000
-R = 1852000  # Design range - 1000nmi
+V_cr = 141.471   # in m/s
+h_cr = 8534.4    # in m
+R_nom = 1852000  # in m ---> Design range - 1000nmi
 f_con = 5/100
-R_div = 200000
-t_E = 45 * 60
+R_div = 185200   # in m ---> 100nmi
+t_E = 45 * 60    # in seconds - endurance time
 
 # Masses Aircraft
-m_mto = 28014
-m_oe =  16746
-m_pldes = 8124
-m_plmax = m_pldes*1.1
-
-
+m_mto = 19314   # in kg --> Max take off
+m_oe =  12486   # in kg --> Operating empty
+m_pldes = 5730  # in kg --> Design payload
+m_plmax = m_pldes*1.1   # in kg --> Max payload
+#m_f = 1098 # in kg --> Fuel mass
 # #Point A
 ranges1 = [0]
 plmasses1 = [m_plmax]
@@ -57,21 +57,18 @@ plmasses1 = np.append(plmasses1, [m_plmax])
 #print(R_lostB)
 
 #Point C (Design Range)
-# f_con = 5/100 # --> Added this up - uncomment if we have diff values for B&C
-# R_div = 200000
-# t_E = 45 * 60
 R_lost1 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
-R_nom1 = 1852000
-R_eq1 = ((R_nom1 + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
-R_aux1 = R_eq1 - R_nom1
-m_fC = m_mto * (1 - np.exp(-R_nom1 / (n_engh * n_ph * (e_fh /g) * (L_D))))
+R_eq1 = ((R_nom + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
+R_aux1 = R_eq1 - R_nom
+#m_fC = m_mto * (1 - np.exp(-R_nom / (n_engh * n_ph * (e_fh /g) * (L_D))))
+m_fC = m_mto - m_pldes - m_oe
 R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_fC)/(m_oe + m_pldes))) - R_aux1
 
 ranges1 = np.append(ranges1, [R_c1])
 plmasses1 = np.append(plmasses1, [m_pldes])
 
 #print("Rc", R_c1)
-#print("mf" ,m_fC)
+print("mf" ,m_fC)
 #print(R_eq1)
 #print(R_aux1)
 #print(R_lost1)
@@ -100,7 +97,7 @@ plt.xlabel('Range (m)')
 plt.ylabel('Payload (Kg)')
 
 # giving a title to my graph
-plt.title('Payload-Range diagram for 100% combustion')
+plt.title('Payload-Range diagram for LH2 combustion')
 
 # function to show the plot
 plt.show()

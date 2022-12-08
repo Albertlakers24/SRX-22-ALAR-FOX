@@ -1,5 +1,5 @@
 import numpy as np
-from Class_I_Weight_Estimation import Cd0, A, e, MTOW
+from Class_I_Weight_Estimation import Cd0, A, e
 
 #Constants
 g_0 = 9.80665
@@ -16,6 +16,17 @@ p_0 = 101325 #Pa
 lapse_rate = -0.0065
 max_sweep = 0
 quarter_sweep = 0
+
+# For propulsion type
+prop_type = 3                        # put 1 for LH2 combustion, 2 for LH2-kerosene hybrid, 3 for Hybrid Electric
+
+# Masses for Aircraft based on prop type
+if prop_type == 1:
+    MTOW = 19314    # in kg
+if prop_type == 2:
+    MTOW = 20000    # in kg --> change
+if prop_type == 3:
+    MTOW = 23000    # in kg --> change
 
 def ISA_calculator(h):
     T = T_0 + lapse_rate * h

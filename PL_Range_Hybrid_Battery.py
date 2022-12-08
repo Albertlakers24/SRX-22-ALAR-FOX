@@ -1,15 +1,15 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-g = 9.81
+g = 9.80665
 
-#mission characteristics
-h_cr = 11000                        #Cruise altitude [m]
-V_cr = 143.89                       #Cruise speed [m/s]
-R_nom = 1852000                     #Nominal Range
-f_con = 5/100                       #fuel trip fraction for contingency
-R_div = 200000                      #Fuel needed for missed approach
-t_E = 45 * 60                       #Endurance time
+# Mission Charecteristics
+V_cr = 141.471   # in m/s
+h_cr = 8534.4    # in m
+R_nom = 1852000  # in m ---> Design range - 1000nmi
+f_con = 5/100
+R_div = 185200   # in m ---> 100nmi
+t_E = 45 * 60    # in seconds - endurance time
 
 #Aircraft mass characteristics
 m_oe    =  15454                    #Operational empty weight (reference for now) [kg]
