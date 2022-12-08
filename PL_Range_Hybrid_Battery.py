@@ -11,10 +11,10 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
-#Aircraft mass characteristics
-m_oe    =  15454                    #Operational empty weight (reference for now) [kg]
-m_pldes = 8124                    #Design payload [kg]
-m_mto   = 30000
+#Aircraft mass characteristics -- --> to be updated!!
+m_oe    =  15454                    #Operational empty weight [kg]
+m_pldes = 5730                    #Design payload [kg]
+m_mto   = 30000                    # Max take-off
 m_plmax = m_pldes*1.25
 
 #Propulsion characteristics

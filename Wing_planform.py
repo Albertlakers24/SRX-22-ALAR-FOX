@@ -18,7 +18,7 @@ if prop_type == 2:
 if prop_type == 3:
     MTOW = 20434    # LH2 fuel cell in kg
 if prop_type == 4:
-    MTOW = 23000    # Hybrid Electric in kg --> change
+    MTOW = 23000    # Hybrid Electric in kg--> to be updated!!
 
 # Mission charecteristics
 V_cruise = 141.471   # in m/s
