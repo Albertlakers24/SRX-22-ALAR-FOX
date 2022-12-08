@@ -97,7 +97,7 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
 eta_fuel_cell = 0.85 * 0.95 #Efficiency chain from shaft-to-thrust (fuel cell)
-eta_btt = 0.95 * 0.85        #Efficiency chain from battery-to-thrust
+eta_btt = 0.95 * 0.85 *0.95        #Efficiency chain from battery-to-thrust
 NoD_ice = 2                 #Number of turboprop engines
 NoD_em = 2                 #Number of electric motor engines
 
