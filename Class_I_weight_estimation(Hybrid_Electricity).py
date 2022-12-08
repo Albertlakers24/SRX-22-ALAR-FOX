@@ -97,8 +97,8 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6           #Total Battery Energy per piece
 eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
 eta_fuel_cell = 0.85 * 0.95 #Efficiency chain from shaft-to-thrust (fuel cell)
-eta_btt = 0.95 * 0.85 *0.95        #Efficiency chain from battery-to-thrust
-NoD_ice = 2                 #Number of turboprop engines
+eta_btt = 0.95 * 0.85        #Efficiency chain from battery-to-thrust
+NoD_ice = 2                   #Number of turboprop engines
 NoD_em = 2                 #Number of electric motor engines
 
 #Initial Climb
@@ -166,7 +166,7 @@ print(np.round(H_p_para,2)*100,"% Hybridlization")
 
 # Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
-m_bat = (1+ddp) * (E_nc_total/(eta_btt*E_bat))
+m_bat = (1+ddp) * (E_nc_total/(0.95*E_bat))
 m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat
