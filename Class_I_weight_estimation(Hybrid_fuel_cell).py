@@ -76,8 +76,6 @@ plt.show()
 W_P_design = 0.04706
 W_S_design = 3271
 m_turboprop = 1074.5/2
-m_em = 13
-m_propeller = m_em * 0.14
 MTOW_design = 20281 * g                  #N
 
 #Range Calculation
