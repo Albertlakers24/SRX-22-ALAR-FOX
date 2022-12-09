@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+from Wing_planform import taper
 #Switch
 switch = 1          # put 1 for circular fuselage, 2 for double bubble fuselage
 
@@ -62,7 +63,22 @@ theta_tc = np.arctan(D_outer/l_tc)*180/np.pi
 
 
 
-# Fuselage mass computation
+# Fuselage mass estimation (Raymer p475)
+K_ws = 0.75*(1+2*taper)/(1+taper)
+K_door = 1.12   # 1.0 if no cargo door, 1.06 if one side cargo door,
+                # 1.12 if two side cargo door, 1.12 if aft clamshell door
+                # 1.25 if two side cargo doors and aft clamshell door
+K_lg = 1.12     # 1.12 if fuselage mounted, 1.0 if otherwise
+MTOM = 19314
+W_dg = MTOM * 9.80665 * 0.224809      # Flight design gross weight [lb] "The aircraft weight at which the structure will withstand the design load factor”
+S_f_wet = l_constant_cross_section * D_outer + D_outer * 0.5 * l_nc + D_outer * 0.5 * l_tc                            # Fuselage wetted area [m^2]
+S_f_wet_imp = (l_constant_cross_section*D_outer+D_outer*0.5*l_nc+D_outer*0.5*l_tc) * 10.7639            # Fuselage wetted area in imperial [ft^2]
+L = (l_f - l_t) * 3.28084     # Fuselage structural length (excl. tailcap) [ft]
+D = D_eff * 3.28084           # Structural Depth [ft]
+N_Z = 1.5*2.5                 # 1.5 * limit load factor
+W_fuselage = 0.3280 * K_door * K_lg * ((W_dg*N_Z)**0.5) * (L**0.25)* (S_f_wet_imp**0.302)* ((L/D)**0.1) * ((1+K_ws)**0.04)      # Weight of the fuselage [lb]
+W_fuselage_SI = W_fuselage * 4.44822    # Weight of the fuselage [N]
+Mass_fuselage = W_fuselage * 4.44822 / 9.80665    # Weight of the fuselage [kg]
 
 
 
@@ -83,5 +99,8 @@ print("l_constant cross section [m]", l_constant_cross_section)
 print("tail cone angle [deg]", theta_tc)
 print("===================================================")
 print("Fineness Ratio: ", fineness_ratio)
+print("Weight estimation fuselage is", Mass_fuselage, "[kg]")
+print("Fuselage wetted area", S_f_wet, "[m^2]")
+print("Fuselage mass fraction", Mass_fuselage/MTOM*100, "[%]")
 
 
