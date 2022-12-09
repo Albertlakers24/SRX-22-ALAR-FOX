@@ -24,10 +24,17 @@ def ISA_calculator(h):
     p = p_0 * ((T_0 / T) ** ((g_0 * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant * T)
     return T, rho
-T, rho = ISA_calculator(0 * 0.3048)
-a = np.sqrt(gamma * T * specific_gas_constant)
-M_cruise = V_cruise_ms / a
+T_sea, rho_sea = ISA_calculator(0 * 0.3048)
+a_sea = np.sqrt(gamma * T_sea * specific_gas_constant)
+# M_cruise = V_cruise_ms / a
 rps = 2500 / 60
-D = a / (np.pi * rps) * np.sqrt(M_tip**2 - M_cruise**2)
-print(rho, a)
+# D = a / (np.pi * rps) * np.sqrt(M_tip**2 - M_cruise**2)
+# print(rho, a)
+
+V_max = 213 #m/s
+V_takeoff = 65 #m/s
+def tip_speed(V_real):
+    V_tip = np.sqrt(V_max**2 - V_real**2)
+    return V_tip
+print(tip_speed(V_takeoff))
 
