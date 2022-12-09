@@ -196,7 +196,7 @@ P_em = E_nc_total/ (eta_btt * t_total_full * NoD_em)
 #Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_bat = (1+ddp) * (E_nc_total/(0.95*E_bat))
-m_propulsion = m_turboprop*NoD_ice + (m_em + m_propeller)*NoD_em
+m_propulsion = m_turboprop*NoD_ice * 1.5 + (m_em + m_propeller)*NoD_em
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat

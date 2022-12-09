@@ -210,7 +210,7 @@ m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m
 m_lh2 = m_fuelcell_climb1 + m_fuelcell_climb2 + m_fuelcell_climb3 + m_fuelcell_descent1 + m_fuelcell_descent2 + m_fuelcell_cruise_full
 m_generator = 127 + 335     #in Pure fuel cell 0, if in hybrid = 1
 m_inverter = (P_fuelcell_climb1 / 1000)/30
-m_propulsion = m_turboprop*NoD_ice + m_fuelcell_struc + m_inverter
+m_propulsion = m_turboprop*NoD_ice * 1.5 + m_fuelcell_struc + m_inverter
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
