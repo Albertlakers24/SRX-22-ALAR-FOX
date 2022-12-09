@@ -72,12 +72,12 @@ plt.grid()
 plt.show()
 
 #Mass Preliminary Calculation
-W_P_design = 0.0547
-W_S_design = 3273
+W_P_design = 0.04706
+W_S_design = 3271
 m_turboprop = 1074.5/2
 m_em = 13
 m_propeller = m_em * 0.14
-MTOW_design = 21123 * g                  #N
+MTOW_design = 20281 * g                  #N
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
@@ -228,3 +228,4 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
+print(np.sqrt(A*S),"Wing Span(m)")
