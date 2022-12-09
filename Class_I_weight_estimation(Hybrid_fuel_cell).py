@@ -127,9 +127,9 @@ L_D_land = CL_land/ CD_to
 tf =  0                     #Trap fuel time step
 BSFC= 1/(43*10**6)   #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
-BSFC_lh2 = 1/ (142*10**6)           #Total Battery Energy per piece
+BSFC_lh2 = 1/ (120*10**6)           #Total Battery Energy per piece
 eta_stt = 0.39 * 0.9 *0.99                 #Efficiency chain from shaft-to-thrust
-eta_fuel_cell = 0.6 * 0.97 * 0.995 * 0.85 * 0.95    #Efficiency chain from shaft-to-thrust (fuel cell)
+eta_fuel_cell = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95    #Efficiency chain from shaft-to-thrust (fuel cell)
 NoD_ice = 2                 #Number of turboprop engines
 
 #Initial Climb
