@@ -194,7 +194,7 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 
 # Hybridnization calculation
 E_nc_total = E_nc_climb1 + E_nc_climb2 + E_nc_climb3 + E_nc_descent1 + E_nc_descent2 + E_nc_cruise_500
-P_em = E_nc_total/ (eta_btt * t_total_full * NoD_em)
+P_em_total = 0 #Change calculation later
 
 #Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
@@ -217,5 +217,5 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-H_p_para = P_em*NoD_em / P_max
+H_p_para = P_em_total / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")
