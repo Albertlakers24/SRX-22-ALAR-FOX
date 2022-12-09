@@ -68,7 +68,7 @@ K_ws = 0.75*(1+2*taper)/(1+taper)
 K_door = 1.12   # 1.0 if no cargo door, 1.06 if one side cargo door,
                 # 1.12 if two side cargo door, 1.12 if aft clamshell door
                 # 1.25 if two side cargo doors and aft clamshell door
-K_lg = 1.12     # 1.12 if fuselage mounted, 1.0 if otherwise
+K_lg = 1     # 1.12 if fuselage mounted, 1.0 if otherwise
 MTOM = 19314
 W_dg = MTOM * 9.80665 * 0.224809      # Flight design gross weight [lb] "The aircraft weight at which the structure will withstand the design load factor”
 S_f_wet = l_constant_cross_section * D_outer + D_outer * 0.5 * l_nc + D_outer * 0.5 * l_tc                            # Fuselage wetted area [m^2]
@@ -78,7 +78,7 @@ D = D_eff * 3.28084           # Structural Depth [ft]
 N_Z = 1.5*2.5                 # 1.5 * limit load factor
 W_fuselage = 0.3280 * K_door * K_lg * ((W_dg*N_Z)**0.5) * (L**0.25)* (S_f_wet_imp**0.302)* ((L/D)**0.1) * ((1+K_ws)**0.04)      # Weight of the fuselage [lb]
 W_fuselage_SI = W_fuselage * 4.44822    # Weight of the fuselage [N]
-Mass_fuselage = W_fuselage * 4.44822 / 9.80665    # Weight of the fuselage [kg]
+Mass_fuselage = W_fuselage * 4.44822 / 9.80665    # mass` of the fuselage [kg]
 
 
 
