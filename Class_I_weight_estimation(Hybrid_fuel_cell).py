@@ -15,8 +15,8 @@ rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_t
 rho_cruise = rho_cruise_rho0 * rho_0
 eff_prop = 0.85                 #Change with Literature
 PAX = 50
-WPAX = 200*0.453592*PAX*g + 3*190*0.453592*g                                  #N
-WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N Crew is bagageless
+WPAX = 200*0.453592*PAX*g                                 #N
+WPAXBAGGAGE = 40*0.453592*PAX*g                           #N Crew is bagageless
 m_payload = (WPAX + WPAXBAGGAGE) / g
 W_S = np.arange(1,5000,1)
 
