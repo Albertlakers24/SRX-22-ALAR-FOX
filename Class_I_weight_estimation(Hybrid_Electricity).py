@@ -75,8 +75,10 @@ plt.show()
 W_P_design = 0.0547
 W_S_design = 3273
 m_turboprop = 1074.5/2
-m_em = 13
-m_propeller = m_em * 0.14
+m_em_dis = 13
+m_propeller_dis = m_em_dis * 0.14
+m_em_tip = 50
+m_propeller_tip = m_em_tip * 0.14
 MTOW_design = 21123 * g                  #N
 
 #Range Calculation
@@ -124,13 +126,14 @@ L_D_cruise = CL/CD
 L_D_to = CL_to/CD_to
 L_D_land = CL_land/ CD_to
 tf =  0                     #Trap fuel time step
-BSFC= 1/(43*10**6 * 0.45)   #Brake-specific fuel consumption
+BSFC= 1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
 ddp = 0.8                   #Deep discharge protection
-E_bat = 2.7*10**6           #Total Battery Energy per piece
+E_bat = 2.7*10**6 *0.99 * 0.995 * 0.95      #Total Battery Energy per piece (Bat eff, Inverter eff, Em eff)
 eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
 eta_btt = 0.934 * 0.85        #Efficiency chain from battery-to-thrust
 NoD_ice = 2                   #Number of turboprop engines
-NoD_em = 2                 #Number of electric motor engines
+NoD_em_tip = 2                #Number of electric motor engines (wing tip)
+NoD_em_dis = 2                #Number of electric motor engines (distributed)
 
 #Initial Climb
 E_total_climb1 = (MTOW_design*V_climb1)/ (L_D_to) * t_climb1 + (MTOW_design/g * V_climb1**2)/2 + MTOW_design*ROC1*t_climb1
@@ -191,12 +194,12 @@ E_total_full = E_total_climb1 + E_total_climb2 + E_total_climb3 + E_total_descen
 
 # Hybridnization calculation
 E_nc_total = E_nc_climb1 + E_nc_climb2 + E_nc_climb3 + E_nc_descent1 + E_nc_descent2 + E_nc_cruise_500
-P_em = E_nc_total/ (eta_btt * t_total_full * NoD_em)
+P_em_total = 0 #Change calculation later
 
 #Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_bat = (1+ddp) * (E_nc_total/(0.95*E_bat))
-m_propulsion = m_turboprop*NoD_ice * 1.5 + (m_em + m_propeller)*NoD_em
+m_propulsion = m_turboprop*NoD_ice * 1.5 + (m_em_tip + m_propeller_tip)*NoD_em_tip + (m_em_dis + m_propeller_dis) *NoD_em_dis
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat
@@ -214,5 +217,5 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-H_p_para = P_em*NoD_em / P_max
+H_p_para = P_em_total / P_max
 print(np.round(H_p_para,2)*100,"% Hybridlization")

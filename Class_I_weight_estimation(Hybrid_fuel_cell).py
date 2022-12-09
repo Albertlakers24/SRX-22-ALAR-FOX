@@ -54,10 +54,12 @@ W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/
 #Stall Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
-plt.vlines(W_S_approach,0,100,'b',label="V_approach")
+plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
-plt.vlines(W_S_land,0,100,'k',label ="Landing")
+plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
+plt.axvspan(3271,4000,color = "red", alpha = 0.1)
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
+plt.fill_between(W_S,W_P_cru,1,color = "red",alpha = 0.1)
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
 plt.xlim(0,4000)
@@ -74,8 +76,6 @@ plt.show()
 W_P_design = 0.04706
 W_S_design = 3271
 m_turboprop = 1074.5/2
-m_em = 13
-m_propeller = m_em * 0.14
 MTOW_design = 20281 * g                  #N
 
 #Range Calculation

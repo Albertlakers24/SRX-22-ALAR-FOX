@@ -2,6 +2,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+######### PROBABLY WON'T NEED TO USE --- IT IS IN THE other LH2 File!!!!
+
 g = 9.80665
 
 # Propulsion charecteristics
@@ -17,7 +19,7 @@ n_engh = 0.3
 
 #Aerodynamic Charecteristics
 LD_crs = 16.2
-L_D = 16          #Lift over drag ---> CHECK!!!
+#L_D = 16  #Lift over drag ---> CHECK!!!
 
 # Mission Charecteristics
 V_cr = 141.471   # in m/s
@@ -34,27 +36,23 @@ m_pldes = 5730  # in kg --> Design payload
 m_plmax = m_pldes*1.1   # in kg --> Max payload
 #m_f = 1098 # in kg --> Fuel mass
 # #Point A
-ranges1 = [0]
-plmasses1 = [m_plmax]
 
 #Point B (Range at Max Payload)
 
 #m_fB = m_mto * (1 - np.exp(-R / (n_engh * n_ph * (e_fh /g) * (L_D))))
 m_fB = m_mto - m_oe - m_plmax
 
-R_b1 = n_engh * n_ph * (L_D) * (e_fh/g) * np.log((m_oe + m_plmax + m_fB)/(m_oe + m_plmax))
+R_b1 = n_engh * n_ph * (LD_crs) * (e_fh/g) * np.log((m_oe + m_plmax + m_fB)/(m_oe + m_plmax))
 R_lostB = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eqB = ((R_b1 + R_lostB)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 R_auxB = R_eqB - R_b1
 R_b = R_b1 - R_auxB
 
-ranges1 = np.append(ranges1, [R_b])
-plmasses1 = np.append(plmasses1, [m_plmax])
-
-#print(ranges1)
-#print(R_auxB)
-#print(R_eqB)
-#print(R_lostB)
+# print(ranges1)
+# print(R_auxB)
+# print(R_eqB)
+# print(R_lostB)
+# print(R_b1)
 
 #Point C (Design Range)
 R_lost1 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
@@ -62,37 +60,38 @@ R_eq1 = ((R_nom + R_lost1)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 R_aux1 = R_eq1 - R_nom
 #m_fC = m_mto * (1 - np.exp(-R_nom / (n_engh * n_ph * (e_fh /g) * (L_D))))
 m_fC = m_mto - m_pldes - m_oe
-R_c1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe + m_pldes + m_fC)/(m_oe + m_pldes))) - R_aux1
+R_c = (n_engh * n_ph * (LD_crs) * (e_fh /g) * np.log((m_oe + m_pldes + m_fC)/(m_oe + m_pldes))) - R_aux1
 
-ranges1 = np.append(ranges1, [R_c1])
-plmasses1 = np.append(plmasses1, [m_pldes])
 
-#print("Rc", R_c1)
-print("mf" ,m_fC)
-#print(R_eq1)
-#print(R_aux1)
-#print(R_lost1)
+# print("Rc", R_c1)
+# print("mf" ,m_fC)
+# print(R_eq1)
+# print(R_aux1)
+# print(R_lost1)
 
 #Point D (Ferry Range)
-R_d1 = (n_engh * n_ph * (L_D) * (e_fh /g) * np.log((m_oe  + m_fC)/(m_oe ))) - R_aux1
+R_d = (n_engh * n_ph * (LD_crs) * (e_fh /g) * np.log((m_oe  + m_fC)/(m_oe ))) - R_aux1
 
-ranges1 = np.append(ranges1, [R_d1])
-plmasses1 = np.append(plmasses1, [0])
 
 #print(R_d1)
+
+ranges = np.array([0, R_b/1000, R_c/1000, R_d/1000])
+plmasses = np.array([m_plmax, m_plmax, m_pldes,0])
 
 #Constructing the actual plot
 
 # plotting the points
-plt.plot(ranges1, plmasses1, color='green', linewidth=2,
+plt.plot(ranges, plmasses, color='green', linewidth=2,
          marker='o', markerfacecolor='green', markersize=5)
-
+n = ['A','B','C','D']
+for i, txt in enumerate(n):
+    plt.annotate(txt, (ranges[i], plmasses[i]))
 
 # print(ranges1)
 # print(plmasses1)
 # print(points)
 # naming the x axis
-plt.xlabel('Range (m)')
+plt.xlabel('Range (km)')
 # naming the y axis
 plt.ylabel('Payload (Kg)')
 
