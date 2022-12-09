@@ -18,7 +18,7 @@ PAX = 50
 WPAX = 200*0.453592*PAX*g                                 #N
 WPAXBAGGAGE = 40*0.453592*PAX*g                           #N Crew is bagageless
 m_payload = (WPAX + WPAXBAGGAGE) / g
-W_S = np.arange(1,5000,1)
+W_S = np.arange(1,4000,1)
 
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
@@ -60,9 +60,9 @@ plt.vlines(W_S_land,0,100,'k',label ="Landing")
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
-plt.xlim(0,5000)
+plt.xlim(0,4000)
 plt.ylim(0,0.5)
-plt.xticks(np.arange(0,5001,500))
+plt.xticks(np.arange(0,4001,500))
 plt.yticks(np.arange(0,0.5,0.05))
 plt.xlabel("W/S (N/m^2)")
 plt.ylabel("W/P (N/W)")
