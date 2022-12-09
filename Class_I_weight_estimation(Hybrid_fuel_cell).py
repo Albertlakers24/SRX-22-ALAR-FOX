@@ -54,9 +54,9 @@ W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/
 #Stall Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
-plt.vlines(W_S_approach,0,100,'b',label="V_approach")
+plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
-plt.vlines(W_S_land,0,100,'k',label ="Landing")
+plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
