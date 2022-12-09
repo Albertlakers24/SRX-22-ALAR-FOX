@@ -228,5 +228,3 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-H_p_para = P_em*NoD_em / P_max
-print(np.round(H_p_para,2)*100,"% Hybridlization")
