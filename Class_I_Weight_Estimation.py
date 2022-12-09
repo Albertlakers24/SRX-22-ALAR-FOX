@@ -45,7 +45,7 @@ Number_tank = 59
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
-e_f = e_lh2*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+e_f = e_kero*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
 W_tanks = m_tank*g*Number_tank  #N
 
 #Intermediate calculations
@@ -58,7 +58,7 @@ eta_eng_lh2 = 0.3               #Brake thermal efficiency 0.2-0.25
 A = 12                          #- ATR72 value aspect ratio -> high A for slender wing
 Cfe = 0.0045                    #- (0.0045-0.005) equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                    #- (6.0-6.2) wetted area ratios -> depending on airframe structure
-eta_eng = eta_eng_lh2           #- thermal efficiency             (TYPES: jet, propeller)
+eta_eng = eta_eng_kero           #- thermal efficiency             (TYPES: jet, propeller)
 a =a_p                          #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =b_p                          #N linear regression for OEW     (TYPES: turboprop, turbojet)
 
@@ -89,10 +89,10 @@ WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N
 WPLtot = WPAX+WPAXBAGGAGE                                                     #N
 #WOE = 16107*g
 #MTOW = (WOE + WPLtot)/(1-Mused*(1+Mres))                             #N    take out W-tanks for JetA       +
-MTOW = (b + WPLtot+W_tanks)/(1-a-Mused*(1+Mres))                              #LH
-#MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                              #Kerosene
-WOE = a*MTOW + b  +W_tanks                                                   #N    take out W_tanks for JetA
-#WOE = a*MTOW +b
+#MTOW = (b + WPLtot+W_tanks)/(1-a-Mused*(1+Mres))                              #LH
+MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                              #Kerosene
+#WOE = a*MTOW + b  +W_tanks                                                   #N    take out W_tanks for JetA
+WOE = a*MTOW +b
 WF = MTOW*(Mused*(1+Mres))                                                    #N
 
 
