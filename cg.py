@@ -98,10 +98,13 @@ elif case == 4:          # Case 4 = hydrogen fuel cell, 2 propellors on the wing
     M_wg_frac = Mf_wing + Mf_prop  # sum of mass of the wing group
     x_fg = (Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_tank * x_hydrogen_tank) / M_fg_frac  # c.g. of the fuselage group
     x_wg_LEMAC = (Mf_wing * x_wing + Mf_prop * x_prop_wing) / M_wg_frac
-    x_LEMAC = x_fg - x_cg_LEMAC + M_wg_frac / M_fg_frac * (x_wg_LEMAC - x_cg_LEMAC)
+    x_LEMAC = x_fg - x_cg_LEMAC + M_wg_frac / M_fg_frac * (x_wg_LEMAC - x_cg_LEMAC) # The distance from nose to LEMAC.
 
 
+x_oewcg = x_LEMAC + x_cg_LEMAC        # The distance from nose to cg.
 print("The distance from zero point to LEMAC is ",x_LEMAC, "[m]")
+print("The distance from zero point to cg is ", x_oewcg, "[m]")
+
 
 
 
