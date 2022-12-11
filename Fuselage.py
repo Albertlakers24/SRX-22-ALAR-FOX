@@ -44,17 +44,17 @@ skin_thickness = 0.084 + 0.045 * D_eff      # fuselage skin thickness [m]
 D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
 
 
-fuel_at_belly = True
+fuel_at_belly = False
 
 if fuel_at_belly == True:
     l_tank = 0
 else:
-    l_tank = 2.1                                  # Length of the fuel tank as fuselage section
+    l_tank = 2.1                             # Length of the fuel tank as fuselage section
 l_t = 1.6 * D_outer + l_tank                      # Length of tail [m]
 l_f = l_cabin + l_t + l_cp                        # length of the fuselage [m]
 fineness_ratio = l_f/D_outer                      # Fineness ratio
-l_nc = 1.2 * D_eff                                # length of the nose cone [m]
-l_tc = 3 * D_eff                                  # length of the tail cone [m]
+l_nc = 1.2 * D_outer                                # length of the nose cone [m]
+l_tc = 3 * D_outer                                # length of the tail cone [m]
 l_pax = l_seat * n_row                            # length of the passenger seating area [m]
 l_constant_cross_section = l_f - l_nc - l_tc      # length of the cross section with constant cross section [m]
 theta_tc = np.arctan(D_outer/l_tc)*180/np.pi
@@ -69,7 +69,7 @@ K_door = 1.12   # 1.0 if no cargo door, 1.06 if one side cargo door,
                 # 1.12 if two side cargo door, 1.12 if aft clamshell door
                 # 1.25 if two side cargo doors and aft clamshell door
 K_lg = 1     # 1.12 if fuselage mounted, 1.0 if otherwise
-MTOM = 19314
+MTOM = 30000
 W_dg = MTOM * 9.80665 * 0.224809      # Flight design gross weight [lb] "The aircraft weight at which the structure will withstand the design load factor”
 S_f_wet = l_constant_cross_section * D_outer + D_outer * 0.5 * l_nc + D_outer * 0.5 * l_tc                            # Fuselage wetted area [m^2]
 S_f_wet_imp = (l_constant_cross_section*D_outer+D_outer*0.5*l_nc+D_outer*0.5*l_tc) * 10.7639            # Fuselage wetted area in imperial [ft^2]
@@ -83,6 +83,7 @@ Mass_fuselage = W_fuselage * 4.44822 / 9.80665    # mass` of the fuselage [kg]
 
 
 #printing results
+print("===============================")
 print(n_row, "rows")
 print(n_SA, "seats abreast")
 print("D_in [m]:", D_inner)
