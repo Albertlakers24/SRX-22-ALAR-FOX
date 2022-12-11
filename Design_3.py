@@ -12,7 +12,7 @@ lbs_to_kg = 0.45359237
 wire_eff = 0.97
 inverter_eff = 0.995
 motor_eff = 0.95
-prop_eff = 0.75
+prop_eff = 0.85
 
 #FC efficiencies
 FC_eff = 0.6
@@ -95,7 +95,7 @@ elif ratio == 0:
 mass_gen_turb = num_generators * (280 * lbs_to_kg + 335)
 total_weight = FC_mass + prop_mass + mass_gen_turb + mass_inverter + perfect_ratio(ratio)
 print(total_weight)
-
+print(total_eff(2, 1))
 # masses = []
 # for ratio in np.arange(1, -0.25, -0.25):
 #     if ratio == 1:
