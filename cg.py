@@ -6,9 +6,9 @@ from Wing_planform import M_cruise, a_cruise, V_cruise, c_mac
 # x_cg = Sum(mass * distance)/Sum(distance)
 #Switches
 case = 1 # Case 1 = hydrogen combustion, 2 propellors on the wing, tank at aft
-         # Case 2 = first battery fuel hybrid, 2 propellors at the back, batteries at
-         # Case 3 = second battery fuel hybrid, 2 propellors at the back, batteries at
-         # Case 4 = hydrogen fuel cell, 2 propellors on the wing, tank at aft
+         # Case 2 = battery fuel hybrid in series/parrallel , 2 propellors on the fuselage, batteries at the center of the fuselage
+         # Case 3 = battery fuel hybrid in series, 2 propellors at the wingtip, batteries at the center of the fuselage
+         # Case 4 = hydrogen fuel cell, 2 propellors on the wing, tank at aft of fuselage
 
 # Some parameters
 M_Dive = M_cruise + 0.09     # Diving mach number
