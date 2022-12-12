@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 2  # put 1 for LH2_Kerosene fuel cell, 2 for LH2 fuel cell
+prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 
@@ -119,17 +119,17 @@ print(ranges, plmasses)
 
 # giving a title to my graph
 if prop_system == 1:
-    plt.plot(ranges, plmasses, color='green', linewidth=2,
+    plt.plot(ranges, plmasses, color='red', linewidth=2,
              marker='o', markerfacecolor='red', markersize=5)
     plt.title('Payload-Range diagram for LH2 fuel cell')
 if prop_system == 2:
-    plt.plot(ranges, plmasses, color='red', linewidth=2,
-             marker='o', markerfacecolor='red', markersize=5)
+    plt.plot(ranges, plmasses, color='green', linewidth=2,
+             marker='o', markerfacecolor='green', markersize=5)
     plt.title('Payload-Range diagram for LH2 Combustion')
 if prop_system == 3:
     plt.plot(ranges, plmasses, color='blue', linewidth=2,
-             marker='o', markerfacecolor='red', markersize=5)
-    plt.title('Payload-Range diagram for Electric-Kerosene hybrid')
+             marker='o', markerfacecolor='blue', markersize=5)
+    plt.title('Payload-Range diagram for LH2-Kerosene Fuel cell')
 
 n = ['A','B','C','D']
 for i, txt in enumerate(n):
