@@ -14,14 +14,14 @@ overturn = 55* np.pi *(1/180)
 
 
 span = 27.06
-y_e = 13.53     #distance to outmost engine, (span of wing for LHFC, EHSP, EHS and 4.05m for H2C
-z_t = 1.0108     #wingtip height  (4.0108m if HW, 1.0108 if LW)
+y_e = 4.05     #distance to outmost engine, (span of wing for LHFC, EHSP, EHS and 4.05m for H2C
+z_t = 4.0108     #wingtip height  (4.0108m if HW, 1.0108 if LW)
 z_n = 1.015    #outmost engine clearance
 phi = 5* np.pi *(1/180)
 
 #Disposition Calculation Variables
-l_fus = 23.876
-x_cg = 10.71537
+l_fus = 26.876
+x_cg = 12.04
 l_tail = 9.03
 X_tailtocg =  l_fus - x_cg - l_tail
 D_finner = 3.01
