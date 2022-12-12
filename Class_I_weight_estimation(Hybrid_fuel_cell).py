@@ -80,7 +80,7 @@ MTOW_design = 20281 * g                  #N
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
-CD = CD = 2 * Cd0
+CD = 2 * Cd0
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -102,7 +102,7 @@ V_climb1 = 140 * 0.51444444
 V_climb2 = 210 * 0.51444444
 V_climb3 = 210 * 0.51444444
 V_descent1 = 270 * 0.51444444
-V_descent2 = 140 * 0.51444444
+V_descent2 = 141 * 0.51444444
 Vx_climb1 = np.sqrt(V_climb1**2 - ROC1**2)
 Vx_climb2 = np.sqrt(V_climb2**2 - ROC2**2)
 Vx_climb3 = np.sqrt(V_climb3**2 - ROC3**2)
@@ -231,11 +231,9 @@ S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
 print(np.sqrt(A*S),"Wing Span(m)")'''
-
-print(E_total_cruise_500/10**6, "Energy for cruise")
-print(E_total_cruise_500/t_cruise_500/1000,"Power for cruise")
-print(E_total_climb1/10**6, "Energy for climb1")
-print(E_total_climb1/t_climb1/1000, "Power for climb1")
-
-print(t_climb1)
-print(L_D_to)
+print(MTOW_climb_3)
+print(t_cruise_full)
+print(V_climb3)
+print(V_cruise)
+print(L_D_cruise)
+print(E_total_cruise_full/10**6)
