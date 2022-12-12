@@ -42,22 +42,22 @@ a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
+W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.98)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
-W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
+W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/CL_to))))
-#Stall Constraint
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
+#Approach Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
-plt.axvspan(3271,4000,color = "red", alpha = 0.1)
+plt.axvspan(3170,4000,color = "red", alpha = 0.1)
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.fill_between(W_S,W_P_cru,1,color = "red",alpha = 0.1)
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
@@ -74,9 +74,10 @@ plt.show()
 
 #Mass Preliminary Calculation
 W_P_design = 0.04706
-W_S_design = 3271
+W_S_design = 3169
 m_turboprop = 1074.5/2
 MTOW_design = 20281 * g                  #N
+S = MTOW_design / W_S_design
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
@@ -93,6 +94,8 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
+V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
+print(V_to)
 ROC1 = 1350 / 196.9
 ROC2 = 1000 / 196.9
 ROC3 = 800 / 196.9
@@ -122,7 +125,7 @@ t_total_500 = t_cruise_500 + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_des
 t_total_full = t_cruise_full + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_descent2
 L_D_cruise = CL/CD
 L_D_to = CL_to/CD_to
-L_D_land = CL_land/ CD_to
+L_D_land = CL_land/ CD_land
 tf =  0                     #Trap fuel time step
 BSFC= 1/(43*10**6)   #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
@@ -132,7 +135,7 @@ eta_fuel_cell = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95    #Efficiency chain from sh
 NoD_ice = 2                 #Number of turboprop engines
 
 #Initial Climb
-E_total_climb1 = (MTOW_design*V_climb1*t_climb1)/ (L_D_to) + (MTOW_design/g * V_climb1**2)/2 + MTOW_design*ROC1*t_climb1
+E_total_climb1 = (MTOW_design*V_climb1*t_climb1)/ (L_D_to) + (MTOW_design/g * (V_climb1-V_to)**2)/2 + MTOW_design*ROC1*t_climb1
 E_fuelcell_climb1 = 1 * E_total_climb1     #Change %
 E_c_climb1 = E_total_climb1 - E_fuelcell_climb1
 P_ice_climb1 = (E_c_climb1)/ (eta_stt * t_climb1 * NoD_ice)
@@ -231,9 +234,5 @@ S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
 print(np.sqrt(A*S),"Wing Span(m)")'''
-print(MTOW_climb_3)
-print(t_cruise_full)
-print(V_climb3)
-print(V_cruise)
-print(L_D_cruise)
-print(E_total_cruise_full/10**6)
+print(P_fuelcell_climb1/1000)
+print(P_fuelcell_cruise_full/1000)
