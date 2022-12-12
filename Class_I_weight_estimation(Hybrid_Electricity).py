@@ -42,16 +42,16 @@ a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
 W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
-W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
+W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/CL_to))))
-#Stall Constraint
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
+#Approach Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
 plt.vlines(W_S_approach,0,100,'b',label="V_approach")
