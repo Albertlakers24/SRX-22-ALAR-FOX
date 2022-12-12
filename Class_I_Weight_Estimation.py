@@ -25,7 +25,7 @@ Mres = 0.25                     #-
 #Constants depending on the aircraft
 e_kero = 46                     #MJ/kg Specific Energy Kerosene
 e_atj = 43.2                    #MJ/kg Specific Energy SAF(ATJ)
-e_lh2 = 142                     #MJ/kg Specific Energy Liquid Hydrogen
+e_lh2 = 120                     #MJ/kg Specific Energy Liquid Hydrogen
 e_bat = 1.1                     #MJ/kg Specific Energy Battery (assuming 300Wh/kg)
 #PSFC = 0.48*(0.45/(745*3600))   #kg/N/s Power Specific Fuel Consumption    ---> to be checked
 #TSFC = 0.67*(0.45/(745*3600))   #kg/N/s Thrust Specific Fuel Consumption   ---> to be checked
@@ -40,12 +40,12 @@ b_j = 1782.3*g                  #N turbojet
 Psi = 0.0075                    #- parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #- span efficiency factor (value based on Roelof reader p.46)
 m_tank = 8.375                  #kg
-Number_tank = 59
+Number_tank = 69
 
 
 #TO BE CHANGED DEPENDING ON THE DESIGN
 eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
-e_f = e_kero*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
+e_f = e_lh2*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
 W_tanks = m_tank*g*Number_tank  #N
 
 #Intermediate calculations
@@ -58,7 +58,7 @@ eta_eng_lh2 = 0.3               #Brake thermal efficiency 0.2-0.25
 A = 12                          #- ATR72 value aspect ratio -> high A for slender wing
 Cfe = 0.0045                    #- (0.0045-0.005) equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                    #- (6.0-6.2) wetted area ratios -> depending on airframe structure
-eta_eng = eta_eng_kero           #- thermal efficiency             (TYPES: jet, propeller)
+eta_eng = eta_eng_lh2           #- thermal efficiency             (TYPES: jet, propeller)
 a =a_p                          #- linear regression for OEW     (TYPES: turboprop, turbojet)
 b =b_p                          #N linear regression for OEW     (TYPES: turboprop, turbojet)
 
@@ -80,19 +80,17 @@ mbat_MTO_FULL = R/(eta_EM*eta_p*(e_bat/g)*(CL/CD))                            #-
 #TO BE CHANGED DEPENDING ON THE DESIGN
 Mused = mfuel_MTO_FULL                                                        #-
 
-WPAX = 200*0.453592*PAX*g + 3*190*0.453592*g                                  #N
-WPAXBAGGAGE = 40*0.453592*PAX*g +2*30*0.453592*g                              #N Crew is bagageless
+WPAX = 200*0.453592*PAX*g                                   #N
+WPAXBAGGAGE = 40*0.453592*PAX*g                              #N Crew is bagageless
 
 
 #OUTPUTS
 
 WPLtot = WPAX+WPAXBAGGAGE                                                     #N
-#WOE = 16107*g
-#MTOW = (WOE + WPLtot)/(1-Mused*(1+Mres))                             #N    take out W-tanks for JetA       +
-#MTOW = (b + WPLtot+W_tanks)/(1-a-Mused*(1+Mres))                              #LH
-MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                              #Kerosene
-#WOE = a*MTOW + b  +W_tanks                                                   #N    take out W_tanks for JetA
-WOE = a*MTOW +b
+MTOW = (b + WPLtot+W_tanks)/(1-a-Mused*(1+Mres))                              #LH
+#MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                              #Kerosene
+WOE = a*MTOW + b  +W_tanks                                                   #N    take out W_tanks for JetA
+#WOE = a*MTOW +b
 WF = MTOW*(Mused*(1+Mres))                                                    #N
 
 
@@ -110,6 +108,8 @@ print("m_tanks =", W_tanks/g, "kg")
 print("efficiency =", eta_eng*eta_p)
 
 print("CL/CD =", CL/CD)
+print("Cl=", CL)
+print("CD", CD)
 
 
 
