@@ -108,7 +108,7 @@ R_d = ((n_engh * n_ph * (LD_crs) * (e_fh /g) * np.log((m_oe  + m_fh)/(m_oe )))+ 
 
 #print(R_d2)
 
-ranges = np.array([0, R_b/1000, R_c/1000, R_d/1000])
+ranges = np.array([0, R_b/1852, R_c/1852, R_d/1852])
 plmasses = np.array([m_plmax, m_plmax, m_pldes,0])
 
 print(ranges, plmasses)
@@ -136,9 +136,9 @@ for i, txt in enumerate(n):
     plt.annotate(txt, (ranges[i], plmasses[i]))
 
 # naming the x axis
-plt.xlabel('Range (km)')
+plt.xlabel('Range (nmi)')
 # naming the y axis
-plt.ylabel('Payload (Kg)')
+plt.ylabel('Payload (kg)')
 
 # function to show the plot
 plt.show()
