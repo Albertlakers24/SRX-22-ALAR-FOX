@@ -3,8 +3,8 @@ import numpy as np
 #from Class_I_Weight_Estimation import MTOW,V_cruise
 from Lift_Drag_Polar import p, T, specific_gas_constant, b
 #Switch for simple/double tapered wing
-switch = 1                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 3                        # put 1 for LH2 combustion, 2 for LH2-kerosene hybrid, 3 for LH2 fuel cell, 4 for Hybrid Electric
+switch = 2                            # put 1 for simple tapered, 2 for double tapered
+prop_type = 1                        # put 1 for LH2 combustion, 2 for LH2-kerosene hybrid, 3 for LH2 fuel cell, 4 for Hybrid Electric
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
