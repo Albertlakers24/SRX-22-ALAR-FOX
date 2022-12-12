@@ -80,7 +80,7 @@ MTOW_design = 20281 * g                  #N
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
-CD = CD = 2 * Cd0
+CD = 2 * Cd0
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -214,7 +214,7 @@ m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
-print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
+'''print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_lh2,0),"LH2 Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
 print(np.round(m_lh2+m_fuel_ice,0),"Fuel + Battery mass")
@@ -230,4 +230,10 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-print(np.sqrt(A*S),"Wing Span(m)")
+print(np.sqrt(A*S),"Wing Span(m)")'''
+print(MTOW_climb_3)
+print(t_cruise_full)
+print(V_climb3)
+print(V_cruise)
+print(L_D_cruise)
+print(E_total_cruise_full/10**6)
