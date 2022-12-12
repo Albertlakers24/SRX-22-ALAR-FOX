@@ -43,6 +43,8 @@ m_tank = 8.375                  #kg
 Number_tank = 69
 
 
+
+
 #TO BE CHANGED DEPENDING ON THE DESIGN
 eta_p =eta_p_turbo              #- propulsive efficiency depending on airplane types (TYPES: single, twin, regional turboprop)
 e_f = e_lh2*1000000            #J/kg specfic Energy per fuel type  (TYPES: kerosene, SAF, LH)
