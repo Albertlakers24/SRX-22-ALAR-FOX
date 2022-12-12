@@ -132,7 +132,7 @@ eta_fuel_cell = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95    #Efficiency chain from sh
 NoD_ice = 2                 #Number of turboprop engines
 
 #Initial Climb
-E_total_climb1 = (MTOW_design*V_climb1)/ (L_D_to) * t_climb1 + (MTOW_design/g * V_climb1**2)/2 + MTOW_design*ROC1*t_climb1
+E_total_climb1 = (MTOW_design*V_climb1*t_climb1)/ (L_D_to) + (MTOW_design/g * V_climb1**2)/2 + MTOW_design*ROC1*t_climb1
 E_fuelcell_climb1 = 1 * E_total_climb1     #Change %
 E_c_climb1 = E_total_climb1 - E_fuelcell_climb1
 P_ice_climb1 = (E_c_climb1)/ (eta_stt * t_climb1 * NoD_ice)
@@ -214,7 +214,7 @@ m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
-print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
+'''print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_lh2,0),"LH2 Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
 print(np.round(m_lh2+m_fuel_ice,0),"Fuel + Battery mass")
@@ -230,4 +230,12 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-print(np.sqrt(A*S),"Wing Span(m)")
+print(np.sqrt(A*S),"Wing Span(m)")'''
+
+print(E_total_cruise_500/10**6, "Energy for cruise")
+print(E_total_cruise_500/t_cruise_500/1000,"Power for cruise")
+print(E_total_climb1/10**6, "Energy for climb1")
+print(E_total_climb1/t_climb1/1000, "Power for climb1")
+
+print(t_climb1)
+print(L_D_to)
