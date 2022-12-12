@@ -15,7 +15,7 @@ t_E = 45 * 60    # in seconds - endurance time
 m_oe    =  15454                    #Operational empty weight [kg]
 m_pldes = 5730                    #Design payload [kg]
 m_mto   = 30000                    # Max take-off
-m_plmax = m_pldes*1.2
+m_plmax = m_pldes*1.3
 
 #Propulsion characteristics
 
@@ -93,7 +93,7 @@ RD = n_p*(e_f/g) * (LD_crs) *(n_eng_tp + n_eng_em *(phi/(1+phi))) * np.log((m_oe
 R_D2 = RD - R_aux
 
 
-ranges = np.array([0, R_B2/1000, R_C2/1000, R_D2/1000])
+ranges = np.array([0, R_B2/1852, R_C2/1852, R_D2/1852])
 plmasses = np.array([m_plmax, m_plmax, m_pldes,0])
 
 print(ranges, plmasses)
@@ -108,9 +108,9 @@ for i, txt in enumerate(n):
     plt.annotate(txt, (ranges[i], plmasses[i]))
 
 # naming the x axis
-plt.xlabel('Range [km]')
+plt.xlabel('Range [nmi]')
 # naming the y axis
-plt.ylabel('Payload')
+plt.ylabel('Payload [kg]')
 
 # giving a title to my graph
 plt.title('Payload range diagram hybrid battery/fuel')

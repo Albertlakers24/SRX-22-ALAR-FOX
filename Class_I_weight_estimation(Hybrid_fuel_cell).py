@@ -102,7 +102,7 @@ V_climb1 = 140 * 0.51444444
 V_climb2 = 210 * 0.51444444
 V_climb3 = 210 * 0.51444444
 V_descent1 = 270 * 0.51444444
-V_descent2 = 140 * 0.51444444
+V_descent2 = 141 * 0.51444444
 Vx_climb1 = np.sqrt(V_climb1**2 - ROC1**2)
 Vx_climb2 = np.sqrt(V_climb2**2 - ROC2**2)
 Vx_climb3 = np.sqrt(V_climb3**2 - ROC3**2)
@@ -214,7 +214,7 @@ m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
-'''print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
+print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_lh2,0),"LH2 Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
 print(np.round(m_lh2+m_fuel_ice,0),"Fuel + Battery mass")
@@ -230,12 +230,4 @@ P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-print(np.sqrt(A*S),"Wing Span(m)")'''
-
-print(E_total_cruise_500/10**6, "Energy for cruise")
-print(E_total_cruise_500/t_cruise_500/1000,"Power for cruise")
-print(E_total_climb1/10**6, "Energy for climb1")
-print(E_total_climb1/t_climb1/1000, "Power for climb1")
-
-print(t_climb1)
-print(L_D_to)
+print(np.sqrt(A*S),"Wing Span(m)")
