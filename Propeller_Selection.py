@@ -4,7 +4,7 @@ V_cruise = 275 #KTAS
 kts_to_ms = 0.51444444444444
 ft_to_m = 0.3048
 V_cruise_ms = V_cruise * kts_to_ms
-M_tip = 0.8
+M_tip = 0.95
 
 E_500_nmi = 11835 #MJ
 E_1000 = 34943 #MJ
@@ -35,7 +35,7 @@ rps = 2500 / 60
 # print(rho, a)
 
 V_max_takeoff = 213 #m/s
-V_max_cruise = 0.8 * a_cruise
+V_max_cruise = M_tip * a_cruise
 V_takeoff = 65 #m/s
 V_cruise = 275 * kts_to_ms
 def tip_speed(V_real, V_max):
@@ -46,9 +46,11 @@ V_tip_cruise = tip_speed(V_cruise, V_max_cruise)
 
 def diameter(prop_blades, power, mass):
     if prop_blades == 2:
-        D = 0.6 * (power * mass) ** (1/4)
+        D = 0.56 * (power * mass) ** (1/4)
     elif prop_blades == 3:
-        D = 0.5 * (power * mass) ** (1/4)
+        D = 0.52 * (power * mass) ** (1/4)
+    elif prop_blades == 4:
+        D = 0.49 * (power * mass) ** (1/4)
     return D
 
 power1 = 190 #kW
@@ -71,7 +73,7 @@ rpm_big_takeoff = rpm(big_prop_diameter, V_tip_takeoff)
 rpm_big_cruise = rpm(big_prop_diameter, V_tip_cruise)
 print(big_prop_diameter, rpm_big_takeoff, rpm_big_cruise)
 
-def number_props(ratio):
+def number_props(num_blades, ratio):
     diameters_small = []
     number_props = []
     rpms_cruise = []
@@ -80,7 +82,7 @@ def number_props(ratio):
         number_props.append(j)
         power_small = max_power_needed * (1 - ratio) / j
         mass_small_est_val = power_small / power
-        new_diameter = diameter(3, power, mass_small_est_val)
+        new_diameter = diameter(num_blades, power, mass_small_est_val)
         diameters_small.append(new_diameter)
         rpms_cruise.append(rpm(new_diameter, V_tip_cruise))
         rpms_takeoff.append(rpm(new_diameter, V_tip_takeoff))
@@ -101,42 +103,68 @@ def number_props(ratio):
 # print(f"With a power of {power1} kW, the two blade propeller has a diameter of {diameters[0]} m and the three blade propeller of {diameters[1]}")
 # print(f"With a power of {power2} kW, the two blade propeller has a diameter of {diameters[2]} m and the three blade propeller of {diameters[3]}")
 
-# print(ratio_big_small)
-diameters_small, number_props, rpms_cruise, rpms_takeoff = number_props(ratio_big_small)
+diameters_small_2, number_props_2, rpms_cruise_2, rpms_takeoff_2 = number_props(2, ratio_big_small)
+diameters_small_3, number_props_3, rpms_cruise_3, rpms_takeoff_3 = number_props(3, ratio_big_small)
+diameters_small_4, number_props_4, rpms_cruise_4, rpms_takeoff_4 = number_props(4, ratio_big_small)
 # print(rpms_cruise, rpms_takeoff)
 # diameters_small_split = np.array_split(diameters_small, 10)
 # number_props_split = np.array_split(number_props, 10)
-diameters_accumulated = np.array(diameters_small) * np.array(number_props)
-total_diameter = []
+diameters_accumulated_2 = np.array(diameters_small_2) * np.array(number_props_2)
+diameters_accumulated_3 = np.array(diameters_small_3) * np.array(number_props_3)
+diameters_accumulated_4 = np.array(diameters_small_4) * np.array(number_props_4)
+total_diameter_3 = []
+total_diameter_2 = []
+total_diameter_4 = []
 fuselage_width = 2.8
 for i in np.arange(0, 7, 1):
-    total_diameter.append(diameters_accumulated[i] + big_prop_diameter + 0.04 * diameters_small[i] * 2 * (number_props[i]) + fuselage_width)
-print(total_diameter)
-print(rpms_takeoff)
+    total_diameter_3.append(diameters_accumulated_3[i] + big_prop_diameter + 0.04 * diameters_small_3[i] * 2 * (number_props_3[i]) + fuselage_width)
+    total_diameter_2.append(diameters_accumulated_2[i] + big_prop_diameter + 0.04 * diameters_small_2[i] * 2 * (number_props_2[i]) + fuselage_width)
+    total_diameter_4.append(diameters_accumulated_4[i] + big_prop_diameter + 0.04 * diameters_small_4[i] * 2 * (number_props_4[i]) + fuselage_width)
+print(total_diameter_4)
+print(rpms_takeoff_3)
 
-"""
+
 plt.figure("Number of props vs diameter per prop, ratio 0.6")
 plt.title("Number of props vs diameter per propeller")
 plt.xlabel("Number of propellers")
 plt.ylabel("Propeller diameter (m)")
-plt.plot(number_props, diameters_small, "red")
+plt.plot(number_props_2, diameters_small_2, "blue", label = "2 blades")
+plt.plot(number_props_3, diameters_small_3, "red", label = "3 blades")
+plt.plot(number_props_4, diameters_small_4, "green", label = "4 blades")
+plt.legend()
 # plt.savefig('ratio 0.5.png')
 plt.show()
 plt.figure("Number of props vs accumulated diameters, ratio 0.6")
 plt.title("Number of props vs accumulated diameters")
 plt.xlabel("Number of propellers")
 plt.ylabel("Propeller diameters accumulated (m)")
-plt.plot(number_props, diameters_accumulated, "red")
+plt.plot(number_props_2, diameters_accumulated_2, "blue", label = "2 blades")
+plt.plot(number_props_3, diameters_accumulated_3, "red", label = "3 blades")
+plt.plot(number_props_4, diameters_accumulated_4, "green", label = "4+ blades")
+plt.legend()
 # plt.savefig("ratio 0.5 acc.png")
 plt.show()
-"""
-del rpms_takeoff[6]
-del rpms_takeoff[5]
-num_props_smaller = number_props.copy()
-del num_props_smaller[6]
-del num_props_smaller[5]
+
+del rpms_takeoff_3[6]
+del rpms_takeoff_3[5]
+num_props_smaller_3 = number_props_3.copy()
+del num_props_smaller_3[6]
+del num_props_smaller_3[5]
+del rpms_takeoff_2[6]
+del rpms_takeoff_2[5]
+num_props_smaller_2 = number_props_2.copy()
+del num_props_smaller_2[6]
+del num_props_smaller_2[5]
+del rpms_takeoff_4[6]
+del rpms_takeoff_4[5]
+num_props_smaller_4 = number_props_4.copy()
+del num_props_smaller_4[6]
+del num_props_smaller_4[5]
 plt.figure("RPM vs number of propellers")
-plt.plot(num_props_smaller, rpms_takeoff, "red")
+plt.plot(num_props_smaller_2, rpms_takeoff_2, "blue", label = "2 blades")
+plt.plot(num_props_smaller_3, rpms_takeoff_3, "red", label = "3 blades")
+plt.plot(num_props_smaller_4, rpms_takeoff_4, "green", label = "4 blades")
+plt.legend()
 plt.title("RPM vs number of propellers")
 plt.xlabel("Number of propellers")
 plt.ylabel("RPM of small propellers during take-off")
