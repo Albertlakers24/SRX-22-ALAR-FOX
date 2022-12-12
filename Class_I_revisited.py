@@ -1,18 +1,37 @@
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
+
 #Constants
 g = 9.80665
-lambda_trop = -6.5/1000
-R = 287.0528
-V_cruise = 275 * 0.51444444     #kts -> m/s (TAS)
-h_cruise = 280*100 * 0.3048     #m
-s_takeoff_1524 = 1372           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-s_landing_1524 = 1372           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-rho_0= 1.225                    #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
-rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
-rho_1524_rho0 = rho_1524/rho_0
-rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
-rho_cruise = rho_cruise_rho0 * rho_0
+Molar_mass_air = 0.0289644 #kg/mol
+universal_gas_constant = 8.31432 #N m kmol⁻¹ K⁻¹
+specific_gas_constant = 287.052 #J·kg⁻¹·K⁻¹
+kts_ms = 0.514444444
+ft_to_m = 0.3048
+
+T_0 = 288.15
+p_0 = 101325 #Pa
+rho_0 = 1.225
+lapse_rate = -0.0065
+
+V_cruise = 275 * kts_ms #KTAS
+h_cruise = 28000 * ft_to_m
+
+s_takeoff = 1372 #m
+s_landing = 1372 #m
+alt_1524 = 5000 * ft_to_m
+
+def ISA_calculator(h):
+    T = T_0 + lapse_rate * h
+    p = p_0 * ((T_0 / T) ** ((g * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
+    rho = p / (specific_gas_constant * T)
+    return T, p, rho
+
+T_1524, p_1524, rho_1524 = ISA_calculator(alt_1524)
+T_cruise, p_cruise, rho_cruise = ISA_calculator(h_cruise)
+sigma_1524 = rho_1524 / rho_0
+sigma_cruise = rho_cruise / rho_0
+
 eff_prop = 0.85                 #Change with Literature
 PAX = 50
 WPAX = 200*0.453592*PAX*g                                 #N
@@ -37,16 +56,16 @@ CD_land = Cd0 + (CL_to**2 /(np.pi * A* e))
 TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 6.9                         #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_approach = 141 * 0.514444         #Change with CS25 or Requirement
+V_approach = 141* kts_ms         #Change with CS25 or Requirement
 a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
+W_S_land = (CL_land * rho_1524 * s_landing/0.5847)/(2*0.95)
 # Cruise Speed Constraint
-W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
+W_P_cru = eff_prop * (sigma_cruise)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
 W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
@@ -54,6 +73,7 @@ W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/
 #Stall Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
+"""
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
@@ -71,9 +91,54 @@ plt.ylabel("W/P (N/W)")
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
+"""
 
 #Mass Preliminary Calculation
 W_P_design = 0.04706
 W_S_design = 3271
 m_turboprop = 1074.5/2
 MTOW_design = 20281 * g                  #N
+
+#Range Calculation
+CL = np.sqrt(np.pi*Cd0*A*e)
+CD = 2 * Cd0
+R_norm = 1000 * 1852
+R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
+f_con = 0.05
+R_div = 100 * 1852
+E = 45 * 60
+R_eq = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + (E*V_cruise)
+
+climb_h1 = 5000 * ft_to_m
+climb_h2 = 15000 * ft_to_m - climb_h1
+climb_h3 = 28000 * ft_to_m - climb_h2
+descent_h1 = climb_h3 - 10000 * ft_to_m
+descent_h2 = 10000 * ft_to_m
+h_all = [climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
+
+v_climb1 = 140 * kts_ms
+v_climb2 = 210 * kts_ms
+v_climb3 = 210 * kts_ms
+v_descent1 = 270 * kts_ms
+v_descent2 = 140 * kts_ms
+V_all = [v_climb1, v_climb2, v_climb3, v_descent1, v_descent2]
+
+ROC1 = 1350 / 196.9
+ROC2 = 1000 / 196.9
+ROC3 = 800 / 196.9
+ROD1 = 1500 / 196.9
+ROD2 = 1110 / 196.9
+ROC_all = [ROC1, ROC2, ROC3, ROD1, ROD2]
+
+def s_non_cruise(range):
+    V_x = []
+    t_list = []
+    for i in np.arange(0, len(V_all)):
+        V_x.append(np.sqrt(V_all[i]**2 - ROC_all[i]))
+        t_list.append(V_all[i] / h_all[i])
+    s_no_cruise = V_x * t_list
+    s_cruise_500 = 500 * 1852 - s_no_cruise
+    s_cruise_full = R_eq - s_no_cruise
+
+
+
