@@ -209,7 +209,8 @@ m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m
 m_lh2 = m_fuelcell_climb1 + m_fuelcell_climb2 + m_fuelcell_climb3 + m_fuelcell_descent1 + m_fuelcell_descent2 + m_fuelcell_cruise_full
 m_generator = 127 + 335     #in Pure fuel cell 0, if in hybrid = 1
 m_inverter = (P_fuelcell_climb1 / 1000)/30
-m_propulsion = m_turboprop*NoD_ice * 1.5 + m_fuelcell_struc + m_inverter
+m_propulsion = (m_turboprop*NoD_ice + m_inverter)* 1.5 + m_fuelcell_struc
+m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
@@ -220,9 +221,11 @@ print(np.round(m_lh2+m_fuel_ice,0),"Fuel + Battery mass")
 print(np.round(m_OE,0), "Operational Empty mass with Propulsion(kg)")
 print(np.round(m_OE_without,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
+print(np.round(m_propulsion_withoutstruc,0), "Propulsion mass without Fuel Cell Structure Mass (kg)")
+print(np.round(m_fuelcell_struc,0), "Fuel Cell Structure Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOM (kg)")
 print(np.round(MTOW_design/g,0), "Initial MTOM Input(kg)")
-print(np.round((m_MTOW/(MTOW_design/g))-1,2), "Difference between hybrid and original design")
+print(np.round((m_MTOW/(MTOW_design/g))-1,3), "Difference between hybrid and original design")
 P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
