@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 g = 9.80665
 lambda_trop = -6.5/1000
 R = 287.0528
-V_cruise = 275 * 0.51444444     #knt -> m/s (TAS)
+V_cruise = 275 * 0.51444444     #kts -> m/s (TAS)
 h_cruise = 280*100 * 0.3048     #m
 s_takeoff_1524 = 1372           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 s_landing_1524 = 1372           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
@@ -37,7 +37,7 @@ CD_land = Cd0 + (CL_land**2 /(np.pi * A* e))
 TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 6.9                         #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_approach = 141* 0.514444         #Change with CS25 or Requirement
+V_approach = 141 * 0.514444         #Change with CS25 or Requirement
 a = 0.5088
 b = 1199.7
 
