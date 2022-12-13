@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 g = 9.80665
+prop_type = 1       # 1 = Parallel Series-Hybrid, 2 = Series
 
 # Mission Charecteristics
 V_cr = 141.471   # in m/s
@@ -12,23 +13,23 @@ R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
 #Aircraft mass characteristics -- --> to be updated!!
-m_oe    =  15454                    #Operational empty weight [kg]
-m_pldes = 5730                    #Design payload [kg]
-m_mto   = 30000                    # Max take-off
-m_plmax = m_pldes*1.3
+m_oe    =  12494                    #Operational empty weight [kg]
+m_pldes = 5443                    #Design payload [kg]
+m_mto   = 25467                    # Max take-off
+m_plmax = m_pldes*1.1
 
 #Propulsion characteristics
 
 # ----- BATTERY ------
-m_bat       = 2600                      #battery mass [kg]
+m_bat       = 3898                      #battery mass [kg]
 e_bat       = 2.7 * 10**6
-n_eng_em    = 0.95                      #Enine efficiency (electric motor)
-n_p_em      = 0.95                      #Propulsive efficiency (electric motor)
+n_eng_em    = 0.934*0.85*0.99*0.995*0.95                      #Enine efficiency (electric motor)
+n_p_em      = 0.85                      #Propulsive efficiency (electric motor)
 P_em = 2000*10**3
 # ------- TURBOPROP
 PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
-e_f         = 42.8 * 10**6
-n_eng_tp    = (1/e_f)*(1/PSFC)          #Engine efficiency (thermodynamic, turboprop)
+e_f         = 43 * 10**6
+n_eng_tp    = 0.45          #Engine efficiency (thermodynamic, turboprop)
 n_p_tp      = 0.85                      #Propulsive efficiency (turboprop)
 P_tp = 8000*10**3
 # ----- HYBRID THINGS

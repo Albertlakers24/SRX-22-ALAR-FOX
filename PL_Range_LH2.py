@@ -8,14 +8,15 @@ g = 9.80665
 # Masses Aircraft --> Payload - constant for all configurations
 
 m_pldes = 5443  # Payload mass designed for
-m_plmax = m_pldes*1.1
+m_plmax = m_pldes*1.03
 
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
-
+# fuel = 555, tank = 666
 if prop_system == 1:  # LH2 fuel cell
-    m_oe = 11499  + 595 # Operating empty mass + tank mass
-    m_mto = 18033
-    m_fh = 496 # LH2 mass in kg
+    m_fh = 750 # LH2 mass in kg
+    m_tank = m_fh*1.5
+    m_oe = (12727.3) + m_tank # Operating empty mass + tank mass
+    m_mto = (19391 - 555 - 666) + m_fh + m_tank
     m_fk = 0   # Kerosene mass in kg
 if prop_system == 2:    # LH2 Combustion
     m_mto = 19223  # in kg --> Max take off
@@ -31,7 +32,7 @@ if prop_system == 3:   # LH2_Kerosene fuel cell
 n_pk =  0.85                            #Propulsive efficiency twin turboprop
 n_ph = 0.85                             #Propulsive efficiency twin turboprop
 e_fk = 42.9 * 10**6                     # Specific Energy - kerosene
-e_fh = 142 * 10**6                      # specific energy - hydrogen
+e_fh = 120 * 10**6                      # specific energy - hydrogen
 
 if prop_system == 1:    # LH2 fuel cell
     n_engh = 0.6*0.97*0.995*0.85*0.95       # Efficiency engine - hydrogen fuel cell w/o kerosene
@@ -80,7 +81,6 @@ R_lostB2 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eqB2 = ((R_b2 + R_lostB2)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 R_auxB2 = R_eqB2 - R_b2
 R_b = R_b2 - R_auxB2
-
 #print(R_lostB)
 #print(R_eqB)
 #print(R_auxB)
