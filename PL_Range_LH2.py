@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 2  # put 1 for LH2_Kerosene fuel cell, 2 for LH2 fuel cell
+prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 
@@ -108,7 +108,7 @@ R_d = ((n_engh * n_ph * (LD_crs) * (e_fh /g) * np.log((m_oe  + m_fh)/(m_oe )))+ 
 
 #print(R_d2)
 
-ranges = np.array([0, R_b/1000, R_c/1000, R_d/1000])
+ranges = np.array([0, R_b/1852, R_c/1852, R_d/1852])
 plmasses = np.array([m_plmax, m_plmax, m_pldes,0])
 
 print(ranges, plmasses)
@@ -119,26 +119,26 @@ print(ranges, plmasses)
 
 # giving a title to my graph
 if prop_system == 1:
-    plt.plot(ranges, plmasses, color='green', linewidth=2,
+    plt.plot(ranges, plmasses, color='red', linewidth=2,
              marker='o', markerfacecolor='red', markersize=5)
     plt.title('Payload-Range diagram for LH2 fuel cell')
 if prop_system == 2:
-    plt.plot(ranges, plmasses, color='red', linewidth=2,
-             marker='o', markerfacecolor='red', markersize=5)
+    plt.plot(ranges, plmasses, color='green', linewidth=2,
+             marker='o', markerfacecolor='green', markersize=5)
     plt.title('Payload-Range diagram for LH2 Combustion')
 if prop_system == 3:
     plt.plot(ranges, plmasses, color='blue', linewidth=2,
-             marker='o', markerfacecolor='red', markersize=5)
-    plt.title('Payload-Range diagram for Electric-Kerosene hybrid')
+             marker='o', markerfacecolor='blue', markersize=5)
+    plt.title('Payload-Range diagram for LH2-Kerosene Fuel cell')
 
 n = ['A','B','C','D']
 for i, txt in enumerate(n):
     plt.annotate(txt, (ranges[i], plmasses[i]))
 
 # naming the x axis
-plt.xlabel('Range (km)')
+plt.xlabel('Range (nmi)')
 # naming the y axis
-plt.ylabel('Payload (Kg)')
+plt.ylabel('Payload (kg)')
 
 # function to show the plot
 plt.show()

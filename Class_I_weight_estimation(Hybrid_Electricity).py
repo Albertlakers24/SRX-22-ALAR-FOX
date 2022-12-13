@@ -42,16 +42,16 @@ a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
 W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
-W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
+W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/CL_to))))
-#Stall Constraint
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
+#Approach Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
 plt.vlines(W_S_approach,0,100,'b',label="V_approach")
@@ -129,7 +129,7 @@ tf =  0                     #Trap fuel time step
 BSFC= 1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
 ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6 *0.99 * 0.995 * 0.95      #Total Battery Energy per piece (Bat eff, Inverter eff, Em eff)
-eta_stt = 0.85       #Efficiency chain from shaft-to-thrust
+eta_stt = 0.85                #Efficiency chain from shaft-to-thrust
 eta_btt = 0.934 * 0.85        #Efficiency chain from battery-to-thrust
 NoD_ice = 2                   #Number of turboprop engines
 NoD_em_tip = 2                #Number of electric motor engines (wing tip)
@@ -145,7 +145,7 @@ MTOW_climb_1 = MTOW_design - m_fuel_climb1 * g
 
 #Second Climb
 E_total_climb2 = (MTOW_climb_1*V_climb2)/ (L_D_cruise) * t_climb2 + (MTOW_climb_1/g * (V_climb2-V_climb1)**2)/2 + MTOW_climb_1*ROC2*t_climb2
-E_nc_climb2 = 0 * E_total_climb2 #Change %
+E_nc_climb2 = 0 * E_total_climb2                #Change %
 E_c_climb2 = E_total_climb2 - E_nc_climb2
 P_ice_climb2 = (E_c_climb2)/ (eta_stt * t_climb2 * NoD_ice)
 m_fuel_climb2 = (1+tf)*P_ice_climb2*NoD_ice*BSFC*t_climb2
@@ -153,7 +153,7 @@ MTOW_climb_2 = MTOW_climb_1 - m_fuel_climb2 * g
 
 #3rd Climb
 E_total_climb3 = (MTOW_climb_2*V_climb3)/ (L_D_cruise) * t_climb3 + MTOW_climb_2*ROC3*t_climb3
-E_nc_climb3 = 0 * E_total_climb3 #Change %
+E_nc_climb3 = 0 * E_total_climb3                #Change %
 E_c_climb3 = E_total_climb3 - E_nc_climb3
 P_ice_climb3 = (E_c_climb3)/ (eta_stt * t_climb3 * NoD_ice)
 m_fuel_climb3 = (1+tf)*P_ice_climb3*NoD_ice*BSFC*t_climb3
@@ -162,7 +162,7 @@ MTOW_climb_3 = MTOW_climb_2 - m_fuel_climb3 * g
 #Cruise
 E_total_cruise_500 = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_500 + (MTOW_climb_3/g * (V_cruise-V_climb3)**2)/2
 E_total_cruise_full = (MTOW_climb_3*V_cruise)/ (L_D_cruise) * t_cruise_full + (MTOW_climb_3/g * (V_cruise-V_climb3)**2)/2
-E_nc_cruise_500 = 0 * E_total_cruise_500 #Change %
+E_nc_cruise_500 = 0 * E_total_cruise_500                #Change %
 E_c_cruise_500 = E_total_cruise_500 - E_nc_cruise_500
 E_nc_cruise_full = E_nc_cruise_500 #0 * E_total_cruise_full #Change %
 E_c_cruise_full = E_total_cruise_full - E_nc_cruise_500
@@ -199,7 +199,7 @@ P_em_total = 0 #Change calculation later
 #Mass Calculation
 m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m_fuel_descent2 + m_fuel_cruise_full
 m_bat = (1+ddp) * (E_nc_total/(0.95*E_bat))
-m_propulsion = m_turboprop*NoD_ice * 1.5 + (m_em_tip + m_propeller_tip)*NoD_em_tip + (m_em_dis + m_propeller_dis) *NoD_em_dis
+m_propulsion = m_turboprop*NoD_ice * 1.5 + ((m_em_tip + m_propeller_tip)*NoD_em_tip + (m_em_dis + m_propeller_dis) *NoD_em_dis) * 1.5
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_bat

@@ -42,22 +42,22 @@ a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
-W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.95)
+W_S_land = (CL_land * rho_1524 * s_landing_1524/0.5847)/(2*0.98)
 # Cruise Speed Constraint
 W_P_cru = eff_prop * (rho_cruise_rho0)**(3/4) * ((((Cd0*1/2*rho_cruise*V_cruise**3)/W_S)+(W_S/(np.pi*A*e*1/2*rho_cruise*V_cruise)))**(-1))
 # Rate of Climb Constraint
-W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_0))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
+W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(3/4))/(Cd0**(1/4)))))
 # Climb Gradent Constraint
-W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/CL_to))))
-#Stall Constraint
+W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
+#Approach Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
-plt.axvspan(3271,4000,color = "red", alpha = 0.1)
+plt.axvspan(3170,4000,color = "red", alpha = 0.1)
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 plt.fill_between(W_S,W_P_cru,1,color = "red",alpha = 0.1)
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
@@ -74,13 +74,14 @@ plt.show()
 
 #Mass Preliminary Calculation
 W_P_design = 0.04706
-W_S_design = 3271
+W_S_design = 3169
 m_turboprop = 1074.5/2
 MTOW_design = 20281 * g                  #N
+S = MTOW_design / W_S_design
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
-CD = CD = 2 * Cd0
+CD = 2 * Cd0
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -93,6 +94,8 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
+V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
+print(V_to)
 ROC1 = 1350 / 196.9
 ROC2 = 1000 / 196.9
 ROC3 = 800 / 196.9
@@ -102,7 +105,7 @@ V_climb1 = 140 * 0.51444444
 V_climb2 = 210 * 0.51444444
 V_climb3 = 210 * 0.51444444
 V_descent1 = 270 * 0.51444444
-V_descent2 = 140 * 0.51444444
+V_descent2 = 141 * 0.51444444
 Vx_climb1 = np.sqrt(V_climb1**2 - ROC1**2)
 Vx_climb2 = np.sqrt(V_climb2**2 - ROC2**2)
 Vx_climb3 = np.sqrt(V_climb3**2 - ROC3**2)
@@ -122,7 +125,7 @@ t_total_500 = t_cruise_500 + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_des
 t_total_full = t_cruise_full + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_descent2
 L_D_cruise = CL/CD
 L_D_to = CL_to/CD_to
-L_D_land = CL_land/ CD_to
+L_D_land = CL_land/ CD_land
 tf =  0                     #Trap fuel time step
 BSFC= 1/(43*10**6)   #Brake-specific fuel consumption
 ddp = 0.8                   #Deep discharge protection
@@ -132,7 +135,7 @@ eta_fuel_cell = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95    #Efficiency chain from sh
 NoD_ice = 2                 #Number of turboprop engines
 
 #Initial Climb
-E_total_climb1 = (MTOW_design*V_climb1)/ (L_D_to) * t_climb1 + (MTOW_design/g * V_climb1**2)/2 + MTOW_design*ROC1*t_climb1
+E_total_climb1 = (MTOW_design*V_climb1*t_climb1)/ (L_D_to) + (MTOW_design/g * (V_climb1-V_to)**2)/2 + MTOW_design*ROC1*t_climb1
 E_fuelcell_climb1 = 1 * E_total_climb1     #Change %
 E_c_climb1 = E_total_climb1 - E_fuelcell_climb1
 P_ice_climb1 = (E_c_climb1)/ (eta_stt * t_climb1 * NoD_ice)
@@ -209,22 +212,27 @@ m_fuel_ice = m_fuel_climb1 + m_fuel_climb2 + m_fuel_climb3 + m_fuel_descent1 + m
 m_lh2 = m_fuelcell_climb1 + m_fuelcell_climb2 + m_fuelcell_climb3 + m_fuelcell_descent1 + m_fuelcell_descent2 + m_fuelcell_cruise_full
 m_generator = 127 + 335     #in Pure fuel cell 0, if in hybrid = 1
 m_inverter = (P_fuelcell_climb1 / 1000)/30
-m_propulsion = m_turboprop*NoD_ice * 1.5 + m_fuelcell_struc + m_inverter
+m_propulsion = (m_turboprop*NoD_ice + m_inverter)* 1.5 + m_fuelcell_struc
+m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_fuel_ice + m_payload + m_lh2
-print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
+'''print(np.round(m_fuel_ice,0), "Fuel Mass(kg)")
 print(np.round(m_lh2,0),"LH2 Mass(kg)")
 print(np.round(m_payload,0),"Payload Mass (kg)")
 print(np.round(m_lh2+m_fuel_ice,0),"Fuel + Battery mass")
 print(np.round(m_OE,0), "Operational Empty mass with Propulsion(kg)")
 print(np.round(m_OE_without,0), "Operational Empty mass without Engine(kg)")
 print(np.round(m_propulsion,0), "Propulsion Mass (kg)")
+print(np.round(m_propulsion_withoutstruc,0), "Propulsion mass without Fuel Cell Structure Mass (kg)")
+print(np.round(m_fuelcell_struc,0), "Fuel Cell Structure Mass (kg)")
 print(np.round(m_MTOW,0), "Calculated MTOM (kg)")
 print(np.round(MTOW_design/g,0), "Initial MTOM Input(kg)")
-print(np.round((m_MTOW/(MTOW_design/g))-1,2), "Difference between hybrid and original design")
+print(np.round((m_MTOW/(MTOW_design/g))-1,3), "Difference between hybrid and original design")
 P_max = m_MTOW*g / W_P_design
 S = m_MTOW*g / W_S_design
 print(P_max/1000, "kW Max Power")
 print(S,"m^2 Surface Area ")
-print(np.sqrt(A*S),"Wing Span(m)")
+print(np.sqrt(A*S),"Wing Span(m)")'''
+print(P_fuelcell_climb1/1000)
+print(P_fuelcell_cruise_full/1000)
