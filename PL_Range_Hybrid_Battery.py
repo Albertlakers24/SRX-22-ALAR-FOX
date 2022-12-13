@@ -12,38 +12,54 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
-#Aircraft mass characteristics -- --> to be updated!!
-m_oe    =  12494                    #Operational empty weight [kg]
 m_pldes = 5443                    #Design payload [kg]
-m_mto   = 25467                    # Max take-off
-m_plmax = m_pldes*1.1
+m_plmax = m_pldes*1.2
+m_bat       = 3898                      #battery mass [kg]
+E_tot = 31226 * 10**6                 # Total propulsive energy (in J)
+
+#Aircraft mass characteristics -- --> to be updated!!
+#PARALLEL SERIES
+# m_oe    =  12883                    #Operational empty weight [kg]
+# m_mto   = 25857                    # Max take-off
+# phi = (0.35+0.02)/2                               # Rate of hybridization (Point C - Design point)
+# n_eng_tp = 0.45          #Engine efficiency (thermodynamic, turboprop)
+# m_fuel = 3633
+# phiB = (0.45+0.02)/2
+
+# SERIES
+n_eng_tp = 0.39*0.97*0.99*0.99
+m_oe    =  12786                   # Operational empty weight [kg]
+m_mto   = 24378                    # Max take-off
+phi = (0.45+ 0.04)/2               # Rate of hybridization (Point C - Design point)
+m_fuel = 2211
+phiB = (0.65+0.04)/2
 
 #Propulsion characteristics
 
 # ----- BATTERY ------
-m_bat       = 3898                      #battery mass [kg]
 e_bat       = 2.7 * 10**6
 n_eng_em    = 0.934*0.85*0.99*0.995*0.95                      #Enine efficiency (electric motor)
 n_p_em      = 0.85                      #Propulsive efficiency (electric motor)
-P_em = 2000*10**3
+#P_em = 2000*10**3
 # ------- TURBOPROP
-PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
+#PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
 e_f         = 43 * 10**6
-n_eng_tp    = 0.45          #Engine efficiency (thermodynamic, turboprop)
+
+
 n_p_tp      = 0.85                      #Propulsive efficiency (turboprop)
-P_tp = 8000*10**3
+#P_tp = 8000*10**3
 # ----- HYBRID THINGS
-E_tot = 35485.5 * 10**6                 # Total propulsive energy (in J)
 n_p = 0.85                              # Propulsive efficiency (overall)
-phi = 0.3                               # Rate of hybridization (Point C - Design point)
 
 #---- PHI Calculations for Point B (Point C included for sanity check)
 m_f = m_mto - m_oe - m_pldes - m_bat
-phi1 = 1 - (m_f*e_f/E_tot/g)
-print(phi, phi1)
+# print(m_fuel, m_f)
+# phi1 =(m_f*e_f/E_tot/g)
+# print(phi, phi1)
 m_fB = m_mto - m_oe - m_plmax - m_bat       # Mass of fuel at max payload - battery mass constant - trading fuel for payload
-phiB = 1 - (m_fB*e_f/E_tot/g)               # Rate of hybridization (Point B - Max payload point)
-print(phiB)
+# phiB =  (m_fB*e_f/E_tot/g)               # Rate of hybridization (Point B - Max payload point)
+# print(m_fB, phiB)
+
 
 #aerodynamic characteristics
 LD     = 17
@@ -102,8 +118,8 @@ print(ranges, plmasses)
 #Constructing the actual plot
 
 # plotting the points
-plt.plot(ranges, plmasses, color='blue', linewidth=3,
-         marker='o', markerfacecolor='blue', markersize=5)
+plt.plot(ranges, plmasses, color='orange', linewidth=3,
+         marker='o', markerfacecolor='orange', markersize=5)
 n = ['A','B','C','D']
 for i, txt in enumerate(n):
     plt.annotate(txt, (ranges[i], plmasses[i]))
@@ -114,7 +130,7 @@ plt.xlabel('Range [nmi]')
 plt.ylabel('Payload [kg]')
 
 # giving a title to my graph
-plt.title('Payload range diagram hybrid battery/fuel')
+plt.title('Payload range diagram Electric-Hybrid Series')
 
 # function to show the plot
 plt.show()

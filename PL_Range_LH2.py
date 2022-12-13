@@ -1,20 +1,20 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 1  # put 1 for LH2 fuel cell, 2 for LH2 combustion
+prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 
 # Masses Aircraft --> Payload - constant for all configurations
 
 m_pldes = 5443  # Payload mass designed for
-m_plmax = m_pldes*1.03
+m_plmax = m_pldes*1.1
 
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 # fuel = 555, tank = 666
 if prop_system == 1:  # LH2 fuel cell
     m_fh = 750 # LH2 mass in kg
-    m_tank = m_fh*1.5
+    m_tank = 0.5*m_fh
     m_oe = (12727.3) + m_tank # Operating empty mass + tank mass
     m_mto = (19391 - 555 - 666) + m_fh + m_tank
     m_fk = 0   # Kerosene mass in kg
