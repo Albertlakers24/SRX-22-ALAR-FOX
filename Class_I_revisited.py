@@ -114,7 +114,7 @@ climb_h2 = 15000 * ft_to_m - climb_h1
 climb_h3 = 28000 * ft_to_m - climb_h2
 descent_h1 = climb_h3 - 10000 * ft_to_m
 descent_h2 = 10000 * ft_to_m
-h_all = [climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
+h_all = [0, climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
 
 v_climb1 = 140 * kts_ms
 v_climb2 = 210 * kts_ms
@@ -130,15 +130,85 @@ ROD1 = 1500 / 196.9
 ROD2 = 1110 / 196.9
 ROC_all = [ROC1, ROC2, ROC3, ROD1, ROD2]
 
-def s_non_cruise(range):
+def t_cruise():
     V_x = []
     t_list = []
-    for i in np.arange(0, len(V_all)):
+    for i in np.arange(0, len(ROC_all)):
         V_x.append(np.sqrt(V_all[i]**2 - ROC_all[i]))
-        t_list.append(V_all[i] / h_all[i])
-    s_no_cruise = V_x * t_list
-    s_cruise_500 = 500 * 1852 - s_no_cruise
-    s_cruise_full = R_eq - s_no_cruise
+        t_list.append(np.sqrt((h_all[i+1] - h_all[i])**2) / ROC_all[i])
+    s_no_cruise = np.array(V_x) * np.array(t_list)
+    s_cruise_500 = 500 * 1852 - sum(s_no_cruise)
+    s_cruise_full = R_eq - sum(s_no_cruise)
+    t_cruise_500 = s_cruise_500 / V_cruise
+    t_cruise_full = s_cruise_full / V_cruise
+    return t_cruise_500, t_cruise_full, t_list
+
+t_cruise_500, t_cruise_full, t_list = t_cruise()
+t_total_500 = sum(t_list) + t_cruise_500 
+t_total_full = sum(t_list) + t_cruise_full
+
+L_D_cruise = CL/CD
+L_D_to = CL_to/CD_to
+L_D_land = CL_land/ CD_to
+tf =  0                     #Trap fuel time step
+BSFC= 1/(43*10**6)   #Brake-specific fuel consumption
+ddp = 0.8                   #Deep discharge protection
+BSFC_lh2 = 1/ (120*10**6)           #Total Battery Energy per piece
+eta_stt = 0.39 * 0.9 *0.99                 #Efficiency chain from shaft-to-thrust
+eta_fuel_cell = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95    #Efficiency chain from shaft-to-thrust (fuel cell)
+NoD_ice = 2                 #Number of turboprop engines
+
+#Power Calculation
+V_to = 65 #m/s
+E_total = []
+P_fc_total = []
+MTOW_total = []
+m_fc_total = []
+def power(V, V_prev, t, ROC, MTOW, L_D):
+    E_increment = (MTOW * V * t) / (L_D) + (MTOW / g * abs(V - V_prev) ** 2) / 2 + MTOW * ROC * t
+    P_fc = E_increment / (eta_fuel_cell * t * NoD_ice)
+    m_fc = (1+tf) * P_fc * NoD_ice * BSFC_lh2 * t
+    MTOW_now = MTOW - m_fc * g
+    E_total.append(E_increment / 10**6)
+    P_fc_total.append(P_fc / 10**3)
+    MTOW_total.append(MTOW_now)
+    m_fc_total.append(m_fc)
+    return E_total, P_fc_total, MTOW_total, m_fc_total
+
+def total_all(range):
+    power(v_climb1, V_to, t_list[0], ROC1, MTOW_design, L_D_to)
+    power(v_climb2, v_climb1, t_list[1], ROC2, MTOW_total[0], L_D_cruise)
+    power(v_climb3, v_climb2, t_list[2], ROC3, MTOW_total[1], L_D_cruise)
+    if range == 500:
+        power(V_cruise, v_climb3, t_cruise_500, 0, MTOW_total[2], L_D_cruise)
+    else:
+        power(V_cruise, v_climb3, t_cruise_full, 0, MTOW_total[2], L_D_cruise)
+    power(v_descent1, V_cruise, t_list[3], -1 * ROD1, MTOW_total[3], L_D_cruise)
+    power(v_descent2, v_descent1, t_list[4], -1 * ROD2, MTOW_total[4], L_D_land)
+    return E_total, P_fc_total, MTOW_total, m_fc_total
+
+def sum(range):
+    total_all(range)
+    E_sum = np.sum(E_total)
+    P_sum = np.sum(P_fc_total)
+    MTOW_sum = np.sum(MTOW_total)
+    m_fc_sum = np.sum(m_fc_total)
+    return E_sum, P_sum, MTOW_sum, m_fc_sum
+# E_sum_500, P_sum_500, MTOW_sum_500 = sum(500)
+E_sum_full, P_sum_full, MTOW_sum_full, m_fc_sum_full = sum(1000)
+P_max = max(P_fc_total) #in kW
+m_fuelcell_struc = (P_max / 1000)/3
+m_inverter = (P_max)/30
+m_propulsion = (m_turboprop*NoD_ice + m_inverter)* 1.5 + m_fuelcell_struc
+m_propulsion_withoutstruc = m_propulsion - m_fuelcell_struc
+m_OE = (a * MTOW_design/g + b) + m_propulsion
+m_OE_without = (a * MTOW_design/g + b)
+m_MTOW = m_OE + m_fc_sum_full + m_payload
+
+print(f"Total energy is {E_sum_full} MJ")
+print(f"Peak power is {P_max} kW per engine")
+print(f"The MTOW is {m_MTOW} kg")
+
 
 
 
