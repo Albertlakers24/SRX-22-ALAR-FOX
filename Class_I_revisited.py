@@ -111,21 +111,21 @@ R_eq = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + (E*V_cruise)
 
 climb_h1 = 5000 * ft_to_m
 climb_h2 = 15000 * ft_to_m - climb_h1
-climb_h3 = 28000 * ft_to_m - climb_h2
+climb_h3 = 28000 * ft_to_m - climb_h2 - climb_h1
 descent_h1 = climb_h3 - 10000 * ft_to_m
 descent_h2 = 10000 * ft_to_m
-h_all = [0, climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
+h_all = [climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
 
 v_climb1 = 140 * kts_ms
-v_climb2 = 210 * kts_ms
-v_climb3 = 210 * kts_ms
-v_descent1 = 270 * kts_ms
+v_climb2 = 176 * kts_ms#210 * kts_ms
+v_climb3 = 176 * kts_ms#210 * kts_ms
+v_descent1 = 176 * kts_ms#270 * kts_ms
 v_descent2 = 140 * kts_ms
 V_all = [v_climb1, v_climb2, v_climb3, v_descent1, v_descent2]
 
-ROC1 = 1350 / 196.9
-ROC2 = 1000 / 196.9
-ROC3 = 800 / 196.9
+ROC1 = 4#1350 / 196.9
+ROC2 = 3#1000 / 196.9
+ROC3 = 2#800 / 196.9
 ROD1 = 1500 / 196.9
 ROD2 = 1110 / 196.9
 ROC_all = [ROC1, ROC2, ROC3, ROD1, ROD2]
@@ -134,8 +134,8 @@ def t_cruise():
     V_x = []
     t_list = []
     for i in np.arange(0, len(ROC_all)):
-        V_x.append(np.sqrt(V_all[i]**2 - ROC_all[i]))
-        t_list.append(np.sqrt((h_all[i+1] - h_all[i])**2) / ROC_all[i])
+        V_x.append(np.sqrt(V_all[i]**2 - ROC_all[i]**2))
+        t_list.append(h_all[i] / ROC_all[i])
     s_no_cruise = np.array(V_x) * np.array(t_list)
     s_cruise_500 = 500 * 1852 - sum(s_no_cruise)
     s_cruise_full = R_eq - sum(s_no_cruise)
@@ -165,7 +165,7 @@ P_fc_total = []
 MTOW_total = []
 m_fc_total = []
 def power(V, V_prev, t, ROC, MTOW, L_D):
-    E_increment = (MTOW * V * t) / (L_D) + (MTOW / g * abs(V - V_prev) ** 2) / 2 + MTOW * ROC * t
+    E_increment = (MTOW * V * t) / (L_D) + (MTOW / g * (V - V_prev) ** 2) / 2 + MTOW * ROC * t
     P_fc = E_increment / (eta_fuel_cell * t * NoD_ice)
     m_fc = (1+tf) * P_fc * NoD_ice * BSFC_lh2 * t
     MTOW_now = MTOW - m_fc * g
@@ -207,7 +207,9 @@ m_MTOW = m_OE + m_fc_sum_full + m_payload
 
 print(f"Total energy is {E_sum_full} MJ")
 print(f"Peak power is {P_max} kW per engine")
+print(P_fc_total, t_list, t_cruise_full)
 print(f"The MTOW is {m_MTOW} kg")
+print(E_total)
 
 
 
