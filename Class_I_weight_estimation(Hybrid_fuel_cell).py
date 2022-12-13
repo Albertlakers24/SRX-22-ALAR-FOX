@@ -58,7 +58,7 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
-MTOW_design = 18120 * g                  #N
+MTOW_design = 20281 * g                  #N
 S = MTOW_design / 3169
 V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
 ROC1 = 4
@@ -99,15 +99,15 @@ t_total_full = t_cruise_full + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_d
 L_D_cruise = CL/CD
 L_D_to = CL_to/CD_to
 L_D_land = CL_land/ CD_to
-tf =  0                     #Trap fuel time step
-BSFC= 1/(43*10**6 * 0.45) #1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
-ddp = 0.8                   #Deep discharge protection
+tf =  0                         #Trap fuel time step
+BSFC= 1/(43*10**6 * 0.45)       #1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
+ddp = 0.8                       #Deep discharge protection
 E_bat = 2.7*10**6 *0.99 * 0.995 * 0.95      #Total Battery Energy per piece (Bat eff, Inverter eff, Em eff)
 eta_stt = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95                #Efficiency chain from shaft-to-thrust
-eta_btt = 0.934 * 0.85        #Efficiency chain from battery-to-thrust
-NoD_ice = 2                   #Number of turboprop engines
-NoD_em_tip = 2                #Number of electric motor engines (wing tip)
-NoD_em_dis = 2                #Number of electric motor engines (distributed)
+eta_btt = 0.934 * 0.85          #Efficiency chain from battery-to-thrust
+NoD_ice = 2                     #Number of turboprop engines
+NoD_em_tip = 2                  #Number of electric motor engines (wing tip)
+NoD_em_dis = 2                  #Number of electric motor engines (distributed)
 E_climb1_total = 0
 E_climb2_total = 0
 E_climb3_total = 0
@@ -221,7 +221,7 @@ m_inverter = P_ice(E_climb1_total,t_climb1)/10**3 /30
 m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
 m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc
 m_OE_without = (a * MTOW_design/g + b)
-m_MTOW = m_OE + m_payload + m_fuel_total * 2.2
+m_MTOW = m_OE + m_payload + m_fuel_total * 1.5
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
 print(m_OE,"OEM")
@@ -229,12 +229,7 @@ print(m_fuel_total * 2.2, "m_fuel with tank")
 print(m_fuel_total,"m_fuel pure fuel cell")
 S_design = m_MTOW * g / W_S_design
 print(m_payload)
-print(S_design)
+print(S_design,"m^2")
 b= np.sqrt(S*A)
-print(b)
-print(m_propulsion)
-print(P_max_no_eff)
-print(P_ice(E_climb1_total,t_climb1)/10**3)
-print(P_ice(E_cruise_full_total,t_cruise_full)/10**3)
-print(m_payload)
-print(m_fuel_total)
+print(b,"m")
+
