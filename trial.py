@@ -122,13 +122,43 @@ for i in range(1,int(t_total_full)+1):
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
     elif t_climb1 < i <= (t_climb1+t_climb2):
         E_climb2 = Energy(MTOW_energy_calculate,a_climb2,(i-t_climb1),L_D_cruise,ROC2,V_climb1)
-        E_nc = 0 * E_climb1
-        E_c = E_climb1 - E_nc
-        P_ice_climb1 = P_ice(E_c,1)
-        m_fuel_climb1 = m_fuel(P_ice_climb1)
-        m_fuel_total = m_fuel_climb1
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
-    else:
+        E_nc = 0 * E_climb2
+        E_c = E_climb2 - E_nc
+        P_ice_climb2 = P_ice(E_c,1)
+        m_fuel_climb2 = m_fuel(P_ice_climb2)
+        m_fuel_total = m_fuel_climb2
+        E_climb2_total += E_climb2
+        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb2 * g
+    elif (t_climb1 + t_climb2) < i <= (t_climb1 +t_climb2 +t_climb3):
+        E_climb3 = Energy(MTOW_energy_calculate,a_climb3,(i-(t_climb1+t_climb2)),L_D_cruise,ROC3,V_climb2)
+        E_nc = 0 * E_climb3
+        E_c = E_climb3 - E_nc
+        P_ice_climb3 = P_ice(E_c, 1)
+        m_fuel_climb3 = m_fuel(P_ice_climb3)
+        m_fuel_total = m_fuel_climb3
+        E_climb3_total += E_climb3
+        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
+    elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
+        E_cruise_full = Energy(MTOW_energy_calculate,a_cruise_full,(i-(t_climb1+t_climb2+t_climb3)),L_D_cruise,0,V_climb3)
+        E_nc = 0 * E_cruise_full
+        E_c = E_cruise_full - E_nc
+        P_ice_cruise_full = P_ice(E_c,1)
+        m_fuel_cruise_full = m_fuel(P_ice_cruise_full)
+        E_cruise_full_total += E_cruise_full
+        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise_full *g
         continue
 print(E_climb1_total/10**6,"MJ")
 print(E_climb1_total/t_climb1/1000,"kW")
+print(E_climb2_total/10**6, "MJ")
+print(E_climb2_total/t_climb2/1000,"kW")
+print(E_climb3_total/10**6, "MJ")
+print(E_climb3_total/t_climb3/1000,"kW")
+print(E_cruise_full_total/10**6, "MJ")
+print(E_cruise_full_total/t_cruise_full/1000,"kW")
+print(MTOW_energy_calculate)
+print(MTOW_design)
+print(t_cruise_full)
+print(L_D_cruise)
+print(h_cruise)
+print(V_climb3)
+print(a_cruise_full)
