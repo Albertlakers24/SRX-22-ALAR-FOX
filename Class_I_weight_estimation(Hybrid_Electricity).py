@@ -240,7 +240,7 @@ print(np.round(np.average(hybridization_climb3),2),"climb3")
 print(np.round(np.average(hybridization_cruise_full),2),"Cruise")
 print(np.round(np.average(hybridization_descent1),2),"descent1")
 print(np.round(np.average(hybridization_descent2),2),"descent2")
-m_propulsion = 650 * 1.5
+m_propulsion = 700 * 1.95
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_payload +m_bat(E_nc_total) + m_fuel_total
@@ -252,3 +252,6 @@ S = m_MTOW*g / W_S_design
 print(S,"m^2")
 b = np.sqrt(A*S)
 print(b,"m")
+print(m_payload)
+print(m_OE_without)
+print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
