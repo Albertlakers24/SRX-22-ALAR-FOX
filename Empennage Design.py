@@ -9,7 +9,7 @@ from Wing_planform import Sw, c_mac, specific_gas_constant, T, p, gamma, M_cross
 ##Design 2; Liquid Hydrogen, propeller on main wing, tank aft
 ##Design 3; EM SP, Small propellers on wing tip, engines aft, fuel tanks in wing
 ##Design 4; EHS, small propellers on wing tip, engines aft, fuel in wing and aft
-Design = 1
+Design = 3
 
 #Constants from other files
 D_outer = 2.8 + 0.21*2              #m
@@ -18,30 +18,32 @@ D_inner = 2.8                       #m
 
 
 
-if Design ==1:                  #FUEL CELL -
-    ##AIRCRAFT DESIGN
+if Design ==1:                  #FUEL CELL - DONE
+    ##AIRCRAFT DESIGN fixed inputs
     cw = 2.23               # from Gabriel (double tapered)
     bw = 27                 # from Gabriel
     Sw = 57.6               # from Gabriel
     l_f = 23.876            #m
-
-    xcg_aft = 10.75         #m
-    x_h = 22                #m
-    l_h = x_h - xcg_aft     #m
-    x_v = 22.5              #m
-    l_v = x_v - xcg_aft     #
-
+    xcg_aft = 10.75         # m
     l_ultimate = 20.57  # m
 
-    Vh = 0.9  # TBD horizontal tail volume from data  -> 0.68113 (propeller)
+    ##Change
+    x_h = 22.3              #m
+    x_v = 21.6              #m
+    Vh = 0.86  # TBD horizontal tail volume from data  -> 0.68113 (propeller)
     Vv = 0.08  # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
-    Av = 1.5  # - (1-2)
+    Av = 1.3  # - (1-2)
     Ah = 4  # - (3-5)
-    taperv = 0.6  # - (0.3-0.7) taper ratio
+    taperv = 0.5  # - (0.3-0.7) taper ratio
     taperh = 0.75  # - (0.3-1) taper ratio
     Kc = 1.4
 
+    l_v = x_v - xcg_aft  #
+    l_h = x_h - xcg_aft  # m
+
     l_opt = Kc * np.sqrt((4 * c_mac * Sw * Vh) / (np.pi * D_outer))
+
+
 if Design ==2:              #Liquid hydrogen combustion
     #AIRCRAFT DESIGN FROM GABRIEL
     cw = 2.23                   # from Gabriel (double tapered)
@@ -68,11 +70,11 @@ if Design ==2:              #Liquid hydrogen combustion
 
     l_ultimate = 20.57 #m
 
-if Design ==3:
+if Design ==3:                          #Parallel series hybrid
     # AIRCRAFT DESIGN FROM GABRIEL
-    cw = 1               # from Gabriel (double tapered)
-    bw =  1              # from Gabriel
-    Sw =   1                 # from Gabriel
+    cw = 1               #?????? from Gabriel (double tapered)
+    bw =  30.7              # from Gabriel
+    Sw =   78.8                 # from Gabriel
     l_f =1
 
     Vh = 0.9                # TBD horizontal tail volume from data  -> 0.68113 (propeller)
@@ -133,13 +135,14 @@ if Type ==1:
         print("c_mach =", c_mach_h)
         print("y_machh =", y_mach_h)
         print("ratio wing areas =", Sh/Sw)
+        print("tail_arm_h=", x_h - xcg_aft)
 
         print("Av=", Av)
-        Sv = Vv * (Sw * bw) / l_v          #correct
-        bv = np.sqrt(2*(Av*Sv))             #correct
-        c_mac_v = Sv/bv                 #correct
-        c_rv =(3/2)*(c_mac_v)*((1+taperv+taperv**2)/(1+taperv))
-        c_tv = taperv*c_rv              #correct
+        Sv = Vv * (Sw * bw) / l_v                           #correct
+        bv = np.sqrt(Av*Sv)                                 #correct
+        c_mac_v = Sv/bv                                     #correct
+        c_rv = 2*Sv/((1+taperv)*bv)
+        c_tv = taperv*c_rv
 
         #c_rv = (2+Sv)/((1+taperv)*bv)       #
 
@@ -152,6 +155,7 @@ if Type ==1:
         print("ct_v =",c_tv, "m")
         print("c_macv =", c_mac_v)
         print("y_machv =", y_mach_v)
+        print("tail_arm_v=", x_v-xcg_aft)
 
         print("Sh ratio", Sw/Sh)
         print("Sv ratio", Sw/Sv)
@@ -164,7 +168,9 @@ if Type ==1:
         print("part outside", (x_v+(1/4)*c_rv)-l_f)
         print("x_h=", x_h)
         print("x_v =", x_v)
-        if (x_v-(3/4)*c_rv)-l_ultimate < 0:
+        print("nose to LE horizontal tail=", x_v-(1/4*c_rv))
+        print("nose to LE vertical tail=", x_h-(1/4*c_rh))
+        if (x_v-(1/4)*c_rv)-l_ultimate < 0:
             print("we are interfering :(")
         else:
             print((x_v - (3 / 4) * c_rv) - l_ultimate)
