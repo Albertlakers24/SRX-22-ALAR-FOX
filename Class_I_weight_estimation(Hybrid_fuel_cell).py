@@ -45,9 +45,6 @@ b = 1199.7
 W_P_design = 0.04706
 W_S_design = 3169
 m_turboprop = 1074.5/2
-MTOW_design = 19887 * g                  #N
-S = MTOW_design / W_S_design
-
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
 CD = 2 * Cd0
@@ -61,7 +58,7 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
-MTOW_design = 19306 * g                  #N
+MTOW_design = 18120 * g                  #N
 S = MTOW_design / 3169
 V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
 ROC1 = 4
@@ -182,7 +179,7 @@ for i in range(1,int(t_total_full)+1):
         E_nc_total += E_nc
         m_fuel_total += m_fuel_cruise
         E_cruise_full_total += E_cruise_full
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
+        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise * g
     elif (t_climb1 + t_climb2 +t_climb3 + t_cruise_full) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full + t_descent1):
         E_descent1 = Energy(MTOW_energy_calculate, a_descent1, (i - (t_climb1 + t_climb2 + t_climb3+t_cruise_full)), L_D_cruise,-ROD1, V_cruise)
         E_nc = 0 * E_descent1
@@ -203,21 +200,28 @@ for i in range(1,int(t_total_full)+1):
         E_descent2_total += E_descent2
         E_nc_total += E_nc
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent2 * g
-print(E_climb1_total/10**6,"Climb1")
-print(E_climb2_total/10**6,"Climb2")
-print(E_climb3_total/10**6,"Climb3")
-print(E_cruise_full_total/10**6,"Cruise")
-print(E_descent1_total/10**6,"Descent1")
-print(E_descent2_total/10**6,"Descent2")
-print(E_nc_total/10**6, "Enc total")
-print(m_bat(E_nc_total),"m_bat")
 print(m_fuel_total,"m_fuel")
-m_fuelcell_struc = P_ice(E_climb1_total,t_climb1)/10**3 /3
+
+#Regular efficiencies
+wire_eff = 0.97
+inverter_eff = 0.995
+motor_eff = 0.95
+prop_eff = 0.85
+
+#FC efficiencies
+FC_eff = 0.6
+P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_stt
+P_max_fc = P_max_no_eff / wire_eff / inverter_eff**2 / motor_eff / prop_eff
+P_max_EM = P_max_no_eff / prop_eff / motor_eff
+m_fuelcell_struc = P_max_fc / 3
+m_inverter = (P_max_no_eff / wire_eff) / 30
+m_propulsion = (P_max_EM / 15 + m_inverter) * 1.5
+'''m_fuelcell_struc = P_ice(E_climb1_total,t_climb1)/10**3 /3
 m_inverter = P_ice(E_climb1_total,t_climb1)/10**3 /30
-m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5
+m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
 m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc
 m_OE_without = (a * MTOW_design/g + b)
-m_MTOW = m_OE + m_payload + m_fuel_total * 1.5
+m_MTOW = m_OE + m_payload + m_fuel_total * 2.2
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
 print(m_OE,"OEM")
@@ -225,3 +229,10 @@ print(m_fuel_total * 1.5, "m_fuel with tank")
 print(m_fuel_total,"m_fuel pure fuel cell")
 S_design = m_MTOW * g / W_S_design
 print(m_payload)
+print(S_design)
+b= np.sqrt(S*A)
+print(b)
+print(m_propulsion)
+print(P_max_no_eff)
+print(P_ice(E_climb1_total,t_climb1)/10**3)
+print(P_ice(E_cruise_full_total,t_cruise_full)/10**3)

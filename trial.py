@@ -202,3 +202,19 @@ m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_payload +m_bat(E_nc_total) + m_fuel_total
 print(m_MTOW)
+
+
+#Regular efficiencies
+wire_eff = 0.97
+inverter_eff = 0.995
+motor_eff = 0.95
+prop_eff = 0.85
+
+#FC efficiencies
+FC_eff = 0.6
+P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_stt
+P_max_fc = P_max_no_eff / wire_eff / inverter_eff**2 / motor_eff / prop_eff
+P_max_EM = P_max_no_eff / prop_eff / motor_eff
+m_fuelcell_struc = P_max_fc / 3
+m_inverter = (P_max_no_eff / wire_eff) / 30
+m_propulsion = (P_max_EM / 15 + m_inverter) * 1.5
