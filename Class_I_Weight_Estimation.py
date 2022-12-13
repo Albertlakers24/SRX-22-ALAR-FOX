@@ -14,7 +14,7 @@ import numpy as np
 #Constants
 g = 9.80665                     #gravity
 R_norm = 1852000                #Range in m 1000 nmi
-E = 45 * 60                     #Loiter endurance in seconds
+E = 30 * 60                     #Loiter endurance in seconds
 V_cruise = 275*0.51444444       #m/s (TAS)                      ATR72: 280
 h_cruise = 280*100*0.3048       #m                            ATR72: 200
 R_div = 185200                  #m 100 nmi
@@ -40,7 +40,7 @@ b_j = 1782.3*g                  #N turbojet
 Psi = 0.0075                    #- parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #- span efficiency factor (value based on Roelof reader p.46)
 m_tank = 8.375                  #kg
-Number_tank = 69
+Number_tank = 68
 
 
 
@@ -84,28 +84,31 @@ Mused = mfuel_MTO_FULL                                                        #-
 
 WPAX = 200*0.453592*PAX*g                                   #N
 WPAXBAGGAGE = 40*0.453592*PAX*g                              #N Crew is bagageless
+W_F_extra = 1.03                                            #3%
 
 
 #OUTPUTS
 
 WPLtot = WPAX+WPAXBAGGAGE                                                     #N
-MTOW = (b + WPLtot+W_tanks)/(1-a-Mused*(1+Mres))                              #LH
+MTOW = (b + WPLtot+W_tanks)/(1-a-(Mused*(1+Mres)))                              #LH
 #MTOW = (b + WPLtot)/(1-a-Mused*(1+Mres))                              #Kerosene
 WOE = a*MTOW + b  +W_tanks                                                   #N    take out W_tanks for JetA
 #WOE = a*MTOW +b
-WF = MTOW*(Mused*(1+Mres))                                                    #N
-
+WF = MTOW*(Mused*(1+Mres))*W_F_extra                                                    #N
+WF_extra = WF*(W_F_extra-1)
 
 print("MTOW =", MTOW, "N")
 print("Fuel weight =", WF, "N")
 print("Operational Empty Weight =", WOE, "N")
 print("WPLtot =", WPLtot, "N")
+print("WF_extra =", WF_extra, "N")
 print("---------------------------------------")
 print("m_TO=", MTOW/g, "kg")
 print("Fuel mass=", WF/g, "kg")
 print("m_OE=", WOE/g, "kg")
 print("m_PLtot=", WPLtot/g, "kg")
 print("m_tanks =", W_tanks/g, "kg")
+print("mF_extra =", WF_extra/g, "kg")
 
 print("efficiency =", eta_eng*eta_p)
 
