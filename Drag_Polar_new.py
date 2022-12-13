@@ -8,12 +8,14 @@ CL_max_take0ff = 2.1
 CL_max_cruise = 1.9
 CL_max_landing = 2.8
 
-# INPUT CD0 FOR Cruise from Class I
-CD0_Cruise = Cd0       # Call from Class I ---- EVENTUALLY
-e_cruise = e             # Call from Class I ---- EVENTUALLY
+# INPUTS from Class I
+CD0_Cruise = Cd0
+e_cruise = e
+A = A
+
+# FLAP DEFLECTION --> FROM ADSEE READER
 delta_f_take_off = 15       # TAKE Flap deflection - in degrees
 delta_f_landing = 35        # LANDING Flap deflection - in degrees
-A = A                     # Call from Class I ---- EVENTUALLY
 
 # Make CL Lists for each flight phase
 step = 0.2
@@ -128,4 +130,3 @@ plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
 plt.title('Drag polar for Liquid Hydrogen propulsion') # giving a title to my graph
 plt.show()
-
