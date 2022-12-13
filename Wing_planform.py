@@ -1,28 +1,29 @@
 import numpy as np
 #import scipy as sp
-#from Class_I_Weight_Estimation import MTOW,V_cruise
-from Lift_Drag_Polar import p, T, specific_gas_constant, b
+from Lift_Drag_Polar import p, T, specific_gas_constant
+from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 2                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 1                        # put 1 for LH2 combustion, 2 for LH2-kerosene hybrid, 3 for LH2 fuel cell, 4 for Hybrid Electric
+prop_type = 1                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
 
 
-# Masses for Aircraft
+# Parameters per aircraft
 if prop_type == 1:
-    MTOW = 19314    # LH2 combustion in kg
+    MTOM = 19314    # LH2 combustion in kg
     Sw = 63.3       #main wing area [m^2],
 if prop_type == 2:
-    MTOW = 21207    # LH2-kerosene fuel cell in kg
+    MTOM = 21207    # LH2-kerosene fuel cell in kg
     Sw = 63.3       # main wing area [m^2]
 if prop_type == 3:
-    MTOW = 20434    # LH2 fuel cell in kg
+    MTOM = 20434    # LH2 fuel cell in kg
     Sw = 63.3       # main wing area [m^2]
 if prop_type == 4:
-    MTOW = 23000    # Hybrid Electric in kg--> to be updated!!
-    Sw = 63.3   # To be updated!!
+    MTOM = 19231    # Hybrid Electric in kg--> to be updated!!
+    Sw = 57.6      # To be updated!!
+    b = 27
 
 # Mission charecteristics
 V_cruise = 141.471   # in m/s
@@ -40,7 +41,7 @@ if switch == 1:
     c_r = 2*Sw/((1+taper)*b)           # Tip chord  [m]
     c_t = c_r * taper                  # Root chord [m]
     qhat = 0.5 * gamma * p * (M_cruise**2)
-    C_Lhat = MTOW/(qhat*Sw)            # Cruise lift coefficient
+    C_Lhat = MTOM/(qhat*Sw)            # Cruise lift coefficient
     t_c_ratio = min(0.18, ((M_cross-M_dd)-0.115*(C_Lhat**1.5))) # thickness to chord ratio
     c_mac = (2/3)*c_r*((1+taper+taper**2)/(1+taper))  # length of MAC
     y_mac = 0.5*(1/3)*(1+2*taper)/(1+taper)*b       # Spanwise location of MAC
