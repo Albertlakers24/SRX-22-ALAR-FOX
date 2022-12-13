@@ -61,7 +61,7 @@ a = 0.5088
 b = 1199.7
 
 #CALCULATIONS for the GRAPHS
-W_P_TOP = TOP/ (W_S) * CL_to #* rho_1524_rho0 #(Use this if it's at a different altitude then sea level)
+W_P_TOP = TOP/ (W_S) * CL_to * sigma_1524 #(Use this if it's at a different altitude then sea level)
 # Landing Distance Constraint
 W_S_land = (CL_land * rho_1524 * s_landing/0.5847)/(2*0.95)
 # Cruise Speed Constraint
@@ -73,7 +73,7 @@ W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_0)*(1/
 #Stall Constraint
 W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
 
-"""
+
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
@@ -91,7 +91,8 @@ plt.ylabel("W/P (N/W)")
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
-"""
+
+
 
 #Mass Preliminary Calculation
 W_P_design = 0.04706
@@ -116,13 +117,13 @@ descent_h1 = climb_h3 - 10000 * ft_to_m
 descent_h2 = 10000 * ft_to_m
 h_all = [climb_h1, climb_h2, climb_h3, descent_h1, descent_h2]
 
-v_climb1 = 140 * kts_ms
-v_climb2 = 176 * kts_ms#210 * kts_ms
-v_climb3 = 176 * kts_ms#210 * kts_ms
-v_descent1 = 176 * kts_ms#270 * kts_ms
+v_climb1 = 140 * (1 + 0.02 * 2.5) * kts_ms
+v_climb2 = 176 * (1 + 0.02 * 10) * kts_ms#210 * kts_ms
+v_climb3 = 176 * (1 + 0.02 * 21.5) * kts_ms#210 * kts_ms
+v_descent1 = 176 * (1 + 0.02 * 19) * kts_ms#270 * kts_ms
 v_descent2 = 140 * kts_ms
 V_all = [v_climb1, v_climb2, v_climb3, v_descent1, v_descent2]
-
+print(V_all)
 ROC1 = 4#1350 / 196.9
 ROC2 = 3#1000 / 196.9
 ROC3 = 2#800 / 196.9
@@ -210,6 +211,7 @@ print(f"Peak power is {P_max} kW per engine")
 print(P_fc_total, t_list, t_cruise_full)
 print(f"The MTOW is {m_MTOW} kg")
 print(E_total)
+print(m_fc_total)
 
 
 

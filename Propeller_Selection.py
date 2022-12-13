@@ -8,8 +8,8 @@ M_tip = 0.95
 
 E_500_nmi = 11835 #MJ
 E_1000 = 34943 #MJ
-max_power_needed = 4439 #kW
-power_cruise = 4439 #2758 #kW
+max_power_needed = 4225 #kW
+power_cruise = 4225 #2758 #kW
 
 g_0 = 9.80665
 Molar_mass_air = 0.0289644 #kg/mol
