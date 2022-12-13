@@ -52,46 +52,48 @@ if case == 1:           #Case 1 = hydrogen combustion, 2 propellors on the wing,
 
 elif case == 2:         # Case 2 = battery fuel hybrid in series/parrallel , 2 propellors on the fuselage, batteries at the center of the fuselage
     Mf_fuselage = 0.14   # Mass fraction of components w.r.t MTOM, need to be changed
-    Mf_prop = 0.12
+    Mf_prop_fuse = 0.1
+    Mf_prop_wing = 0.07
     Mf_sys = 0.26
     Mf_wing = 0.14
     Mf_empennage = 0.03
     Mf_batteries = 0.8
     print("======================================")
     print("For battery hybrid propulsion in series/ parallel configuration: ")
-    M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries + Mf_prop                          # sum of mass of the fuselage group
-    x_fg = (Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_prop * x_prop_fuse + Mf_batteries * x_batteries_center) / M_fg_frac
+    M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries + Mf_prop_fuse                          # sum of mass of the fuselage group
+    x_fg = (Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_prop_fuse * x_prop_fuse + Mf_batteries * x_batteries_center) / M_fg_frac
                                                                                                         # cg of the fuselage group
-    M_wg_frac = Mf_wing                                                                               # sum of mass of the wing group
-    x_wg_LEMAC = (Mf_wing * x_wing) / M_wg_frac                                                       # cg location of the wing group w.r.t. to LEMAC
+    M_wg_frac = Mf_wing + Mf_prop_wing                                                                              # sum of mass of the wing group
+    x_wg_LEMAC = (Mf_wing * x_wing + Mf_prop_wing * x_prop_wing) / M_wg_frac                                                       # cg location of the wing group w.r.t. to LEMAC
     x_LEMAC = x_fg - x_cg_LEMAC + M_wg_frac / M_fg_frac * (x_wg_LEMAC - x_cg_LEMAC)
 
 
 
 elif case == 3:         # Case 3 = battery fuel hybrid in series, 2 propellors at the wingtip, batteries at the center of the fuselage
-    Mf_fuselage = 0.14   ## Mass fraction of components w.r.t MTOM, need to be changed
-    Mf_prop = 0.12
-    Mf_sys = 0.26
-    Mf_wing = 0.14
+    Mf_fuselage = 0.125   ## Mass fraction of components w.r.t MTOM, need to be changed
+    Mf_prop_fuse = 0.1
+    Mf_prop_wing = 0.07
+    Mf_sys = 0.2
+    Mf_wing = 0.105
     Mf_empennage = 0.03
-    Mf_batteries = 0.8
+    Mf_batteries = 0.15
     print("======================================")
     print("For battery hybrid propulsion in series configuration: ")
-    M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries
-    x_fg = (Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_batteries * x_batteries_center) / M_fg_frac
-    M_wg_frac = Mf_wing + Mf_prop
-    x_wg_LEMAC = (Mf_wing * x_wing) / M_wg_frac                                                                 # cg location of the wing group w.r.t. to LEMAC
+    M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries + Mf_prop_fuse
+    x_fg = (Mf_prop_fuse * x_prop_fuse + Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_batteries * x_batteries_center) / M_fg_frac
+    M_wg_frac = Mf_wing + Mf_prop_wing
+    x_wg_LEMAC = (Mf_wing * x_wing + Mf_prop_wing * x_prop_wing) / M_wg_frac                                                                 # cg location of the wing group w.r.t. to LEMAC
     x_LEMAC = x_fg - x_cg_LEMAC + M_wg_frac / M_fg_frac*(x_wg_LEMAC-x_cg_LEMAC)                                 # cg location of the lemac w.r.t. the  datum
 
 
 
 elif case == 4:          # Case 4 = hydrogen fuel cell, 2 propellors on the wing, tank at aft, , more or less done
     Mf_fuselage = 0.14  # Mass fraction of components w.r.t MTOM
-    Mf_prop = 0.12
+    Mf_prop = 0.14
     Mf_empennage = 0.03
     Mf_sys = 0.26
     Mf_wing = 0.14
-    Mf_tank = 0.1    # Mass fraction of the tank to be updated
+    Mf_tank = 0.05    # Mass fraction of the tank to be updated
     print("======================================")
     print("For hydrogen fuel cell architecture: ")
     M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_tank  # sum of mass of the fuselage group
