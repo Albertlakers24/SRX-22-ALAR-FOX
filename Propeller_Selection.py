@@ -8,8 +8,8 @@ M_tip = 0.95
 
 E_500_nmi = 11835 #MJ
 E_1000 = 34943 #MJ
-max_power_needed = 4087 #kW
-power_cruise = 2480 #2758 #kW
+max_power_needed = 4225 #kW
+power_cruise = 4225 #2758 #kW
 
 g_0 = 9.80665
 Molar_mass_air = 0.0289644 #kg/mol
@@ -65,7 +65,7 @@ def rpm(D, V_tip):
 power = 15 #kW / kg
 number_big = 2
 number_small = 10
-ratio_big_small = power_cruise / max_power_needed
+ratio_big_small = 0.8 #power_cruise / max_power_needed
 power_big = max_power_needed * ratio_big_small / number_big
 mass_big = power_big / power
 big_prop_diameter = diameter(3, power, mass_big)
@@ -130,7 +130,7 @@ plt.xlabel("Number of propellers")
 plt.ylabel("Propeller diameter (m)")
 plt.plot(number_props_2, diameters_small_2, "blue", label = "2 blades")
 plt.plot(number_props_3, diameters_small_3, "red", label = "3 blades")
-plt.plot(number_props_4, diameters_small_4, "green", label = "4 blades")
+plt.plot(number_props_4, diameters_small_4, "green", label = "4+ blades")
 plt.legend()
 # plt.savefig('ratio 0.5.png')
 plt.show()
@@ -144,26 +144,35 @@ plt.plot(number_props_4, diameters_accumulated_4, "green", label = "4+ blades")
 plt.legend()
 # plt.savefig("ratio 0.5 acc.png")
 plt.show()
+plt.figure("props_vs_total")
+plt.title("Total distance taken on wing vs number of propellers")
+plt.xlabel("Number of propellers")
+plt.ylabel("Total distance taken by propellers")
+plt.plot(number_props_2, total_diameter_2, "blue", label = "2 blades")
+plt.plot(number_props_3, total_diameter_3, "red", label = "3 blades")
+plt.plot(number_props_4, total_diameter_4, "green", label = "4+ blades")
+plt.legend()
+plt.show()
 
-del rpms_takeoff_3[6]
-del rpms_takeoff_3[5]
+del rpms_cruise_3[6]
+del rpms_cruise_3[5]
 num_props_smaller_3 = number_props_3.copy()
 del num_props_smaller_3[6]
 del num_props_smaller_3[5]
-del rpms_takeoff_2[6]
-del rpms_takeoff_2[5]
+del rpms_cruise_2[6]
+del rpms_cruise_2[5]
 num_props_smaller_2 = number_props_2.copy()
 del num_props_smaller_2[6]
 del num_props_smaller_2[5]
-del rpms_takeoff_4[6]
-del rpms_takeoff_4[5]
+del rpms_cruise_4[6]
+del rpms_cruise_4[5]
 num_props_smaller_4 = number_props_4.copy()
 del num_props_smaller_4[6]
 del num_props_smaller_4[5]
 plt.figure("RPM vs number of propellers")
-plt.plot(num_props_smaller_2, rpms_takeoff_2, "blue", label = "2 blades")
-plt.plot(num_props_smaller_3, rpms_takeoff_3, "red", label = "3 blades")
-plt.plot(num_props_smaller_4, rpms_takeoff_4, "green", label = "4 blades")
+plt.plot(num_props_smaller_2, rpms_cruise_2, "blue", label = "2 blades")
+plt.plot(num_props_smaller_3, rpms_cruise_3, "red", label = "3 blades")
+plt.plot(num_props_smaller_4, rpms_cruise_4, "green", label = "4+ blades")
 plt.legend()
 plt.title("RPM vs number of propellers")
 plt.xlabel("Number of propellers")
