@@ -128,5 +128,5 @@ plt.plot(CD_list_landing_LH2, CL_list_landing, color = 'blue', label = 'Landing'
 plt.legend()
 plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
-plt.title('Drag polar for Liquid Hydrogen propulsion') # giving a title to my graph
+plt.title('Drag polar') # giving a title to my graph
 plt.show()
