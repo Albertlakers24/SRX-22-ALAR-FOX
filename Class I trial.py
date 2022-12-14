@@ -240,7 +240,7 @@ print(np.round(np.average(hybridization_climb3),2),"climb3")
 print(np.round(np.average(hybridization_cruise_full),2),"Cruise")
 print(np.round(np.average(hybridization_descent1),2),"descent1")
 print(np.round(np.average(hybridization_descent2),2),"descent2")
-m_propulsion = 650 * 1.95
+m_propulsion = 1440 * 1.5
 m_OE = (a * MTOW_design/g + b) + m_propulsion
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_payload +m_bat(E_nc_total) + m_fuel_total
