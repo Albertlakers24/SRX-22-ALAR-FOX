@@ -12,17 +12,17 @@ M_cross = 0.935                        # Technology factor for supercritical air
 
 # Parameters per aircraft
 if prop_type == 1:
-    MTOM = 19314    # LH2 combustion in kg
-    Sw = 63.3       #main wing area [m^2],
+    MTOM = 19223    # LH2 combustion in kg
+    Sw = 59       #main wing area [m^2],
 if prop_type == 2:
-    MTOM = 21207    # LH2-kerosene fuel cell in kg
-    Sw = 63.3       # main wing area [m^2]
+    MTOM = 25857    # battery fuel hybrid in series/parrallel
+    Sw = 78.8       # main wing area [m^2]
 if prop_type == 3:
-    MTOM = 20434    # LH2 fuel cell in kg
-    Sw = 63.3       # main wing area [m^2]
+    MTOM = 24878    # battery fuel hybrid in series
+    Sw = 75.4       # main wing area [m^2]
 if prop_type == 4:
-    MTOM = 19231    # Hybrid Electric in kg--> to be updated!!
-    Sw = 57.6      # To be updated!!
+    MTOM = 19295    # hydrogen fuel cell
+    Sw = 60      # To be updated!!
     b = 27
 
 # Mission charecteristics
