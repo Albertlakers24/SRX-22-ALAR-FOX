@@ -37,7 +37,8 @@ CD_land = Cd0 + (CL_land**2 /(np.pi * A* e))
 TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
 ROC = 4                         #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
-V_approach = 141 * 0.514444         #Change with CS25 or Requirement
+V_approach = 141 * 0.514444         #Requirement
+V_approach_stall = V_approach /1.23  #CS 25 requirement of V_stall_land = V_approach / 1.23
 a = 0.5088
 b = 1199.7
 
@@ -52,7 +53,7 @@ W_P_ROC = eff_prop / (ROC + ((np.sqrt(W_S)*np.sqrt(2/rho_1524))/(1.345*((A*e)**(
 # Climb Gradient Constraint
 W_P_CV = eff_prop / (np.sqrt(W_S)*(ROC_V + (CD_to/CL_to))*(np.sqrt((2/rho_1524)*(1/CL_to))))
 #Approach Constraint
-W_S_approach = 1/2 * rho_1524 * V_approach**2 * CL_land
+W_S_approach = 1/2 * rho_1524 * V_approach_stall**2 * CL_land
 
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
