@@ -57,7 +57,7 @@ R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
 R_div = 100 * 1852
-E = 45 * 60
+E = 30 * 60
 R_eq = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + (E*V_cruise)
 #Energy Calculation
 Climb1_h = 50 * 100 *0.3048
