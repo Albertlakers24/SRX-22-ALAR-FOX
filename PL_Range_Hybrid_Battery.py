@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 g = 9.80665
-prop_type = 1       # 1 = Parallel Series-Hybrid, 2 = Series
+#prop_type = 1       # 1 = Parallel Series-Hybrid, 2 = Series
 
 # Mission Charecteristics
 V_cr = 141.471   # in m/s
@@ -12,38 +12,54 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
-#Aircraft mass characteristics -- --> to be updated!!
-m_oe    =  12494                    #Operational empty weight [kg]
 m_pldes = 5443                    #Design payload [kg]
-m_mto   = 25467                    # Max take-off
-m_plmax = m_pldes*1.1
+m_plmax = m_pldes*1.18
+E_tot = 31226 * 10**6                 # Total propulsive energy (in J)
+
+#Aircraft mass characteristics -- --> to be updated!!
+#PARALLEL SERIES
+# m_oe    =  12883                    #Operational empty weight [kg]
+# m_mto   =   24015  #25857                # Max take-off
+# phi = (0.55+0.02)/2                               # Rate of hybridization (Point C - Design point)
+# n_eng_tp = 0.45          #Engine efficiency (thermodynamic, turboprop)
+# m_f = 1723 #3633
+# phiB = (0.45+0.02)/2
+# m_bat       = 3965 #3898                      #battery mass [kg]
+
+# SERIES
+n_eng_tp = 0.39*0.97*0.99*0.99
+m_oe    =  12786                   # Operational empty weight [kg]
+m_mto   = 24378                    # Max take-off
+phi = (0.45+ 0.04)/2               # Rate of hybridization (Point C - Design point)
+m_f =  2211
+phiB = (0.65+0.04)/2
+m_bat       = 3898                      #battery mass [kg]
 
 #Propulsion characteristics
 
 # ----- BATTERY ------
-m_bat       = 3898                      #battery mass [kg]
 e_bat       = 2.7 * 10**6
 n_eng_em    = 0.934*0.85*0.99*0.995*0.95                      #Enine efficiency (electric motor)
 n_p_em      = 0.85                      #Propulsive efficiency (electric motor)
-P_em = 2000*10**3
+#P_em = 2000*10**3
 # ------- TURBOPROP
-PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
+#PSFC        = 0.48*(0.45/(745*3600))    #Specific fuel consumption
 e_f         = 43 * 10**6
-n_eng_tp    = 0.45          #Engine efficiency (thermodynamic, turboprop)
+
+
 n_p_tp      = 0.85                      #Propulsive efficiency (turboprop)
-P_tp = 8000*10**3
+#P_tp = 8000*10**3
 # ----- HYBRID THINGS
-E_tot = 35485.5 * 10**6                 # Total propulsive energy (in J)
 n_p = 0.85                              # Propulsive efficiency (overall)
-phi = 0.3                               # Rate of hybridization (Point C - Design point)
 
 #---- PHI Calculations for Point B (Point C included for sanity check)
-m_f = m_mto - m_oe - m_pldes - m_bat
-phi1 = 1 - (m_f*e_f/E_tot/g)
-print(phi, phi1)
+#m_f = m_mto - m_oe - m_pldes - m_bat
+# print(m_fuel, m_f)
+# phi1 =(m_f*e_f/E_tot/g)
+# print(phi, phi1)
 m_fB = m_mto - m_oe - m_plmax - m_bat       # Mass of fuel at max payload - battery mass constant - trading fuel for payload
-phiB = 1 - (m_fB*e_f/E_tot/g)               # Rate of hybridization (Point B - Max payload point)
-print(phiB)
+# phiB =  (m_fB*e_f/E_tot/g)               # Rate of hybridization (Point B - Max payload point)
+# print(m_fB, phiB)
 
 #aerodynamic characteristics
 LD     = 17
@@ -71,15 +87,16 @@ R_B2 = RB - R_auxB3
 
 #point C (design range)
 #range equations
-m_f = m_mto - m_oe - m_bat - m_pldes
+
+#m_f = m_mto - m_oe - m_bat - m_pldes
 R_lost          = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eq            = ((R_nom + R_lost)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)                                         #Equivalent range
 R_aux           = R_eq - R_nom                                                                                      #Auxilary range
-R_f             = (n_eng_tp * n_p_tp * (LD_crs) * (e_f /g) *  np.log((m_oe + m_pldes + m_f) / (m_oe + m_pldes)))        #Brequet range equation (fuel)
-R_b             = (n_eng_em * n_p_em * (LD_crs) * (e_bat /g) * ((m_bat / (m_oe + m_pldes + m_bat)))     )                 #Brequet range equation (battery)
+R_fC             = (n_eng_tp * n_p_tp * (LD_crs) * (e_f /g) *  np.log((m_oe + m_pldes + m_f) / (m_oe + m_pldes)))        #Brequet range equation (fuel)
+R_bC             = (n_eng_em * n_p_em * (LD_crs) * (e_bat /g) * ((m_bat / (m_oe + m_pldes + m_bat)))     )                 #Brequet range equation (battery)
 
 
-R_c             = R_f + R_b - R_aux
+R_c             = R_fC + R_bC - R_aux
 
 RC = n_p*(e_f/g) * (LD_crs) *(n_eng_tp + n_eng_em *(phi/(1+phi))) * np.log((m_oe + m_pldes + ((g/e_bat)*E_tot*(phi + ((e_bat/e_f)*(1 - phi)))))/(m_oe+m_pldes+((g/e_bat)*phi*E_tot)))
 R_C2 = RC - R_aux
@@ -94,7 +111,8 @@ RD = n_p*(e_f/g) * (LD_crs) *(n_eng_tp + n_eng_em *(phi/(1+phi))) * np.log((m_oe
 R_D2 = RD - R_aux
 
 
-ranges = np.array([0, R_B2/1852, R_C2/1852, R_D2/1852])
+#ranges = np.array([0, R_B2/1852, R_C2/1852, R_D2/1852])
+ranges = np.array([0, R_b/1852, R_c/1852, R_d/1852])
 plmasses = np.array([m_plmax, m_plmax, m_pldes,0])
 
 print(ranges, plmasses)
@@ -114,7 +132,7 @@ plt.xlabel('Range [nmi]')
 plt.ylabel('Payload [kg]')
 
 # giving a title to my graph
-plt.title('Payload range diagram hybrid battery/fuel')
+plt.title('Payload range diagram Electric-Hybrid Series')
 
 # function to show the plot
 plt.show()

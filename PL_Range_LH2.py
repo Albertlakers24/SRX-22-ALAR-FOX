@@ -1,20 +1,20 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 1  # put 1 for LH2 fuel cell, 2 for LH2 combustion
+prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 
 # Masses Aircraft --> Payload - constant for all configurations
 
 m_pldes = 5443  # Payload mass designed for
-m_plmax = m_pldes*1.03
+m_plmax = m_pldes*1
 
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 # fuel = 555, tank = 666
 if prop_system == 1:  # LH2 fuel cell
-    m_fh = 750 # LH2 mass in kg
-    m_tank = m_fh*1.5
+    m_fh = 276 # LH2 mass in kg
+    m_tank = 0.5*m_fh
     m_oe = (12727.3) + m_tank # Operating empty mass + tank mass
     m_mto = (19391 - 555 - 666) + m_fh + m_tank
     m_fk = 0   # Kerosene mass in kg
@@ -33,7 +33,7 @@ n_pk =  0.85                            #Propulsive efficiency twin turboprop
 n_ph = 0.85                             #Propulsive efficiency twin turboprop
 e_fk = 42.9 * 10**6                     # Specific Energy - kerosene
 e_fh = 120 * 10**6                      # specific energy - hydrogen
-
+print(m_mto)
 if prop_system == 1:    # LH2 fuel cell
     n_engh = 0.6*0.97*0.995*0.85*0.95       # Efficiency engine - hydrogen fuel cell w/o kerosene
     n_engk = 0
@@ -60,10 +60,10 @@ LD_crs = 16.7                            # Lift to drag ratio during cruise
 # Mission Charecteristics
 V_cr = 141.471   # in m/s
 h_cr = 8534.4    # in m
-R_nom = 1852000  # in m ---> Design range - 1000nmi
+R_nom = 1852000/2  # in m ---> Design range - 1000nmi
 f_con = 5/100
-R_div = 185200   # in m ---> 100nmi
-t_E = 45 * 60    # in seconds - endurance time
+R_div = 0 #185200   # in m ---> 100nmi
+t_E =  0 #45 * 60    # in seconds - endurance time
 
 
 # #Point A

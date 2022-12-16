@@ -1,33 +1,29 @@
 import numpy as np
 #import scipy as sp
 from Lift_Drag_Polar import p, T, specific_gas_constant
-from Fuselage import prop_choice
+#from Fuselage import prop_choice
 #Switch for simple/double tapered wing
-switch = 2                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 1                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
+switch = 1                            # put 1 for simple tapered, 2 for double tapered
+prop_type = 2                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
-
-
+g = 9.80665
 # Parameters per aircraft
 if prop_type == 1:
     MTOM = 19223    # LH2 combustion in kg
-    Sw = 59       #main wing area [m^2],
 if prop_type == 2:
-    MTOM = 25857    # battery fuel hybrid in series/parrallel
-    Sw = 78.8       # main wing area [m^2]
+    MTOM = 24015    # battery fuel hybrid in parallel series
 if prop_type == 3:
-    MTOM = 24878    # battery fuel hybrid in series
-    Sw = 75.4       # main wing area [m^2]
+    MTOM = 24378    # battery fuel hybrid in series
 if prop_type == 4:
-    MTOM = 19295    # hydrogen fuel cell
-    Sw = 60      # To be updated!!
-    b = 27
-
+    MTOM = 18584    # hydrogen fuel cell
+Sw = MTOM *g / 3171     # To be updated!!
+print(Sw)
+A = 12
+b = np.sqrt(A*Sw)
 # Mission charecteristics
 V_cruise = 141.471   # in m/s
-
 #Calculation
 #Sw = 61                               # main wing area [m^2], change value base this on class I est.
 a_cruise = np.sqrt(gamma*specific_gas_constant*T)          # Speed of sound at cruise altitude  [m/s]
