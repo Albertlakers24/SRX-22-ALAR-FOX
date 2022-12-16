@@ -4,7 +4,7 @@ from Lift_Drag_Polar import p, T, specific_gas_constant
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 1                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
+prop_type = 2                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
@@ -12,17 +12,14 @@ g = 9.80665
 # Parameters per aircraft
 if prop_type == 1:
     MTOM = 19223    # LH2 combustion in kg
-    Sw = MTOM *g / 3171      #main wing area [m^2],
 if prop_type == 2:
     MTOM = 24015    # battery fuel hybrid in parallel series
-    Sw = MTOM *g / 3171       # main wing area [m^2]
 if prop_type == 3:
     MTOM = 24378    # battery fuel hybrid in series
-    Sw = MTOM *g / 3171      # main wing area [m^2]
 if prop_type == 4:
     MTOM = 18584    # hydrogen fuel cell
-    Sw = MTOM *g / 3171     # To be updated!!
-
+Sw = MTOM *g / 3171     # To be updated!!
+print(Sw)
 A = 12
 b = np.sqrt(A*Sw)
 # Mission charecteristics
