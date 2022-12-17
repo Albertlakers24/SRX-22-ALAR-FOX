@@ -57,7 +57,7 @@ R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
 R_div = 100 * 1852
-E = 45 * 60
+E = 30 * 60
 R_eq = (R_norm + R_lost)*(1+f_con) + 1.2 * R_div + (E*V_cruise)
 #Energy Calculation
 Climb1_h = 50 * 100 *0.3048
@@ -104,7 +104,7 @@ t_total_500 = t_cruise_500 + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_des
 t_total_full = t_cruise_full + t_climb1 + t_climb2 + t_climb3 + t_descent1 + t_descent2
 L_D_cruise = CL/CD
 L_D_to = CL_to/CD_to
-L_D_land = CL_land/ CD_to
+L_D_land = CL_land/ CD_land
 tf =  0                         #Trap fuel time step
 BSFC= 1/(43*10**6 * 0.45)       #1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
 ddp = 0.8                       #Deep discharge protection
