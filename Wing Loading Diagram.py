@@ -73,11 +73,11 @@ def ROC_constraint(eff_prop,alpha_p,ROC,Cd0,density,A,e,W_S,beta,N_e):
 def climb_gradient_constraint(eff_prop,alpha_p,ROC_V,CD,CL,density,W_S,beta,N_e):
     W_P = ((N_e - 1) / N_e) * eff_prop * (beta/alpha_p) * (1/(ROC_V + (CD/CL))) * np.sqrt((density/2)*((CL)/(beta*W_S)))
     return W_P
-#def
+def
 propulsion_type = 1 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
 
 
-'''if propulsion_type == 1 or 2:
+if propulsion_type == 1 or 2:
     # Approach Constraint
     W_S_approach = V_approach_constraint(rho_1524,V_approach_stall,CL_land,beta_V_app)
     W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_1524,CL_land,beta_s_land)
@@ -123,6 +123,4 @@ W_P_design = 0.0467
 W_S_design = 3171
 MTOW_design = 20281 * g                  #N
 print(MTOW_design/W_S_design,"m^2")
-print(MTOW_design/W_P_design/10**3,"kW")'''
-print(Cd0)
-print(e)
+print(MTOW_design/W_P_design/10**3,"kW")
