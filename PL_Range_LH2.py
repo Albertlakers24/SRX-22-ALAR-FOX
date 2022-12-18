@@ -146,7 +146,7 @@ plt.axvline(x = ranges[2], color = 'grey', linestyle = '--')
 plt.annotate('Range @ Design payload', xy = (ranges[2] - 60, 100), rotation = 'vertical')
 plt.axvline(x = ranges[1], color = 'grey', linestyle = '--')
 plt.annotate('Range @ Maximum payload', xy = (ranges[1] - 60, 100), rotation = 'vertical')
-
+plt.xlim(0,2300)
 # naming the x axis
 plt.xlabel('Range (nmi)')
 # naming the y axis

@@ -18,7 +18,7 @@ E_tot = 32604 * 10**6 #31226 * 10**6                 # Total propulsive energy (
 #Aircraft mass characteristics -- --> to be updated!!
 # SERIES PARALLEL
 m_oe    =  12883                    #Operational empty weight [kg]
-phi = ((0.55*0.6) + (0.04*0.4)) #(0.55+0.02)/2                               # Rate of hybridization (Point C - Design point)
+phi = ((0.55*0.2) + (0.04*0.8)) #(0.55+0.02)/2  # Rate of hybridization (Point C - Design point)
 n_eng_tp = 0.45          #Engine efficiency (thermodynamic, turboprop)
 m_f = 1723 #3633
 m_mto   = 24100 -1723 + m_f  #25857                # Max take-off
