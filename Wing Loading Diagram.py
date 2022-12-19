@@ -28,10 +28,10 @@ print(rho_cruise)
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 9 #12                           #Aspect Ratio (12-14) #Reference to ATR 72
-e = 1/(np.pi*A*Psi+(1/phi))
+e = 0.75 #1/(np.pi*A*Psi+(1/phi))
 Cfe = 0.0045                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
-Cd0 = Cfe * Swet_S
+Cd0 = 0.049 #Cfe * Swet_S
 #Aerodynamic Estimations
 CL_max = 1.4 #1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
 CL_to = 1.7#2.1                        #Change with Estimate (1.7-2.1)
@@ -55,7 +55,7 @@ beta_s_to = 1
 beta_em = 1
 C_LFL = 0.6 #0.45                        #Landing field length coefficient s^2/m
 alpha_p_em = 1
-CL_2 = (1.13)**2 * CL_to
+CL_2 = 1.18 #(1.13)**2 * CL_to
 k_t = 0.85
 h2 = 50 * ft
 V_s0 = 31
@@ -116,19 +116,20 @@ if propulsion_type == 3 or 4:
     W_P_ROC_OEI_ice = ROC_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 1)
 '''
 W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
-#W_P_TOP = takeoff_constraint(1,s_takeoff_1524,rho_0,h2,k_t,1,2)
+W_P_TOP = takeoff_constraint(1,s_takeoff_1524,rho_0,h2,k_t,1,2)
 W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_0,CL_land,beta_em)
 W_P_cru = cruise_contraint(eff_prop,1,0.026,1.009,70,W_S,9,0.71,beta_em)
 W_P_ROC = roc_constraint(0.8,1,2.0,0.026,1.23,9.0,0.71,W_S,1,1,2)
 W_P_CV = climb_gradient_constraint(0.8,1,0.083,0.16,1.5,1.23,W_S,1,1,2)
-'''plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
-#plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
+W_P_TOP = takeoff_constraint(1,750,1.23,50*ft,k_t,1,2)
+plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
+plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
 #plt.axvspan(3171,4000,color = "red", alpha = 0.1)
 plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
 #plt.fill_between(W_S,W_P_cru,1,color = "red",alpha = 0.1)
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
-#plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
+plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
 plt.xlim(0,2000)
 plt.ylim(0,0.5)
 plt.xticks(np.arange(0,2001,500))
@@ -137,14 +138,14 @@ plt.xlabel("W/S (N/m^2)")
 plt.ylabel("W/P (N/W)")
 plt.legend(loc = "upper right")
 plt.grid()
-plt.show()'''
+plt.show()
 
-#Mass Preliminary Calculation
+'''#Mass Preliminary Calculation
 W_P_design = 0.0467
 W_S_design = 3171
 MTOW_design = 20281 * g                  #N
 #print(MTOW_design/W_S_design,"m^2")
-#print(MTOW_design/W_P_design/10**3,"kW")
+#print(MTOW_design/W_P_design/10**3,"kW")'''
 print(W_P_CV[501])
 print(W_P_CV[1001])
 print(W_P_CV[1501])
