@@ -7,38 +7,34 @@ R = 287.0528
 kts = 0.51444444
 ft = 0.3048
 lbs = 0.453592
-V_cruise =  70 #275 * kts     #kts -> m/s (TAS)
-h_cruise = 1800  #280*100 * ft     #m
-s_takeoff_1524 = 750#4500 * ft           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-s_landing_1524 = 750 #1/ 0.6 * (4500 * ft)           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
+V_cruise =  275 * kts     #kts -> m/s (TAS)
+h_cruise = 280*100 * ft     #m
+s_takeoff_1524 = 4500 * ft           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
+s_landing_1524 = 1/ 0.6 * (4500 * ft)           #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
 rho_0= 1.225                    #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
 rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
 rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
 rho_cruise = rho_cruise_rho0 * rho_0
-eff_prop = 0.80 #0.85                 #Change with Literature
+eff_prop = 0.85                 #Change with Literature
 PAX = 50
 WPAX = 200*lbs*PAX*g                                 #N
 WPAXBAGGAGE = 40*lbs*PAX*g                           #N Crew is bagageless
 m_payload = (WPAX + WPAXBAGGAGE) / g
-W_S = np.arange(1,4000,1)
-print(rho_cruise)
+W_S = np.arange(1,6000,1)
 
 ##Cdo calculations
 Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
-A = 9 #12                           #Aspect Ratio (12-14) #Reference to ATR 72
-e = 0.75 #1/(np.pi*A*Psi+(1/phi))
+A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
+e = 1/(np.pi*A*Psi+(1/phi))
 Cfe = 0.0045                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
-Cd0 = 0.049 #Cfe * Swet_S
+Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
-CL_max = 1.4 #1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
-CL_to = 1.7#2.1                        #Change with Estimate (1.7-2.1)
-CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
-CL_land = 2.1 #2.6                      #Change with Estimate (1.9-3.3)
-CD_land = Cd0 + (CL_land**2 /(np.pi * A* e))
-TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
+CL_max = 1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
+CL_to = 2.1                        #Change with Estimate (1.7-2.1)
+CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 ROC = 4                         #Change with CS25 and literature or Requirement (Rate of Climb)
 ROC_V = 0.0032
 ROC_V_OEI = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
@@ -53,9 +49,9 @@ beta_ROC = 0.95
 beta_cv = 1
 beta_s_to = 1
 beta_em = 1
-C_LFL = 0.6 #0.45                        #Landing field length coefficient s^2/m
+C_LFL = 0.45                        #Landing field length coefficient s^2/m
 alpha_p_em = 1
-CL_2 = 1.18 #(1.13)**2 * CL_to
+CL_2 = (1.13)**2 * CL_to
 k_t = 0.85
 h2 = 50 * ft
 V_s0 = 31
@@ -99,53 +95,75 @@ def takeoff_constraint(alpha_p,L_to,density,h_2, k_t,N_e,y):
     return W_P
 
 propulsion_type = 1 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
+
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
 Cd0_take_off = CD_0(15, 1)
 Cd0_landing = CD_0(35, 1)
+CD_to = Cd0_take_off + (CL_to**2 /(np.pi * A* e_take_off))
+CD_land = Cd0_landing + (CL_land**2 /(np.pi * A* e_landing))
 
-'''
-if propulsion_type == 1 or 2:
+
+if propulsion_type == 1:
     # Approach Constraint
     W_S_approach = V_approach_constraint(rho_1524,V_approach_stall,CL_land,beta_V_app)
     W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_1524,CL_land,beta_s_land)
-    W_P_cruise = Cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise)
-    W_P_ROC = ROC_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC,Cd0,rho_1524,A,e,W_S,beta_ROC,2)
-    W_P_ROC_OEI = ROC_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 1)
-    W_P_CV = climb_gradient_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC_V,CD_to,CL_to,rho_1524,W_S,beta_cv,2)
-    W_P_CV_OEI = climb_gradient_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC_V_OEI, CD_to, CL_to, rho_1524, W_S,beta_cv, 1)
-if propulsion_type == 3 or 4:
+    W_P_cruise = cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise)
+    W_P_ROC = roc_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC,Cd0,rho_1524,A,e,W_S,beta_ROC,2,2)
+    W_P_ROC_OEI = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC,2,1)
+    W_P_CV = climb_gradient_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC_V,CD_to,CL_to,rho_1524,W_S,beta_cv,2,2)
+    W_P_CV_OEI = climb_gradient_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC_V_OEI, CD_to, CL_to, rho_1524, W_S,beta_cv,2,1)
+    W_P_TOP = takeoff_constraint(Power_lapse(rho_1524,rho_0),s_takeoff_1524,rho_1524,h2,k_t,2,2)
+    W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524, rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
+if propulsion_type == 2:
+    W_S_approach = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_V_app)
+    W_S_land = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_s_land)
+    W_P_cruise = cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e,beta_cruise)
+    W_P_ROC = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2, 2)
+    W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2, 1)
+    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to, CL_to, rho_1524, W_S,beta_cv, 2, 2)
+    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to, CL_to, rho_1524,W_S, beta_cv, 2, 1)
+    W_P_TOP = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
+    W_P_TOP_OEI = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
+if propulsion_type == 3:
     # Approach Constraint
-    W_S_approach_em = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_em)
-    W_S_approach_ice = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_V_app)
-    W_S_land_em = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_em)
-    W_S_land_ice = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_s_land)
-    W_P_cruise_em = Cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e, beta_em)
-    W_P_cruise_ice = Cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise)
-    W_P_ROC_em = ROC_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_em, 2)
-    W_P_ROC_OEI_em = ROC_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_em, 1)
-    W_P_ROC_ice = ROC_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2)
-    W_P_ROC_OEI_ice = ROC_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 1)
-'''
-W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
+    W_S_approach = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_em)
+    #W_S_approach_ice = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_V_app)
+    W_S_land = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_em)
+    #W_S_land_ice = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_s_land)
+    W_P_cruise = cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e, beta_em)
+    #W_P_cruise_ice = cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise)
+    W_P_ROC = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_em, 2,2)
+    W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_em,2,1)
+    #W_P_ROC_ice = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2)
+    #W_P_ROC_OEI_ice = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 1)
+    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to, CL_to, rho_1524, W_S, beta_em, 2, 2)
+    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to, CL_to, rho_1524, W_S, beta_em, 2, 1)
+    W_P_TOP = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
+    W_P_TOP_OEI = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
+
+'''W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
 W_P_TOP = takeoff_constraint(1,s_takeoff_1524,rho_0,h2,k_t,1,2)
 W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_0,CL_land,beta_em)
 W_P_cru = cruise_contraint(eff_prop,1,0.026,1.009,70,W_S,9,0.71,beta_em)
 W_P_ROC = roc_constraint(0.8,1,2.0,0.026,1.23,9.0,0.71,W_S,1,1,2)
 W_P_CV = climb_gradient_constraint(0.8,1,0.083,0.16,1.5,1.23,W_S,1,1,2)
-W_P_TOP = takeoff_constraint(1,750,1.23,50*ft,k_t,1,2)
+W_P_TOP = takeoff_constraint(1,750,1.23,50*ft,k_t,1,2)'''
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'r',label = "Takeoff Constraint")
+plt.plot(W_S,W_P_TOP_OEI,'orange',label = "Takeoff Constraint (OEI)")
 plt.vlines(W_S_land,0,100,'k',label ="Landing Constraint")
 #plt.axvspan(3171,4000,color = "red", alpha = 0.1)
-plt.plot(W_S,W_P_cru,'m',label = "Cruise Constraint")
+plt.plot(W_S,W_P_cruise,'m',label = "Cruise Constraint")
 #plt.fill_between(W_S,W_P_cru,1,color = "red",alpha = 0.1)
 plt.plot(W_S,W_P_ROC,'c',label = "Rate of Climb Constraint")
+plt.plot(W_S,W_P_ROC_OEI,'green',label = "Rate of Climb Constraint (OEI)")
 plt.plot(W_S,W_P_CV,'y',label = "Climb Gradient Constraint")
-plt.xlim(0,2000)
+plt.plot(W_S,W_P_CV_OEI,'black',label = "Climb Gradient Constraint (OEI)")
+plt.xlim(0,6000)
 plt.ylim(0,0.5)
-plt.xticks(np.arange(0,2001,500))
-plt.yticks(np.arange(0,0.51,0.1))
+plt.xticks(np.arange(0,6001,500))
+plt.yticks(np.arange(0,0.51,0.05))
 plt.xlabel("W/S (N/m^2)")
 plt.ylabel("W/P (N/W)")
 plt.legend(loc = "upper right")
@@ -162,3 +180,7 @@ print(W_P_CV[501])
 print(W_P_CV[1001])
 print(W_P_CV[1501])
 print(W_P_CV[2001])
+print(W_S_land)
+print(19200 * g / 0.047 / 10**3)
+print(19400 * g/ 0.0555 / 10**3)
+print(19400 * g / 3171)
