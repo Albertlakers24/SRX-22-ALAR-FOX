@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 1  # put 1 for LH2 fuel cell, 2 for LH2 combustion
+prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 

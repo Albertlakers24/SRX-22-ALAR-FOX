@@ -5,7 +5,7 @@ prop_type = 1 # 1 for Parallel Series, 2 for Series
 
 # constants
 g = 9.80665
-e_bat       = 2.7 * 10**6
+e_bat       = 2.7  * 10**6
 e_f         = 42 * 10**6
 
 # Mission Charecteristics
