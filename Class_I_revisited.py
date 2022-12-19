@@ -31,7 +31,7 @@ T_1524, p_1524, rho_1524 = ISA_calculator(alt_1524)
 T_cruise, p_cruise, rho_cruise = ISA_calculator(h_cruise)
 sigma_1524 = rho_1524 / rho_0
 sigma_cruise = rho_cruise / rho_0
-
+print(rho_1524)
 eff_prop = 0.85                 #Change with Literature
 PAX = 50
 WPAX = 200*0.453592*PAX*g                                 #N

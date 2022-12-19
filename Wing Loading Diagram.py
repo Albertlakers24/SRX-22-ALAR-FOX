@@ -59,6 +59,14 @@ CL_2 = (1.13)**2 * CL_to
 k_t = 0.85
 h2 = 50 * ft
 V_s0 = 31
+def oswald_efficiency(flap_deflection):
+    delta_e = 0.0026 * flap_deflection
+    e_new = e + delta_e
+    return e_new
+def CD_0(flap_deflection, lg):
+    delta_CD0 = flap_deflection * (13 * 10**(-4)) + (175 * 10**(-4)) * lg
+    CD_0_new = Cd0 + delta_CD0
+    return CD_0_new
 def Power_lapse(rho,rho_0):
     alpha_p_ice = (rho/rho_0) ** (3/4)
     return alpha_p_ice
@@ -91,6 +99,10 @@ def takeoff_constraint(alpha_p,L_to,density,h_2, k_t,N_e,y):
     return W_P
 
 propulsion_type = 1 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
+e_take_off = oswald_efficiency(15)
+e_landing = oswald_efficiency(35)
+Cd0_take_off = CD_0(15, 1)
+Cd0_landing = CD_0(35, 1)
 
 '''
 if propulsion_type == 1 or 2:
