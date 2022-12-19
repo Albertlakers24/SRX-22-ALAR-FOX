@@ -196,7 +196,7 @@ for i in range(1,int(t_total_full)+1):
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
     elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
         E_cruise_full = Energy(MTOW_energy_calculate, 0, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_cruise)
-        E_nc =  0.0380 * E_cruise_full
+        E_nc =  0.037 * E_cruise_full
         E_c = E_cruise_full - E_nc
         P_ice_cruise_full = P_ice(E_c, 1)
         P_em_cruise = P_em(E_nc, 1)
@@ -253,6 +253,7 @@ print(S,"m^2")
 b = np.sqrt(A*S)
 print(b,"m")
 print(m_OE_without)
-
+print(E_cruise_full_total/t_cruise_full/10**3)
+print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
 
 

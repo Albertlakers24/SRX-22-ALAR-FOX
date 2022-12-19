@@ -157,7 +157,7 @@ def P_em(E_nc,dt):
 for i in range(1,int(t_total_full)+1):
     if i<= t_climb1:
         E_climb1 = Energy(MTOW_energy_calculate,a_climb1,i,L_D_to,ROC1,V_to)
-        E_nc = 0.55 * E_climb1
+        E_nc = 0 * E_climb1
         E_c = E_climb1 - E_nc
         P_ice_climb1 = P_ice(E_c,1)
         P_em_climb1 = P_em(E_nc,1)
@@ -170,7 +170,7 @@ for i in range(1,int(t_total_full)+1):
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
     elif t_climb1 < i <= (t_climb1+t_climb2):
         E_climb2 = Energy(MTOW_energy_calculate,a_climb2,(i-t_climb1),L_D_cruise,ROC2,V_climb1)
-        E_nc = 0.55 * E_climb2
+        E_nc = 0 * E_climb2
         E_c = E_climb2 - E_nc
         P_ice_climb2 = P_ice(E_c,1)
         P_em_climb2 = P_em(E_nc, 1)
@@ -183,7 +183,7 @@ for i in range(1,int(t_total_full)+1):
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb2 * g
     elif (t_climb1 + t_climb2) < i <= (t_climb1 +t_climb2 +t_climb3):
         E_climb3 = Energy(MTOW_energy_calculate,a_climb3,(i-(t_climb1+t_climb2)),L_D_cruise,ROC3,V_climb2)
-        E_nc = 0.55 * E_climb3
+        E_nc = 0 * E_climb3
         E_c = E_climb3 - E_nc
         P_ice_climb3 = P_ice(E_c, 1)
         P_em_climb3 = P_em(E_nc, 1)
@@ -196,7 +196,7 @@ for i in range(1,int(t_total_full)+1):
         MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
     elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
         E_cruise_full = Energy(MTOW_energy_calculate, 0, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_cruise)
-        E_nc =  0.0385 * E_cruise_full
+        E_nc =  0 * E_cruise_full
         E_c = E_cruise_full - E_nc
         P_ice_cruise_full = P_ice(E_c, 1)
         P_em_cruise = P_em(E_nc, 1)
@@ -254,4 +254,5 @@ b = np.sqrt(A*S)
 print(b,"m")
 print(m_payload)
 print(m_OE_without)
+print(E_descent2_total/t_descent2/10**3)
 print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
