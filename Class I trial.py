@@ -254,6 +254,6 @@ b = np.sqrt(A*S)
 print(b,"m")
 print(m_OE_without)
 print(E_cruise_full_total/t_cruise_full/10**3)
+print((E_climb1_total*0.55 + E_climb2_total*0.55 + E_climb3_total*0.55 + E_cruise_full_total*0.2 + E_descent1_total + E_descent2_total)/10**6)
 print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
-
 

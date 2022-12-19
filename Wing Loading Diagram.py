@@ -28,7 +28,7 @@ Psi = 0.0075                    #Parasite drag dependent on the lift coefficient
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e = 1/(np.pi*A*Psi+(1/phi))
-Cfe = 0.0045                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
@@ -42,10 +42,18 @@ V_approach = 141 * 0.514444         #Requirement
 V_approach_stall = V_approach /1.23  #CS 25 requirement of V_stall_land = V_approach / 1.23
 a = 0.5088
 b = 1199.7
-beta_V_app = 0.85
-beta_s_land = 0.85
-beta_cruise = 0.95
-beta_ROC = 0.95
+beta_V_app_fc = 0.96
+beta_s_land_fc = 0.96
+beta_cruise_fc  = 0.98
+beta_ROC_fc = 0.98
+beta_V_app_hc = 0.94
+beta_s_land_hc = 0.94
+beta_cruise_hc  = 0.97
+beta_ROC_hc = 0.97
+beta_V_app_ker = 0.91
+beta_s_land_ker = 0.91
+beta_cruise_ker  = 0.96
+beta_ROC_ker = 0.96
 beta_cv = 1
 beta_s_to = 1
 beta_em = 1
@@ -106,21 +114,21 @@ CD_land = Cd0_landing + (CL_land**2 /(np.pi * A* e_landing))
 
 if propulsion_type == 1:
     # Approach Constraint
-    W_S_approach = V_approach_constraint(rho_1524,V_approach_stall,CL_land,beta_V_app)
-    W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_1524,CL_land,beta_s_land)
-    W_P_cruise = cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise)
-    W_P_ROC = roc_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC,Cd0,rho_1524,A,e,W_S,beta_ROC,2,2)
-    W_P_ROC_OEI = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC,2,1)
+    W_S_approach = V_approach_constraint(rho_1524,V_approach_stall,CL_land,beta_V_app_hc)
+    W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_1524,CL_land,beta_s_land_hc)
+    W_P_cruise = cruise_contraint(eff_prop,Power_lapse(rho_cruise,rho_0), Cd0, rho_cruise, V_cruise, W_S, A, e, beta_cruise_hc)
+    W_P_ROC = roc_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC,Cd0,rho_1524,A,e,W_S,beta_ROC_hc,2,2)
+    W_P_ROC_OEI = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC_hc,2,1)
     W_P_CV = climb_gradient_constraint(eff_prop,Power_lapse(rho_1524,rho_0),ROC_V,CD_to,CL_to,rho_1524,W_S,beta_cv,2,2)
     W_P_CV_OEI = climb_gradient_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC_V_OEI, CD_to, CL_to, rho_1524, W_S,beta_cv,2,1)
     W_P_TOP = takeoff_constraint(Power_lapse(rho_1524,rho_0),s_takeoff_1524,rho_1524,h2,k_t,2,2)
     W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524, rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
 if propulsion_type == 2:
-    W_S_approach = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_V_app)
-    W_S_land = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_s_land)
-    W_P_cruise = cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e,beta_cruise)
-    W_P_ROC = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2, 2)
-    W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2, 1)
+    W_S_approach = V_approach_constraint(rho_1524, V_approach_stall, CL_land, beta_V_app_fc)
+    W_S_land = s_land_constraint(s_landing_1524, C_LFL, rho_1524, CL_land, beta_s_land_fc)
+    W_P_cruise = cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e,beta_cruise_fc)
+    W_P_ROC = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC_fc, 2, 2)
+    W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC_fc, 2, 1)
     W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to, CL_to, rho_1524, W_S,beta_cv, 2, 2)
     W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to, CL_to, rho_1524,W_S, beta_cv, 2, 1)
     W_P_TOP = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
