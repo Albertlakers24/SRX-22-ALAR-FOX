@@ -36,7 +36,7 @@ CL_max = 1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) 
 CL_to = 2.1                        #Change with Estimate (1.7-2.1)
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 ROC = 4                         #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V = 0.0032
+ROC_V = 0.024#0.0032
 ROC_V_OEI = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_approach = 141 * 0.514444         #Requirement
 V_approach_stall = V_approach /1.23  #CS 25 requirement of V_stall_land = V_approach / 1.23
@@ -102,12 +102,15 @@ def takeoff_constraint(alpha_p,L_to,density,h_2, k_t,N_e,y):
         W_P = alpha_p * (1.15 * np.sqrt((W_S / (L_to * k_t * density * g * np.pi * A * e))) + (4 * h_2 / L_to)) ** (-1) * np.sqrt((CL_2 / W_S) * (density) / 2)
     return W_P
 
-propulsion_type = 1 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
+propulsion_type = 2 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
 
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
 Cd0_take_off = CD_0(15, 1)
 Cd0_landing = CD_0(35, 1)
+red_CD = 0.85
+CD_to_props = (Cd0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
+CD_land_props = (Cd0_landing + (CL_land**2 /(np.pi * A* e_landing))) * red_CD
 CD_to = Cd0_take_off + (CL_to**2 /(np.pi * A* e_take_off))
 CD_land = Cd0_landing + (CL_land**2 /(np.pi * A* e_landing))
 
@@ -129,8 +132,8 @@ if propulsion_type == 2:
     W_P_cruise = cruise_contraint(eff_prop,alpha_p_em, Cd0, rho_cruise, V_cruise, W_S, A, e,beta_cruise_fc)
     W_P_ROC = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC_fc, 2, 2)
     W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_ROC_fc, 2, 1)
-    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to, CL_to, rho_1524, W_S,beta_cv, 2, 2)
-    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to, CL_to, rho_1524,W_S, beta_cv, 2, 1)
+    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to_props, CL_to, rho_1524, W_S,beta_cv, 2, 2)
+    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to_props, CL_to, rho_1524,W_S, beta_cv, 2, 1)
     W_P_TOP = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
     W_P_TOP_OEI = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
 if propulsion_type == 3:
@@ -145,8 +148,8 @@ if propulsion_type == 3:
     W_P_ROC_OEI = roc_constraint(eff_prop, alpha_p_em, ROC, Cd0, rho_1524, A, e, W_S, beta_em,2,1)
     #W_P_ROC_ice = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 2)
     #W_P_ROC_OEI_ice = roc_constraint(eff_prop, Power_lapse(rho_1524, rho_0), ROC, Cd0, rho_1524, A, e, W_S, beta_ROC, 1)
-    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to, CL_to, rho_1524, W_S, beta_em, 2, 2)
-    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to, CL_to, rho_1524, W_S, beta_em, 2, 1)
+    W_P_CV = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V, CD_to_props, CL_to, rho_1524, W_S, beta_em, 2, 2)
+    W_P_CV_OEI = climb_gradient_constraint(eff_prop, alpha_p_em, ROC_V_OEI, CD_to_props, CL_to, rho_1524, W_S, beta_em, 2, 1)
     W_P_TOP = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
     W_P_TOP_OEI = takeoff_constraint(alpha_p_em, s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
 

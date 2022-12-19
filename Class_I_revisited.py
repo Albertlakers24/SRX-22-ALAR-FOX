@@ -195,7 +195,7 @@ def sum(range):
     MTOW_sum = np.sum(MTOW_total)
     m_fc_sum = np.sum(m_fc_total)
     return E_sum, P_sum, MTOW_sum, m_fc_sum
-# E_sum_500, P_sum_500, MTOW_sum_500 = sum(500)
+# E_sum_500, P_sum_500, MTOW_sum_500, m_fc_sum = sum(500)
 E_sum_full, P_sum_full, MTOW_sum_full, m_fc_sum_full = sum(1000)
 P_max = max(P_fc_total) #in kW
 m_fuelcell_struc = (P_max / 1000)/3

@@ -25,18 +25,31 @@ Psi = 0.0075                    #Parasite drag dependent on the lift coefficient
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e = 1/(np.pi*A*Psi+(1/phi))
-Cfe = 0.0045                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
 CL_max = 1.9                       #(1.2-1.8 twin engine) & (1.5-1.9 turboprop) max lift coefficient
 CL_to = 2.1                        #Change with Estimate (1.7-2.1)
-CD_to = Cd0 + (CL_to**2 /(np.pi * A* e))
+def oswald_efficiency(flap_deflection):
+    delta_e = 0.0026 * flap_deflection
+    e_new = e + delta_e
+    return e_new
+def CD_0(flap_deflection, lg):
+    delta_CD0 = flap_deflection * (13 * 10**(-4)) + (175 * 10**(-4)) * lg
+    CD_0_new = Cd0 + delta_CD0
+    return CD_0_new
+CD0_take_off = CD_0(15, 1)
+CD0_landing = CD_0(35, 1)
+e_take_off = oswald_efficiency(15)
+e_landing = oswald_efficiency(35)
+red_CD = 0.85
+CD_to = (CD0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
-CD_land = Cd0 + (CL_to**2 /(np.pi * A* e))
+CD_land = (CD0_landing + (CL_to**2 /(np.pi * A* e_landing))) * red_CD
 TOP = 430                          #Change with Literature Reference to slide (420-460) -> from Raymer graph
-ROC = 6.9                         #Change with CS25 and literature or Requirement (Rate of Climb)
-ROC_V = 0.0032                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
+ROC = 4                         #Change with CS25 and literature or Requirement (Rate of Climb)
+ROC_V = 0.024                    #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_approach = 141* 0.514444         #Change with CS25 or Requirement
 a = 0.5088
 b = 1199.7
@@ -52,7 +65,7 @@ m_propeller_tip = m_em_tip * 0.14
 
 #Range Calculation
 CL = np.sqrt(np.pi*Cd0*A*e)
-CD = CD = 2 * Cd0
+CD = (2 * Cd0) * red_CD
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
