@@ -111,7 +111,7 @@ for i in range(len(CL_list_landing)):
     CD_Land_EH = CD0_Landing + CDi_land_EH
     CD_list_landing_EH.append(CD_Land_EH)
 
-plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
+'''plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_EH, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
 plt.plot(CD_list_takeOf_withLG_EH, CL_list_takeOff, color = 'orange', label = 'Take-off, Landing gear down')
 plt.plot(CD_list_landing_EH, CL_list_landing, color = 'blue', label = 'Landing')
@@ -119,7 +119,7 @@ plt.legend()
 plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
 plt.title('Drag polar for Electric Hybrid propulsion') # giving a title to my graph
-plt.show()
+plt.show()'''
 
 plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_LH2, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
