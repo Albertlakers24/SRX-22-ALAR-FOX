@@ -1,29 +1,39 @@
 import numpy as np
 #import scipy as sp
 from Lift_Drag_Polar import p, T, specific_gas_constant
-from Fuselage import prop_choice
+#from Fuselage import prop_choice
 #Switch for simple/double tapered wing
-switch = 2                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 1                        # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
+switch = 1                            # put 1 for simple tapered, 2 for double tapered
+prop_choice = 3                    # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 #Constants
 gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
 
-
 # Parameters per aircraft
-if prop_type == 1:
-    MTOM = 19314    # LH2 combustion in kg
-    Sw = 63.3       #main wing area [m^2],
-if prop_type == 2:
-    MTOM = 21207    # LH2-kerosene fuel cell in kg
-    Sw = 63.3       # main wing area [m^2]
-if prop_type == 3:
-    MTOM = 20434    # LH2 fuel cell in kg
-    Sw = 63.3       # main wing area [m^2]
-if prop_type == 4:
-    MTOM = 19231    # Hybrid Electric in kg--> to be updated!!
-    Sw = 57.6      # To be updated!!
+if prop_choice == 1:
+    MTOM = 19234   # LH2 combustion in kg
+    Sw = 59.44       #main wing area [m^2], done
     b = 27
+    print("================================")
+    print("Wing Planform for LH2 combustion")
+if prop_choice == 2:
+    MTOM = 25857    # series parallel in kg
+    Sw = 78.8       # main wing area [m^2], done
+    b = 30.7
+    print("================================")
+    print("Wing Planform for Hybrid Series Parallel")
+if prop_choice == 3:
+    MTOM = 24378    # series electric hybrid in kg
+    Sw = 75.4       # main wing area [m^2], done
+    b = 30
+    print("================================")
+    print("Wing Planform for Hybrid Series")
+if prop_choice == 4:
+    MTOM = 19231    # H2FC in kg done
+    Sw = 57.6      # main wing area [m^2]
+    b = 27
+    print("================================")
+    print("Wing Planform for Hydrogen FC")
 
 # Mission charecteristics
 V_cruise = 141.471   # in m/s
@@ -61,7 +71,7 @@ if switch == 1:
 if switch == 2:                         # For double tapered wing
 
     # c_r = 2*Sw/((1+taper)*b)
-    eta_k = 0.4                         # relative span position of kink, need to determine this value later
+    eta_k = 0.5                         # relative span position of kink, need to determine this value later
                                         # Depending on the postition of the propellor
     y_k = b * eta_k / 2                 # Spanwise position of the kink
     taper_inner = 1                     # Taper ratio of the inner wing [to be changed]

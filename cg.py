@@ -45,6 +45,7 @@ if prop_choice == 1:           #Case 1 = hydrogen combustion, 2 propellors on th
 
     print("======================================")
     print("For hydrogen combustion propulsion: ")
+    print("hydrogen tank placement", x_hydrogen_tank/l_f)
     M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_tank                                                   # sum of mass of the fuselage group
     M_wg_frac = Mf_wing + Mf_prop                                                                               # sum of mass of the wing group
     x_fg = (Mf_fuselage*x_fuselage+Mf_empennage*x_empennage+Mf_sys*x_sys+Mf_tank*x_hydrogen_tank) / M_fg_frac   # c.g. of the fuselage group
@@ -97,6 +98,7 @@ elif prop_choice == 4:          # Case 4 = hydrogen fuel cell, 2 propellors on t
     Mf_tank = 0.05    # Mass fraction of the tank to be updated
     print("======================================")
     print("For hydrogen fuel cell architecture: ")
+    print("hydrogen tank placement", x_hydrogen_tank/l_f)
     M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_tank  # sum of mass of the fuselage group
     M_wg_frac = Mf_wing + Mf_prop  # sum of mass of the wing group
     x_fg = (Mf_fuselage * x_fuselage + Mf_empennage * x_empennage + Mf_sys * x_sys + Mf_tank * x_hydrogen_tank) / M_fg_frac  # c.g. of the fuselage group

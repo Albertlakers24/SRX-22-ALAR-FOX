@@ -3,7 +3,7 @@ import scipy as sp
 from Wing_planform import taper
 #Switch
 switch = 1          # put 1 for circular fuselage, 2 for double bubble fuselage
-prop_choice = 3  # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
+prop_choice = 4 # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 
 # Some constants
 k_cabin = 1.08      #For single aisle
@@ -18,7 +18,7 @@ w_galley = 0.914
 l_seat = 0.76      # seat pitch [m]
 
 # Design choices
-n_SA = 4          # Number of seats abreast
+n_SA = 3         # Number of seats abreast
 
 if n_SA == 3:
     n_PAX = 48                  # Number of passengers (46-50)
@@ -48,9 +48,20 @@ D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
 
 
 if prop_choice == 1:
-    l_tank = 5.1                            # Length of the fuel tank as fuselage section
+    if n_SA == 3:
+        l_tank = 6.4
+    if n_SA == 4:
+        l_tank = 5.1                            # Length of the fuel tank as fuselage section
+    if n_SA == 5:
+        l_tank = 3.26
 elif prop_choice == 4:
-    l_tank = 2.1
+    if n_SA == 3:
+        l_tank = 2.59
+    if n_SA == 4:
+        l_tank = 2.1                            # Length of the fuel tank as fuselage section
+    if n_SA == 5:
+        l_tank = 1.3446
+
 else:
     l_tank = 0
 
