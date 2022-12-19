@@ -8,8 +8,20 @@ M_tip = 0.95
 
 E_500_nmi = 11835 #MJ
 E_1000 = 34943 #MJ
-max_power_needed = 4225 #kW
-power_cruise = 4225 #2758 #kW
+max_power_needed_all_eff = 3835 #kW
+#Regular efficiencies
+wire_eff = 0.97
+inverter_eff = 0.995
+motor_eff = 0.95
+prop_eff = 0.85
+
+#FC efficiencies
+FC_eff = 0.6
+
+max_power_needed_no_eff = max_power_needed_all_eff * FC_eff * wire_eff * inverter_eff**2 * motor_eff * prop_eff
+max_power_needed = max_power_needed_no_eff / motor_eff / prop_eff
+print(max_power_needed)
+power_cruise = 3148 #2758 #kW
 
 g_0 = 9.80665
 Molar_mass_air = 0.0289644 #kg/mol
@@ -154,21 +166,21 @@ plt.plot(number_props_4, total_diameter_4, "green", label = "4+ blades")
 plt.legend()
 plt.show()
 
-del rpms_cruise_3[6]
-del rpms_cruise_3[5]
+# del rpms_cruise_3[6]
+# del rpms_cruise_3[5]
 num_props_smaller_3 = number_props_3.copy()
-del num_props_smaller_3[6]
-del num_props_smaller_3[5]
-del rpms_cruise_2[6]
-del rpms_cruise_2[5]
+# del num_props_smaller_3[6]
+# del num_props_smaller_3[5]
+# del rpms_cruise_2[6]
+# del rpms_cruise_2[5]
 num_props_smaller_2 = number_props_2.copy()
-del num_props_smaller_2[6]
-del num_props_smaller_2[5]
-del rpms_cruise_4[6]
-del rpms_cruise_4[5]
+# del num_props_smaller_2[6]
+# del num_props_smaller_2[5]
+# del rpms_cruise_4[6]
+# del rpms_cruise_4[5]
 num_props_smaller_4 = number_props_4.copy()
-del num_props_smaller_4[6]
-del num_props_smaller_4[5]
+# del num_props_smaller_4[6]
+# del num_props_smaller_4[5]
 plt.figure("RPM vs number of propellers")
 plt.plot(num_props_smaller_2, rpms_cruise_2, "blue", label = "2 blades")
 plt.plot(num_props_smaller_3, rpms_cruise_3, "red", label = "3 blades")
