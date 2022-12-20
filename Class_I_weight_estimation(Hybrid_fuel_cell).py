@@ -194,7 +194,7 @@ if range_selected == 500:
             E_nc_total += E_nc
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
         elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
-            E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_full, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
+            E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_500, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
             E_nc = 0 * E_cruise_full
             E_c = E_cruise_full - E_nc
             P_ice_cruise_full = P_ice(E_c, 1)
@@ -256,7 +256,7 @@ elif range_selected == 1000:
             E_climb3_total += E_climb3
             E_nc_total += E_nc
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
-        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
+        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
             E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_full, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
             E_nc = 0 * E_cruise_full
             E_c = E_cruise_full - E_nc
@@ -332,7 +332,7 @@ print(CL / CD, "L/D ratio")
 print(b, S_design, S, "Wingspan, design S, input S")
 print(P_max_no_eff, P_max_EM, P_max_fc, "Maximum power no eff, max power em, max power fc")
 E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
-print(E_total)
+print(E_total / 10**6, "MJ")
 print(m_MTOW, "MTOM")
 print(m_fuel_total, "fuel mass")
 

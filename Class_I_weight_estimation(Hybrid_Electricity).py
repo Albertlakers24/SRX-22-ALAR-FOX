@@ -376,6 +376,6 @@ print(CL / CD, "L/D ratio")
 print(b, S_design, S, "Wingspan, design S, input S")
 print(P_max_no_eff, P_max_EM, "Maximum power no eff, max power em")
 E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
-print(E_total)
+print(E_total / 10**6, "MJ")
 print(m_MTOW, "MTOM")
 print(m_fuel_total, "fuel mass")
