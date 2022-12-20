@@ -211,7 +211,7 @@ if range_selected == 500:
             E_climb3_total += E_climb3
             E_nc_total += E_nc
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
-        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
+        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
             E_cruise_full = Energy(MTOW_energy_calculate, 0, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_cruise)
             E_nc =  0.037 * E_cruise_full
             E_c = E_cruise_full - E_nc
@@ -224,7 +224,7 @@ if range_selected == 500:
             m_fuel_total += m_fuel_cruise
             E_cruise_full_total += E_cruise_full
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise * g
-        elif (t_climb1 + t_climb2 +t_climb3 + t_cruise_full) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full + t_descent1):
+        elif (t_climb1 + t_climb2 +t_climb3 + t_cruise_500) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500 + t_descent1):
             E_descent1 = Energy(MTOW_energy_calculate, a_descent1, (i - (t_climb1 + t_climb2 + t_climb3+t_cruise_500)), L_D_cruise,-ROD1, V_cruise)
             E_nc = 0 * E_descent1
             E_c = E_descent1 - E_nc
