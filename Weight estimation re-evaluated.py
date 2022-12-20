@@ -63,7 +63,7 @@ if Type == 1:
     a = a_p  # - linear regression for OEW     (TYPES: turboprop, turbojet)
     b = b_p  # N linear regression for OEW     (TYPES: turboprop, turbojet)
 
-    W_tanks = m_tank * g * Number_tank  # N
+    W_tanks = 1268 * 1.4 * g #m_tank * g * Number_tank  # N
 
 if Type == 2:
     e_f = e_kero * 1000000  # J/kg
@@ -75,8 +75,9 @@ if Type == 2:
 # Calculations Aerodynamics
 e = 1 / ((np.pi) * A * Psi + (1 / phi))  # -
 Cd0 = Cfe * Swet_S  # -
-CL = np.sqrt(np.pi * Cd0 * A * e)  # -
-CD = 2 * Cd0  # -
+CL = 0.72#np.sqrt(np.pi * Cd0 * A * e)  # -
+CL_CD = 19.8
+CD = 0.72 / CL_CD  # -
 
 # Calculations Range
 if Range == 1:
@@ -106,14 +107,14 @@ if Type == 1:
     if Range == 2:
         MTOW = (b + WPLtot + W_tanks) / (1 - a - (Mused * (1 + Mres)) * W_F_extra)
         WOE = a * MTOW + b + W_tanks
-        MTOW_used = 
+        # MTOW_used =
 
 if Type == 2:
     if Range == 1:
         MTOW = (b + WPLtot) / (1 - a - Mused * (1 + Mres))  # N
         WOE = a * MTOW + b  # N
         WF = MTOW * (Mused * (1 + Mres))  # N
-    if Range == 2:
+    # if Range == 2:
 
 #
 # W_tanks =570*9.80665                                #N
