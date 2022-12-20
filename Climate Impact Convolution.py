@@ -138,17 +138,17 @@ if Configuration ==0:
     massflow=100            #kg/s
     EI_NOx = 0.014          #kg/kg
 if Configuration==1:
-    massflow = 8.5  # kg/s
-    EI_NOx = 0.014  # kg/kg
+    massflow = 8.5          # kg/s
+    EI_NOx = 0.0028         # kg/kg
 if Configuration==2:
     massflow = 186.7        # kg/s
-    EI_NOx = 0.014  # kg/kg
+    EI_NOx = 0.014          # kg/kg
 if Configuration==3:
-    massflow = 8.5  # kg/s
-    EI_NOx = 0.014  # kg/kg
+    massflow = 8.5          # kg/s
+    EI_NOx = 0.014          # kg/kg
 if Configuration==4:
-    massflow = 8.5  # kg/s
-    EI_NOx = 0.014  # kg/kg
+    massflow = 8.5          # kg/s
+    EI_NOx = 0.014          # kg/kg
 
 
 def emissions_NOx(EI_NOx, massflow, t_year):
