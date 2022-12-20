@@ -25,7 +25,7 @@ Psi = 0.0075                    #Parasite drag dependent on the lift coefficient
 phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e = 1/(np.pi*A*Psi+(1/phi))
-Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Cfe = 0.003                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 Cd0 = Cfe * Swet_S
 #Aerodynamic Estimations
@@ -43,7 +43,7 @@ CD0_take_off = CD_0(15, 1)
 CD0_landing = CD_0(35, 1)
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
-red_CD = 0.85
+red_CD = 0.9
 CD_to = (CD0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 CD_land = (CD0_landing + (CL_to**2 /(np.pi * A* e_landing))) * red_CD
@@ -167,85 +167,174 @@ def m_bat(E_nc):
 def P_em(E_nc,dt):
     P_em = E_nc / (0.85 * dt)
     return P_em
-for i in range(1,int(t_total_full)+1):
-    if i<= t_climb1:
-        E_climb1 = Energy(MTOW_energy_calculate,a_climb1,i,L_D_to,ROC1,V_to)
-        E_nc = 0 * E_climb1
-        E_c = E_climb1 - E_nc
-        P_ice_climb1 = P_ice(E_c,1)
-        P_em_climb1 = P_em(E_nc,1)
-        P_max = P_ice_climb1 + P_em_climb1
-        hybridization_climb1.append(P_em_climb1/P_max)
-        m_fuel_climb1 = m_fuel(P_ice_climb1)
-        E_nc_total += E_nc
-        m_fuel_total += m_fuel_climb1
-        E_climb1_total += E_climb1
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
-    elif t_climb1 < i <= (t_climb1+t_climb2):
-        E_climb2 = Energy(MTOW_energy_calculate,a_climb2,(i-t_climb1),L_D_cruise,ROC2,V_climb1)
-        E_nc = 0 * E_climb2
-        E_c = E_climb2 - E_nc
-        P_ice_climb2 = P_ice(E_c,1)
-        P_em_climb2 = P_em(E_nc, 1)
-        P_max = P_ice_climb2 + P_em_climb2
-        hybridization_climb2.append(P_em_climb2/P_max)
-        m_fuel_climb2 = m_fuel(P_ice_climb2)
-        m_fuel_total += m_fuel_climb2
-        E_climb2_total += E_climb2
-        E_nc_total += E_nc
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb2 * g
-    elif (t_climb1 + t_climb2) < i <= (t_climb1 +t_climb2 +t_climb3):
-        E_climb3 = Energy(MTOW_energy_calculate,a_climb3,(i-(t_climb1+t_climb2)),L_D_cruise,ROC3,V_climb2)
-        E_nc = 0 * E_climb3
-        E_c = E_climb3 - E_nc
-        P_ice_climb3 = P_ice(E_c, 1)
-        P_em_climb3 = P_em(E_nc, 1)
-        P_max = P_ice_climb3 + P_em_climb3
-        hybridization_climb3.append(P_em_climb3 / P_max)
-        m_fuel_climb3 = m_fuel(P_ice_climb3)
-        m_fuel_total += m_fuel_climb3
-        E_climb3_total += E_climb3
-        E_nc_total += E_nc
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
-    elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
-        E_cruise_full = Energy(MTOW_energy_calculate, 0, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_cruise)
-        E_nc =  0 * E_cruise_full
-        E_c = E_cruise_full - E_nc
-        P_ice_cruise_full = P_ice(E_c, 1)
-        P_em_cruise = P_em(E_nc, 1)
-        P_max = P_ice_cruise_full + P_em_cruise
-        hybridization_cruise_full.append(P_em_cruise / P_max)
-        m_fuel_cruise = m_fuel(P_ice_cruise_full)
-        E_nc_total += E_nc
-        m_fuel_total += m_fuel_cruise
-        E_cruise_full_total += E_cruise_full
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise * g
-    elif (t_climb1 + t_climb2 +t_climb3 + t_cruise_full) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full + t_descent1):
-        E_descent1 = Energy(MTOW_energy_calculate, a_descent1, (i - (t_climb1 + t_climb2 + t_climb3+t_cruise_full)), L_D_cruise,-ROD1, V_cruise)
-        E_nc = 0 * E_descent1
-        E_c = E_descent1 - E_nc
-        P_ice_descent1 = P_ice(E_c, 1)
-        P_em_descent1 = P_em(E_nc, 1)
-        P_max = P_ice_descent1 + P_em_descent1
-        hybridization_descent1.append(P_em_descent1 / P_max)
-        m_fuel_descent1 = m_fuel(P_ice_descent1)
-        m_fuel_total += m_fuel_descent1
-        E_descent1_total += E_descent1
-        E_nc_total += E_nc
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent1 * g
-    else:
-        E_descent2 = Energy(MTOW_energy_calculate, a_descent2, (i - (t_climb1 + t_climb2 +t_climb3 + t_cruise_full + t_descent1)), L_D_cruise, -ROD2, V_descent1)
-        E_nc = 0 * E_descent2
-        E_c = E_descent2 - E_nc
-        P_ice_descent2 = P_ice(E_c, 1)
-        P_em_descent2 = P_em(E_nc, 1)
-        P_max = P_ice_descent2 + P_em_descent2
-        hybridization_descent2.append(P_em_descent2 / P_max)
-        m_fuel_descent2 = m_fuel(P_ice_descent2)
-        m_fuel_total += m_fuel_descent2
-        E_descent2_total += E_descent2
-        E_nc_total += E_nc
-        MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent2 * g
+range_selected = 1000 #Choose range of 500 or 1000
+
+if range_selected == 500:
+    for i in range(1,int(t_total_500)+1):
+        if i<= t_climb1:
+            E_climb1 = Energy(MTOW_energy_calculate,a_climb1,i,L_D_to,ROC1,V_to)
+            E_nc = 0.55 * E_climb1
+            E_c = E_climb1 - E_nc
+            P_ice_climb1 = P_ice(E_c,1)
+            P_em_climb1 = P_em(E_nc,1)
+            P_max = P_ice_climb1 + P_em_climb1
+            hybridization_climb1.append(P_max/P_ice_climb1)
+            m_fuel_climb1 = m_fuel(P_ice_climb1)
+            E_nc_total += E_nc
+            m_fuel_total += m_fuel_climb1
+            E_climb1_total += E_climb1
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
+        elif t_climb1 < i <= (t_climb1+t_climb2):
+            E_climb2 = Energy(MTOW_energy_calculate,a_climb2,(i-t_climb1),L_D_cruise,ROC2,V_climb1)
+            E_nc = 0.55 * E_climb2
+            E_c = E_climb2 - E_nc
+            P_ice_climb2 = P_ice(E_c,1)
+            P_em_climb2 = P_em(E_nc, 1)
+            P_max = P_ice_climb2 + P_em_climb2
+            hybridization_climb2.append(P_max/P_ice_climb2)
+            m_fuel_climb2 = m_fuel(P_ice_climb2)
+            m_fuel_total += m_fuel_climb2
+            E_climb2_total += E_climb2
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb2 * g
+        elif (t_climb1 + t_climb2) < i <= (t_climb1 +t_climb2 +t_climb3):
+            E_climb3 = Energy(MTOW_energy_calculate,a_climb3,(i-(t_climb1+t_climb2)),L_D_cruise,ROC3,V_climb2)
+            E_nc = 0.55 * E_climb3
+            E_c = E_climb3 - E_nc
+            P_ice_climb3 = P_ice(E_c, 1)
+            P_em_climb3 = P_em(E_nc, 1)
+            P_max = P_ice_climb3 + P_em_climb3
+            hybridization_climb3.append(P_max/P_ice_climb3)
+            m_fuel_climb3 = m_fuel(P_ice_climb3)
+            m_fuel_total += m_fuel_climb3
+            E_climb3_total += E_climb3
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
+        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
+            E_cruise_full = Energy(MTOW_energy_calculate, 0, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_cruise)
+            E_nc =  0.2 * E_cruise_full
+            E_c = E_cruise_full - E_nc
+            P_ice_cruise_full = P_ice(E_c, 1)
+            P_em_cruise = P_em(E_nc, 1)
+            P_max = P_ice_cruise_full + P_em_cruise
+            hybridization_cruise_full.append(P_max/P_ice_cruise_full)
+            m_fuel_cruise = m_fuel(P_ice_cruise_full)
+            E_nc_total += E_nc
+            m_fuel_total += m_fuel_cruise
+            E_cruise_full_total += E_cruise_full
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise * g
+        elif (t_climb1 + t_climb2 +t_climb3 + t_cruise_500) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500 + t_descent1):
+            E_descent1 = Energy(MTOW_energy_calculate, a_descent1, (i - (t_climb1 + t_climb2 + t_climb3+t_cruise_500)), L_D_cruise,-ROD1, V_cruise)
+            E_nc = 0 * E_descent1
+            E_c = E_descent1 - E_nc
+            P_ice_descent1 = P_ice(E_c, 1)
+            P_em_descent1 = P_em(E_nc, 1)
+            P_max = P_ice_descent1 + P_em_descent1
+            hybridization_descent1.append(P_em_descent1 / P_max)
+            m_fuel_descent1 = m_fuel(P_ice_descent1)
+            m_fuel_total += m_fuel_descent1
+            E_descent1_total += E_descent1
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent1 * g
+        else:
+            E_descent2 = Energy(MTOW_energy_calculate, a_descent2, (i - (t_climb1 + t_climb2 +t_climb3 + t_cruise_500 + t_descent1)), L_D_cruise, -ROD2, V_descent1)
+            E_nc = 0 * E_descent2
+            E_c = E_descent2 - E_nc
+            P_ice_descent2 = P_ice(E_c, 1)
+            P_em_descent2 = P_em(E_nc, 1)
+            P_max = P_ice_descent2 + P_em_descent2
+            hybridization_descent2.append(P_em_descent2 / P_max)
+            m_fuel_descent2 = m_fuel(P_ice_descent2)
+            m_fuel_total += m_fuel_descent2
+            E_descent2_total += E_descent2
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent2 * g
+
+elif range_selected == 1000:
+    for i in range(1, int(t_total_full) + 1):
+        if i <= t_climb1:
+            E_climb1 = Energy(MTOW_energy_calculate, a_climb1, i, L_D_to, ROC1, V_to)
+            E_nc = 0 * E_climb1
+            E_c = E_climb1 - E_nc
+            P_ice_climb1 = P_ice(E_c, 1)
+            P_em_climb1 = P_em(E_nc, 1)
+            P_max = P_ice_climb1 + P_em_climb1
+            hybridization_climb1.append(P_em_climb1 / P_max)
+            m_fuel_climb1 = m_fuel(P_ice_climb1)
+            E_nc_total += E_nc
+            m_fuel_total += m_fuel_climb1
+            E_climb1_total += E_climb1
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb1 * g
+        elif t_climb1 < i <= (t_climb1 + t_climb2):
+            E_climb2 = Energy(MTOW_energy_calculate, a_climb2, (i - t_climb1), L_D_cruise, ROC2, V_climb1)
+            E_nc = 0 * E_climb2
+            E_c = E_climb2 - E_nc
+            P_ice_climb2 = P_ice(E_c, 1)
+            P_em_climb2 = P_em(E_nc, 1)
+            P_max = P_ice_climb2 + P_em_climb2
+            hybridization_climb2.append(P_em_climb2 / P_max)
+            m_fuel_climb2 = m_fuel(P_ice_climb2)
+            m_fuel_total += m_fuel_climb2
+            E_climb2_total += E_climb2
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb2 * g
+        elif (t_climb1 + t_climb2) < i <= (t_climb1 + t_climb2 + t_climb3):
+            E_climb3 = Energy(MTOW_energy_calculate, a_climb3, (i - (t_climb1 + t_climb2)), L_D_cruise, ROC3, V_climb2)
+            E_nc = 0 * E_climb3
+            E_c = E_climb3 - E_nc
+            P_ice_climb3 = P_ice(E_c, 1)
+            P_em_climb3 = P_em(E_nc, 1)
+            P_max = P_ice_climb3 + P_em_climb3
+            hybridization_climb3.append(P_em_climb3 / P_max)
+            m_fuel_climb3 = m_fuel(P_ice_climb3)
+            m_fuel_total += m_fuel_climb3
+            E_climb3_total += E_climb3
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
+        elif (t_climb1 + t_climb2 + t_climb3) < i <= (t_climb1 + t_climb2 + t_climb3 + t_cruise_full):
+            E_cruise_full = Energy(MTOW_energy_calculate, 0, (i - (t_climb1 + t_climb2 + t_climb3)), L_D_cruise, 0,
+                                   V_cruise)
+            E_nc = 0 * E_cruise_full
+            E_c = E_cruise_full - E_nc
+            P_ice_cruise_full = P_ice(E_c, 1)
+            P_em_cruise = P_em(E_nc, 1)
+            P_max = P_ice_cruise_full + P_em_cruise
+            hybridization_cruise_full.append(P_em_cruise / P_max)
+            m_fuel_cruise = m_fuel(P_ice_cruise_full)
+            E_nc_total += E_nc
+            m_fuel_total += m_fuel_cruise
+            E_cruise_full_total += E_cruise_full
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_cruise * g
+        elif (t_climb1 + t_climb2 + t_climb3 + t_cruise_full) < i <= (
+                t_climb1 + t_climb2 + t_climb3 + t_cruise_full + t_descent1):
+            E_descent1 = Energy(MTOW_energy_calculate, a_descent1,
+                                (i - (t_climb1 + t_climb2 + t_climb3 + t_cruise_full)), L_D_cruise, -ROD1, V_cruise)
+            E_nc = 0 * E_descent1
+            E_c = E_descent1 - E_nc
+            P_ice_descent1 = P_ice(E_c, 1)
+            P_em_descent1 = P_em(E_nc, 1)
+            P_max = P_ice_descent1 + P_em_descent1
+            hybridization_descent1.append(P_em_descent1 / P_max)
+            m_fuel_descent1 = m_fuel(P_ice_descent1)
+            m_fuel_total += m_fuel_descent1
+            E_descent1_total += E_descent1
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent1 * g
+        else:
+            E_descent2 = Energy(MTOW_energy_calculate, a_descent2,
+                                (i - (t_climb1 + t_climb2 + t_climb3 + t_cruise_full + t_descent1)), L_D_cruise, -ROD2,
+                                V_descent1)
+            E_nc = 0 * E_descent2
+            E_c = E_descent2 - E_nc
+            P_ice_descent2 = P_ice(E_c, 1)
+            P_em_descent2 = P_em(E_nc, 1)
+            P_max = P_ice_descent2 + P_em_descent2
+            hybridization_descent2.append(P_em_descent2 / P_max)
+            m_fuel_descent2 = m_fuel(P_ice_descent2)
+            m_fuel_total += m_fuel_descent2
+            E_descent2_total += E_descent2
+            E_nc_total += E_nc
+            MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_descent2 * g
 
 print(np.round(np.average(hybridization_climb1),2),"climb1 ")
 print(np.round(np.average(hybridization_climb2),2),"climb2")
@@ -267,6 +356,5 @@ b = np.sqrt(A*S)
 print(b,"m")
 print(m_payload)
 print(m_OE_without)
-print(E_descent2_total/t_descent2/10**3)
-print((E_climb1_total*0.55 + E_climb2_total*0.55 + E_climb3_total*0.55 + E_cruise_full_total*0.2 + E_descent1_total + E_descent2_total)/10**6)
+print((E_climb1_total*0.55 + E_climb2_total*0.55 + E_climb3_total*0.55 + E_cruise_full_total*0.2)/10**6)
 print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
