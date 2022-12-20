@@ -7,8 +7,8 @@ from Wing_planform import Sw, c_mac, specific_gas_constant, T, p, gamma, M_cross
 
 ##Design 1; Fuel Cell
 ##Design 2; Liquid Hydrogen Combustion
-##Design 3; Parallel Series
-##Design 4; Series
+##Design 3; Hybrid Electric Parallel Series
+##Design 4; Hybrid Electric Series
 Design = 2
 
 #Constants from other files
