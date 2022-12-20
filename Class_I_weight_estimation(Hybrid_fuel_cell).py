@@ -60,8 +60,10 @@ W_S_design = 3169
 m_turboprop = 1074.5/2
 #Range Calculation
 MTOW_design = 20281 * g                  #N
-S = MTOW_design / 3169
-CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+# S = MTOW_design / 3169
+# CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+CL = 0.72
+S = (MTOW_design) / (1/2 * rho_cruise * CL * V_cruise**2)
 # CL = np.sqrt(np.pi*Cd0*A*e)
 k2 = np.pi * A * e
 print(k2)

@@ -65,8 +65,10 @@ m_propeller_tip = m_em_tip * 0.14
 
 #Range Calculation
 MTOW_design = 21692 * g                  #N
-S = MTOW_design / 3169
-CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+# S = MTOW_design / 3169
+# CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+CL = 0.72
+S = (MTOW_design) / (1/2 * rho_cruise * CL * V_cruise**2)
 # CL = np.sqrt(np.pi*Cd0*A*e)
 k2 = np.pi * A * e
 print(k2)
