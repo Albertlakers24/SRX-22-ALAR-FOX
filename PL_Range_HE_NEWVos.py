@@ -12,7 +12,7 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 m_pldes = 5443   #Design payload [kg]
-LD_crs= 16.7
+LD_crs= 17
 
 # Energy
 e_f = 42*10**6
