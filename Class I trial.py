@@ -43,7 +43,7 @@ CD0_take_off = CD_0(15, 1)
 CD0_landing = CD_0(35, 1)
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
-red_CD = 0.85
+red_CD = 0.90
 CD_to = (CD0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 CD_land = (CD0_landing + (CL_to**2 /(np.pi * A* e_landing))) * red_CD
@@ -64,8 +64,16 @@ m_em_tip = 50
 m_propeller_tip = m_em_tip * 0.14
 
 #Range Calculation
-CL = np.sqrt(np.pi*Cd0*A*e)
-CD = (2 * Cd0) * red_CD
+MTOW_design = 20281 * g                  #N
+S = MTOW_design / 3169
+CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+# CL = np.sqrt(np.pi*Cd0*A*e)
+k2 = np.pi * A * e
+print(k2)
+CL_opt = np.sqrt(Cd0 / k2)
+print(CL_opt, "CL optimum", Cd0)
+# CD = (2 * Cd0) * red_CD
+CD = (Cd0 + CL**2 / k2) * red_CD
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -77,8 +85,6 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
-MTOW_design = 20281 * g                  #N
-S = MTOW_design / 3169
 V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
 ROC1 = 4
 ROC2 = 3
