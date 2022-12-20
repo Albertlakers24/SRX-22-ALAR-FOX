@@ -107,46 +107,38 @@ def plotting(ranges, plmasses, title, colour):
 # ----------------------------- PARALLEL SERIES -----------------------------
 m_mtoPS, m_oePS, m_fPS, m_batPS, pl_increasePS, eta_1PS, eta_2PS, eta_3PS = configuration_values(1)
 m_plmaxPS = max_payload_mass(m_pldes, pl_increasePS, m_mtoPS, m_oePS, m_batPS)
-print(eta_1PS,eta_2PS,eta_3PS)
-# # Calculations ----> Point B
+
+# Point B
 R_b = R_cruise(eta_1PS, eta_2PS, eta_3PS, LD_crs, phiB, m_oePS, E_tot, m_plmaxPS)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RB = R_tot(R_b, R_b, LD_crs)/1852       # (R_nom, R_cruise, LD)
-
-# Calculations -----> Point C
+# Point C
 R_c = R_cruise(eta_1PS, eta_2PS, eta_3PS, LD_crs, phi, m_oePS, E_tot, m_pldes)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RC = R_tot(R_c, R_c, LD_crs)/1852       # (R_nom, R_cruise, LD)
-
-# #Calculations -----> Point D
-# m_mtoD = m_oe + m_bat + m_f
+# Point D
 R_d = R_cruise(eta_1PS, eta_2PS, eta_3PS, LD_crs, phi, m_oePS, E_tot, 0)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RD = R_tot(R_d, R_d, LD_crs)/1852       # (R_nom, R_cruise, LD)
 
 rangesPS = [0, RB, RC, RD]
 plmassesPS = [m_plmaxPS, m_plmaxPS,m_pldes, 0]
-print(rangesPS, plmassesPS)
-#if prop_type == 1:
+print('Hybrid Electric Parallel Series', rangesPS, plmassesPS)
 
 # ----------------------------- SERIES CONFIGURATION -----------------------------
 m_mtoS, m_oeS, m_fS, m_batS, pl_increaseS, eta_1S, eta_2S, eta_3S = configuration_values(2)
 m_plmaxS = max_payload_mass(m_pldes, pl_increaseS, m_mtoS, m_oeS, m_batS)
-print(eta_1S,eta_2S,eta_3S)
 
-# # Calculations ----> Point B
+# Point B
 R_b = R_cruise(eta_1S, eta_2S, eta_3S, LD_crs, phiB, m_oeS, E_tot, m_plmaxS)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RB = R_tot(R_b, R_b, LD_crs)/1852       # (R_nom, R_cruise, LD)
-
-# Calculations -----> Point C
+# Point C
 R_c = R_cruise(eta_1S, eta_2S, eta_3S, LD_crs, phi, m_oeS, E_tot, m_pldes)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RC = R_tot(R_c, R_c, LD_crs)/1852       # (R_nom, R_cruise, LD)
-
-# #Calculations -----> Point D
-# m_mtoD = m_oe + m_bat + m_f
+# Point D
 R_d = R_cruise(eta_1S, eta_2S, eta_3S, LD_crs, phi, m_oeS, E_tot, 0)  # (eta_1, eta_2, eta_3, LD, phi, m_oe, E_tot, m_pl)
 RD = R_tot(R_d, R_d, LD_crs)/1852       # (R_nom, R_cruise, LD)
 
 rangesS = [0, RB, RC, RD]
 plmassesS = [m_plmaxS, m_plmaxS,m_pldes, 0]
-print(rangesS, plmassesS)
+print('Hybrid Electric Series', rangesS, plmassesS)
 
-plotting(rangesS, plmassesS, 'Payload range diagram Electric Hybrid Series', 'blue')
+plotting(rangesS, plmassesS, 'Payload range diagram Hybrid Electric Series', 'blue')
 plotting(rangesPS, plmassesPS, 'Payload range diagram Hybrid Electric Parallel Series', 'orange')

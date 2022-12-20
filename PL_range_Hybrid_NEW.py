@@ -1,8 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_type = 1 # 1 for Parallel Series, 2 for Series
-
 # constants
 g = 9.80665
 e_bat       = 2.7  * 10**6
@@ -19,47 +17,44 @@ t_E = 45 * 60    # in seconds - endurance time
 # Common values for both configurations
 m_pldes = 5443                    #Design payload [kg]
 E_tot =32604 * 10**6             # Total propulsive energy (in J)
-LD     = 16.7
+LD_crs     = 17
 
 # Efficiencies
-eta_p = 0.85                        # Propulsive efficiency (overall)
+eta_p = 0.85                   # Propulsive efficiency (overall)
 eta_i = 0.99                        # Inverter efficiency
-n_eng_em= 0.934*0.995*0.95 # 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
-eta_m = n_eng_em
-eta_g = 0.97                        # Generator efficiency
+#n_eng_em= 0.934*0.995*0.95 # 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
+eta_m = 0.95
 c_b = e_bat                         # Battery specific energy (J/kg)
 
-# PSFC from class I
-# c_p  = 0.48*(0.45/(745*3600))       # Shaft pwoer specific fuel consumption (kg/W.s)
-# print(c_p)
+def configuration_values(prop_type):
+    if prop_type == 1:  # Parallel Series
+        m_mto = 24100
+        m_oe = 12883
+        m_f = 1723
+        m_bat = 3970
+        pl_increase = 1.47
+        c_p = 1/(43*10**6 * 0.45)
+        eta_g = 0.45  # Generator efficiency
 
-# BSFC from Class I
-if prop_type == 1: # Parallel Series
-    c_p = 1/(43*10**6 * 0.45)
-if prop_type == 2: # Series
-    c_p = 1/(43*10**6 * 0.39)
-print(c_p)
+    if prop_type == 2:  # Series
+        m_mto = 25300
+        m_oe = 13700
+        m_f = 2211
+        m_bat = 3940
+        pl_increase = 1.54
+        c_p = 1/(43*10**6 * 0.39)
+        eta_g = 0.97 * 0.39  # Generator efficiency
 
-if prop_type == 1:  # Parallel Series
-    m_mto = 24100
-    m_oe = 12883
-    m_f = 1723
-    m_bat = 3970
-    pl_increase = 1.47
+    return m_mto, m_oe, m_f, m_bat, pl_increase, c_p, eta_g
 
-if prop_type == 2:  # Series
-    m_mto = 25300
-    m_oe = 13700
-    m_f = 2211
-    m_bat = 3940
-    pl_increase = 1.54
+def max_payload_mass(m_pldes, pl_increase, m_mto, m_oe, m_bat):
+    m_plmax = min(m_pldes * pl_increase, m_mto - m_oe - m_bat)
+    return m_plmax
 
-m_plmax = min(m_pldes * pl_increase, m_mto - m_oe - m_bat)
-m_fB = max(0, m_mto - m_oe - m_bat - m_plmax)
+def fuelmass_maxpl(m_mto, m_oe, m_bat, m_plmax):
+    m_fB = max(0, m_mto - m_oe - m_bat - m_plmax)
+    return m_fB
 
-print(m_plmax)
-print(m_fB)
-print(m_oe + m_bat + m_fB + m_plmax, m_mto)
 def f_ratio(m_mto, m_oe):
     f = m_oe/m_mto
     return f
@@ -69,33 +64,16 @@ def mass_fraction(m_mto,m_bat, m_fuel, f):
     psi_fuel = m_fuel / m_mto / (1 - f)
     return phi_bat, psi_fuel
 
-def W_pay(phi,psi):
-	w_pay = (1-f)*m_mto*(1-phi-psi)
-	return w_pay
-
-def R_cruise(phi, psi):
-    r_tot = LD * eta_i * eta_m * eta_p / g * ((phi * c_b * (1 - f)) / (1 - psi * (1 - f)) + eta_g / c_p * np.log(1 / (1 - psi * (1 - f))))
+def R_cruise(phi, psi, f, c_p, eta_g):
+    r_tot = LD_crs * eta_i * eta_m * eta_p / g * ((phi * c_b * (1 - f)) / (1 - psi * (1 - f)) + eta_g / c_p * np.log(1 / (1 - psi * (1 - f))))
     return r_tot
 
-def R_tot(R_nom, R_cruise):
-    R_lost = (1 / 0.7) * (LD) * (h_cr + ((V_cr ** 2) / (2 * g)))
+def R_tot(R_nom, R_cruise, LD_crs):
+    R_lost = (1 / 0.7) * (LD_crs) * (h_cr + ((V_cr ** 2) / (2 * g)))
     R_eq = ((R_nom + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
     R_aux = R_eq - R_nom
     R = R_cruise + R_aux
     return R
-
-def R_f(w_pay,eps,MTOW):
-	log_interior = (eps+(1-eps)*c_b*c_p)*MTOW/(eps*MTOW+(1-eps)*c_b*c_p*(w_pay+f*MTOW))
-	r_f = LD*eta_i*eta_m*eta_p*eta_g/c_p/g*np.log(log_interior)
-	return r_f
-
-def R_e(w_pay,eps, MTOW):
-	r_e = eps*c_b*LD*eta_i*eta_m*eta_p/g*((1-f)*MTOW-w_pay)/(eps*MTOW+(1-eps)*c_b*c_p*(w_pay+f*MTOW))
-	return r_e
-
-def R_total(w_pay,eps, MTOW):
-	r_tot = R_f(w_pay,eps, MTOW)+R_e(w_pay,eps, MTOW)
-	return r_tot
 
 def plotting(ranges, plmasses, title, colour):
     # plotting the points
@@ -126,29 +104,56 @@ def plotting(ranges, plmasses, title, colour):
     # function to show the plot
     plt.show()
 
-phi = ((0.55*0.2) + (0.04*0.8))
-# # Calculations ----> Point B
-f = f_ratio(m_mto, m_oe)
-phi_B, psi_B = mass_fraction(m_mto, m_bat, m_fB, f)
-R_b = R_cruise(phi_B, psi_B)
-RB = R_tot(R_b, R_b)/1852
-# Calculations -----> Point C
-phi_C, psi_C = mass_fraction(m_mto, m_bat, m_f, f)
-R_c = R_cruise(phi_C, psi_C)
-RC = R_tot(R_nom, R_c)/1852
 
-# #Calculations -----> Point D
-m_mtoD = m_oe + m_bat + m_f
-f_D = f_ratio(m_mtoD, m_oe)
-phi_D, psi_D = mass_fraction(m_mtoD, m_bat, m_f, f_D)
-R_d = R_cruise(phi_D, psi_D)
-RD = R_tot(R_d, R_d)/1852
+# ----------------------------- PARALLEL SERIES CONFIGURATION -----------------------------
+m_mtoPS, m_oePS, m_fPS, m_batPS, pl_increasePS, c_pPS, eta_g_PS = configuration_values(1)
+m_plmaxPS = max_payload_mass(m_pldes, pl_increasePS, m_mtoPS, m_oePS, m_batPS)
+# Point B
+fPS = f_ratio(m_mtoPS, m_oePS)
+m_fB_PS = fuelmass_maxpl(m_mtoPS, m_oePS, m_batPS, m_plmaxPS)
+phi_B_PS, psi_B_PS = mass_fraction(m_mtoPS, m_batPS, m_fB_PS, fPS)
+R_b_PS = R_cruise(phi_B_PS, psi_B_PS, fPS, c_pPS,eta_g_PS)
+RB_PS = R_tot(R_b_PS, R_b_PS, LD_crs)/1852
+# Point C
+phi_C_PS, psi_C_PS = mass_fraction(m_mtoPS, m_batPS, m_fPS, fPS)
+R_c_PS = R_cruise(phi_C_PS, psi_C_PS,fPS, c_pPS,eta_g_PS)
+RC_PS = R_tot(R_c_PS, R_c_PS, LD_crs)/1852
+# Point D
+m_mtoD_PS = m_oePS + m_batPS + m_fPS
+f_D_PS = f_ratio(m_mtoD_PS, m_oePS)
+phi_D_PS, psi_D_PS = mass_fraction(m_mtoD_PS, m_batPS, m_fPS, f_D_PS)
+R_d_PS = R_cruise(phi_D_PS, psi_D_PS,f_D_PS, c_pPS,eta_g_PS)
+RD_PS = R_tot(R_d_PS, R_d_PS, LD_crs)/1852
 
-ranges = [0, RB, RC, RD]
-plmasses = [m_plmax, m_plmax,m_pldes, 0]
-print(ranges, plmasses)
-if prop_type == 1:
-    plotting(ranges, plmasses, 'Payload range diagram Electric Hybrid Parallel Series', 'orange')
-if prop_type == 2:
-    plotting(ranges, plmasses, 'Payload range diagram Electric Hybrid Series', 'blue')
+rangesPS = [0, RB_PS, RC_PS, RD_PS]
+plmassesPS = [m_plmaxPS, m_plmaxPS,m_pldes, 0]
+print('Hybrid Electric Parallel Series', rangesPS, plmassesPS)
 
+# -----------------------------  SERIES CONFIGURATION -----------------------------
+
+m_mtoS, m_oeS, m_fS, m_batS, pl_increaseS, c_pS, eta_g_S = configuration_values(2)
+m_plmaxS = max_payload_mass(m_pldes, pl_increaseS, m_mtoS, m_oeS, m_batS)
+# Point B
+fS = f_ratio(m_mtoS, m_oeS)
+m_fB_S = fuelmass_maxpl(m_mtoS, m_oeS, m_batS, m_plmaxS)
+phi_B_S, psi_B_S = mass_fraction(m_mtoS, m_batS, m_fB_S, fS)
+R_b_S = R_cruise(phi_B_PS, psi_B_PS, fS, c_pS,eta_g_S)
+RB_S = R_tot(R_b_S, R_b_S, LD_crs)/1852
+# Point C
+phi_C_S, psi_C_S = mass_fraction(m_mtoS, m_batS, m_fS, fS)
+R_c_S = R_cruise(phi_C_S, psi_C_S, fS, c_pS,eta_g_S)
+RC_S = R_tot(R_c_S, R_c_S, LD_crs)/1852
+# Point D
+m_mtoD_S = m_oeS + m_batS + m_fS
+f_D_S = f_ratio(m_mtoD_S, m_oeS)
+phi_D_S, psi_D_S = mass_fraction(m_mtoD_S, m_batS, m_fS, f_D_S)
+R_d_S = R_cruise(phi_D_S, psi_D_S,fS, c_pS,eta_g_S)
+RD_S = R_tot(R_d_S, R_d_S, LD_crs)/1852
+
+rangesS = [0, RB_S, RC_S, RD_S]
+plmassesS = [m_plmaxS, m_plmaxS,m_pldes, 0]
+print('Hybrid Electric Series',rangesS, plmassesS)
+
+
+plotting(rangesS, plmassesS, 'Payload range diagram Electric Hybrid Series', 'blue')
+plotting(rangesPS, plmassesPS, 'Payload range diagram Hybrid Electric Parallel Series', 'orange')
