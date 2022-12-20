@@ -309,6 +309,7 @@ m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
 m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_payload + m_fuel_total * 1.5
+
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
 print(m_OE,"OEM")
@@ -323,6 +324,16 @@ print(m_propulsion)
 print(P_max_no_eff)
 print(f"P_Peak is {P_ice(E_climb1_total,t_climb1)/10**3}")
 print(f"P_Peak is {P_ice(E_cruise_full_total,t_cruise_full)/10**3}")
-print(m_payload)
-print(m_fuel_total)
-print(m_MTOW)
+
+# print(m_payload)
+# print(m_fuel_total)
+# print(m_MTOW)
+print(CL / CD, "L/D ratio")
+print(b, S_design, S, "Wingspan, design S, input S")
+print(P_max_no_eff, P_max_EM, P_max_fc, "Maximum power no eff, max power em, max power fc")
+E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
+print(E_total)
+print(m_MTOW, "MTOM")
+print(m_fuel_total, "fuel mass")
+
+# print(t_climb1, t_climb2, t_climb3, t_cruise_full, t_descent1, t_descent2)
