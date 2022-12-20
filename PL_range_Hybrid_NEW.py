@@ -16,48 +16,50 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
-# Common values for both confugurations
+# Common values for both configurations
 m_pldes = 5443                    #Design payload [kg]
 E_tot =32604 * 10**6             # Total propulsive energy (in J)
-LD     = 17
+LD     = 16.7
 
 # Efficiencies
 eta_p = 0.85                        # Propulsive efficiency (overall)
 eta_i = 0.99                        # Inverter efficiency
-n_eng_em= 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
+n_eng_em= 0.934*0.995*0.95 # 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
 eta_m = n_eng_em
 eta_g = 0.97                        # Generator efficiency
 c_b = e_bat                         # Battery specific energy (J/kg)
+
 # PSFC from class I
-c_p  = 0.48*(0.45/(745*3600))       # Shaft pwoer specific fuel consumption (kg/W.s)
+# c_p  = 0.48*(0.45/(745*3600))       # Shaft pwoer specific fuel consumption (kg/W.s)
+# print(c_p)
+
+# BSFC from Class I
+if prop_type == 1: # Parallel Series
+    c_p = 1/(43*10**6 * 0.45)
+if prop_type == 2: # Series
+    c_p = 1/(43*10**6 * 0.39)
 print(c_p)
 
-# Wiki - BSFC for PW
-if prop_type == 1: # Parallel Series
-    c_p = 300/3600/1000/1000
-if prop_type == 2: # Series
-    c_p = 300/3600/1000/1000
-print(c_p)
-# BSFC from class I
-BSFC= 1/(43*10**6 * 0.45)      #1/(43*10**6 * 0.39 * 0.9 *0.99)   #Brake-specific fuel consumption (only 43*10^6 * 0.45 if parallel series)
-print(BSFC)
 if prop_type == 1:  # Parallel Series
     m_mto = 24100
     m_oe = 12883
     m_f = 1723
     m_bat = 3970
-    m_plmax = m_pldes * 1.47
+    pl_increase = 1.47
 
 if prop_type == 2:  # Series
     m_mto = 25300
     m_oe = 13700
     m_f = 2211
     m_bat = 3940
-    m_plmax = m_pldes * 1.54
+    pl_increase = 1.54
 
-m_fB = m_mto - m_oe - m_bat - m_plmax
+m_plmax = min(m_pldes * pl_increase, m_mto - m_oe - m_bat)
+m_fB = max(0, m_mto - m_oe - m_bat - m_plmax)
 
-print(m_mto)
+print(m_plmax)
+print(m_fB)
+print(m_oe + m_bat + m_fB + m_plmax, m_mto)
 def f_ratio(m_mto, m_oe):
     f = m_oe/m_mto
     return f
@@ -131,9 +133,6 @@ phi_B, psi_B = mass_fraction(m_mto, m_bat, m_fB, f)
 R_b = R_cruise(phi_B, psi_B)
 RB = R_tot(R_b, R_b)/1852
 # Calculations -----> Point C
-# R_F = R_f(m_pldes,phi, m_mto)
-# R_E = R_e(m_pldes, phi, m_mto)
-#RC = R_total(m_pldes, phi, m_mto)
 phi_C, psi_C = mass_fraction(m_mto, m_bat, m_f, f)
 R_c = R_cruise(phi_C, psi_C)
 RC = R_tot(R_nom, R_c)/1852
