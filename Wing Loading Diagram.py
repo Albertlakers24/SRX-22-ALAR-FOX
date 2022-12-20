@@ -108,7 +108,7 @@ e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
 Cd0_take_off = CD_0(15, 1)
 Cd0_landing = CD_0(35, 1)
-red_CD = 0.85
+red_CD = 0.9
 CD_to_props = (Cd0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CD_land_props = (Cd0_landing + (CL_land**2 /(np.pi * A* e_landing))) * red_CD
 CD_to = Cd0_take_off + (CL_to**2 /(np.pi * A* e_take_off))
@@ -194,4 +194,3 @@ print(W_P_CV[2001])
 print(W_S_land)
 print(19200 * g / 0.047 / 10**3)
 print(19400 * g/ 0.0555 / 10**3)
-print(19400 * g / 3171)
