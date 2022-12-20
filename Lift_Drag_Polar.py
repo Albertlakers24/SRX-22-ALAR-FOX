@@ -7,7 +7,7 @@ Molar_mass_air = 0.0289644 #kg/mol
 universal_gas_constant = 8.31432 #N m kmol⁻¹ K⁻¹
 specific_gas_constant = 287.052 #J·kg⁻¹·K⁻¹
 
-b = 25 #wingspan in m
+b = 27 #wingspan in m
 S_w = b**2 / A
 kts_ms = 0.514444444
 V_cruise = 275 * kts_ms #KTAS

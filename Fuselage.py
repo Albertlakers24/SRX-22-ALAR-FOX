@@ -3,6 +3,7 @@ import scipy as sp
 from Wing_planform import taper
 #Switch
 switch = 1          # put 1 for circular fuselage, 2 for double bubble fuselage
+prop_choice = 3  # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
 
 # Some constants
 k_cabin = 1.08      #For single aisle
@@ -44,12 +45,15 @@ skin_thickness = 0.084 + 0.045 * D_eff      # fuselage skin thickness [m]
 D_outer = D_eff + skin_thickness            # outer fuselage diameter [m]
 
 
-fuel_at_belly = False
 
-if fuel_at_belly == True:
-    l_tank = 0
+
+if prop_choice == 1:
+    l_tank = 5.1                            # Length of the fuel tank as fuselage section
+elif prop_choice == 4:
+    l_tank = 2.1
 else:
-    l_tank = 2.1                             # Length of the fuel tank as fuselage section
+    l_tank = 0
+
 l_t = 1.6 * D_outer + l_tank                      # Length of tail [m]
 l_f = l_cabin + l_t + l_cp                        # length of the fuselage [m]
 fineness_ratio = l_f/D_outer                      # Fineness ratio

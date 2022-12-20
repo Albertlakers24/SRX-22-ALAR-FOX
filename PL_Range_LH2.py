@@ -1,38 +1,43 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-prop_system = 2  # put 1 for LH2 fuel cell, 2 for LH2 combustion
+prop_system = 1  # put 1 for LH2 fuel cell, 2 for LH2 combustion
 
 g = 9.80665
 
 # Masses Aircraft --> Payload - constant for all configurations
 
-m_pldes = 5730  # Payload mass designed for
-m_plmax = m_pldes*1.1
+m_pldes = 5443  # Payload mass designed for
 
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
-
+# fuel = 555, tank = 666
 if prop_system == 1:  # LH2 fuel cell
-    m_oe = 14175  # Operating empty mass
-    m_mto = 20434
-    m_fh = 530 # LH2 mass in kg
+    m_fh = 803 # LH2 mass in kg
+    m_tank = 0.5*m_fh
+    m_oe = (12727.3) + m_tank # Operating empty mass + tank mass
+    m_mto = (19391 - 555 - 666) + m_fh + m_tank
     m_fk = 0   # Kerosene mass in kg
+    m_plmax = m_pldes * 1.0735
 if prop_system == 2:    # LH2 Combustion
-    m_mto = 19314  # in kg --> Max take off
-    m_oe = 12486  # in kg --> Operating empty
-    m_fh = 1098  # in kg --> Fuel mass
+    m_mto = 19223  # in kg --> Max take off
+    m_oe = 12512  # in kg --> Operating empty
+    m_fh = 1268  # in kg --> Fuel mass
     m_fk = 0
+    m_plmax = m_pldes * 1.121
+
 if prop_system == 3:   # LH2_Kerosene fuel cell
     m_oe = 14643  # Operating empty mass
     m_mto = 21207
     m_fk = 390 # Kerosene mass in kg
     m_fh = 445 # LH2 mass in kg
+    m_plmax = m_pldes * 1.064
 
 # Propulsion charecteristics
 n_pk =  0.85                            #Propulsive efficiency twin turboprop
 n_ph = 0.85                             #Propulsive efficiency twin turboprop
 e_fk = 42.9 * 10**6                     # Specific Energy - kerosene
-e_fh = 142 * 10**6                      # specific energy - hydrogen
+e_fh = 120 * 10**6                      # specific energy - hydrogen
+print(m_mto, m_oe, m_fh)
 
 if prop_system == 1:    # LH2 fuel cell
     n_engh = 0.6*0.97*0.995*0.85*0.95       # Efficiency engine - hydrogen fuel cell w/o kerosene
@@ -62,8 +67,8 @@ V_cr = 141.471   # in m/s
 h_cr = 8534.4    # in m
 R_nom = 1852000  # in m ---> Design range - 1000nmi
 f_con = 5/100
-R_div = 185200   # in m ---> 100nmi
-t_E = 45 * 60    # in seconds - endurance time
+R_div = 85200   # in m ---> 100nmi
+t_E =  45 * 60    # in seconds - endurance time
 
 
 # #Point A
@@ -81,9 +86,6 @@ R_lostB2 = (1/0.7) * (LD_crs) * (h_cr + ((V_cr **2)/(2*g)))
 R_eqB2 = ((R_b2 + R_lostB2)*(1+f_con)) + (1.2*R_div) + (t_E * V_cr)
 R_auxB2 = R_eqB2 - R_b2
 R_b = R_b2 - R_auxB2
-
-
-
 #print(R_lostB)
 #print(R_eqB)
 #print(R_auxB)
@@ -134,6 +136,16 @@ if prop_system == 3:
 n = ['A','B','C','D']
 for i, txt in enumerate(n):
     plt.annotate(txt, (ranges[i], plmasses[i]))
+
+plt.axhline(y = plmasses[2], color = 'grey', linestyle = '--')
+plt.annotate('Design payload', xy = (1500, plmasses[2] + 50))
+plt.axhline(y = plmasses[1], color = 'grey', linestyle = '--')
+plt.annotate('Maximum payload', xy = (1500, plmasses[1] + 50))
+
+plt.axvline(x = ranges[2], color = 'grey', linestyle = '--')
+plt.annotate('Range @ Design payload', xy = (ranges[2] - 60, 100), rotation = 'vertical')
+plt.axvline(x = ranges[1], color = 'grey', linestyle = '--')
+plt.annotate('Range @ Maximum payload', xy = (ranges[1] - 60, 100), rotation = 'vertical')
 
 # naming the x axis
 plt.xlabel('Range (nmi)')
