@@ -104,6 +104,9 @@ if Type == 1:
         WF = MTOW * (Mused * (1 + Mres)) * W_F_extra
         WF_extra = WF * (W_F_extra - 1)
     if Range == 2:
+        MTOW = (b + WPLtot + W_tanks) / (1 - a - (Mused * (1 + Mres)) * W_F_extra)
+        WOE = a * MTOW + b + W_tanks
+        MTOW_used = 
 
 if Type == 2:
     if Range == 1:

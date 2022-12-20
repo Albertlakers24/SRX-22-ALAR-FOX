@@ -77,7 +77,7 @@ e_EH_Land = e_cruise + Change_e_EH_Land
 
 # DRAG LH2 PROPULSION - ONLY WING MOUNTED!!
 
-red_CD = 1#0.90
+red_CD = 0.90
 for i in range(len(CL_list_cruise)):
     CDi_cruise = (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
     CD_cruise = (CD0_Cruise + CDi_cruise) * red_CD
