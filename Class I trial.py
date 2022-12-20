@@ -371,10 +371,12 @@ motor_eff = 0.95
 prop_eff = 0.85
 P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_stt
 P_max_EM = P_max_no_eff / prop_eff / motor_eff
+P_max_shaft = P_max_no_eff / prop_eff
 print(CL / CD, "L/D ratio")
 print(b, S_design, S, "Wingspan, design S, input S")
 print(P_max_no_eff, P_max_EM, "Maximum power no eff, max power em")
 E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
+print(P_max_shaft, "Maximum shaft power in kW")
 print(E_total / 10**6, "MJ")
 print(m_MTOW, "MTOM")
 print(m_fuel_total, "fuel mass")
