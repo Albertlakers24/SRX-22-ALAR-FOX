@@ -64,8 +64,16 @@ m_em_tip = 50
 m_propeller_tip = m_em_tip * 0.14
 
 #Range Calculation
-CL = np.sqrt(np.pi*Cd0*A*e)
-CD = (2 * Cd0) * red_CD
+MTOW_design = 20281 * g                  #N
+S = MTOW_design / 3169
+CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+# CL = np.sqrt(np.pi*Cd0*A*e)
+k2 = np.pi * A * e
+print(k2)
+CL_opt = np.sqrt(Cd0 / k2)
+print(CL_opt, "CL optimum", Cd0)
+# CD = (2 * Cd0) * red_CD
+CD = (Cd0 + CL**2 / k2) * red_CD
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -77,8 +85,6 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
-MTOW_design = 20281 * g                  #N
-S = MTOW_design / 3169
 V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
 ROC1 = 4
 ROC2 = 3
@@ -350,7 +356,7 @@ print(m_MTOW,"MTOM")
 print(m_OE, "OEM")
 print(m_bat(E_nc_total),"m_bat")
 print(m_fuel_total,"m_fuel")
-S = m_MTOW*g / W_S_design
+S_design = m_MTOW*g / W_S_design
 print(S,"m^2")
 b = np.sqrt(A*S)
 print(b,"m")
@@ -358,3 +364,18 @@ print(m_payload)
 print(m_OE_without)
 print((E_climb1_total*0.55 + E_climb2_total*0.55 + E_climb3_total*0.55 + E_cruise_full_total*0.2)/10**6)
 print((E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total)/10**6)
+
+#Required outputs
+wire_eff = 0.97
+inverter_eff = 0.995
+motor_eff = 0.95
+prop_eff = 0.85
+P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_stt
+P_max_EM = P_max_no_eff / prop_eff / motor_eff
+print(CL / CD, "L/D ratio")
+print(b, S_design, S, "Wingspan, design S, input S")
+print(P_max_no_eff, P_max_EM, "Maximum power no eff, max power em")
+E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
+print(E_total / 10**6, "MJ")
+print(m_MTOW, "MTOM")
+print(m_fuel_total, "fuel mass")

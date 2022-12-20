@@ -1,24 +1,29 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Class_I_Weight_Estimation import Cd0, e, A
+# from Class_I_Weight_Estimation import Cd0, e, A
 #prop_type = 1   # 1 for LH2 (both combustion & fuel cell), 2 for Electric Hybrid (Both configurations)
 
 # INPUT CL_Max for each flight phase  ---> Call from Class I ---- EVENTUALLY
 CL_max_take0ff = 2.1
 CL_max_cruise = 1.9
-CL_max_landing = 2.8
+CL_max_landing = 2.6
 
 # INPUTS from Class I
-CD0_Cruise = Cd0
-e_cruise = e
-A = A
+##Cdo calculations
+Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
+phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
+A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
+e_cruise = 1/(np.pi*A*Psi+(1/phi))
+Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
+Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
+CD0_Cruise = Cfe * Swet_S
 
 # FLAP DEFLECTION --> FROM ADSEE READER
 delta_f_take_off = 15       # TAKE Flap deflection - in degrees
 delta_f_landing = 35        # LANDING Flap deflection - in degrees
 
 # Make CL Lists for each flight phase
-step = 0.2
+step = 0.02
 CL_list_takeOff = np.arange(0, CL_max_take0ff + step, step)
 CL_list_cruise = np.arange(0, CL_max_cruise + step, step)
 CL_list_landing = np.arange(0, CL_max_landing + step, step)
@@ -39,7 +44,7 @@ CD0_Land_flapDef = (13 *10**(-4) * delta_f_landing)
 CD0_TO_flapDef = (13 *10**(-4) * delta_f_take_off)
 
 # CD0 change due to Landing gear
-CD0_LG = 200*10**(-4)
+CD0_LG = 175*10**(-4)
 
 # CD0 change per configuration
 Change_CD0_TO_woLG = CD0_TO_flapDef
@@ -72,10 +77,19 @@ e_EH_Land = e_cruise + Change_e_EH_Land
 
 # DRAG LH2 PROPULSION - ONLY WING MOUNTED!!
 
+red_CD = 1#0.90
 for i in range(len(CL_list_cruise)):
     CDi_cruise = (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
-    CD_cruise = CD0_Cruise + CDi_cruise
+    CD_cruise = (CD0_Cruise + CDi_cruise) * red_CD
     CD_list_cruise.append(CD_cruise)
+CL_CD = CL_list_cruise / CD_list_cruise
+max_CL_CD = max(CL_CD)
+print(CL_CD)
+print(max_CL_CD, "max L/D")
+index = np.where(CL_CD == max_CL_CD)
+print(CL_list_cruise[index])
+# print(CL_CD.index(max_CL_CD))
+
 
 # LH2 CASES
 
@@ -128,5 +142,5 @@ plt.plot(CD_list_landing_LH2, CL_list_landing, color = 'blue', label = 'Landing'
 plt.legend()
 plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
-plt.title('Drag polar') # giving a title to my graph
+plt.title('Drag polar for hydrogen combustion') # giving a title to my graph
 plt.show()

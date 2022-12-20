@@ -43,7 +43,7 @@ CD0_take_off = CD_0(15, 1)
 CD0_landing = CD_0(35, 1)
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
-red_CD = 0.85
+red_CD = 0.90
 CD_to = (CD0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 CD_land = (CD0_landing + (CL_to**2 /(np.pi * A* e_landing))) * red_CD
@@ -59,8 +59,16 @@ W_P_design = 0.04706
 W_S_design = 3169
 m_turboprop = 1074.5/2
 #Range Calculation
-CL = np.sqrt(np.pi*Cd0*A*e)
-CD = (2 * Cd0) * red_CD
+MTOW_design = 20281 * g                  #N
+S = MTOW_design / 3169
+CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
+# CL = np.sqrt(np.pi*Cd0*A*e)
+k2 = np.pi * A * e
+print(k2)
+CL_opt = np.sqrt(Cd0 / k2)
+print(CL_opt, "CL optimum", Cd0)
+# CD = (2 * Cd0) * red_CD
+CD = (Cd0 + CL**2 / k2) * red_CD
 R_norm = 1000 * 1852
 R_lost = 1 / 0.7 * (CL/CD) *(h_cruise + (V_cruise**2 / (2*g)))
 f_con = 0.05
@@ -71,8 +79,6 @@ Climb1_h = 50 * 100 *0.3048
 Climb2_h = 150 * 100 *0.3048
 Descent1_h = 100 * 100 *0.3048
 Descent2_h = 0
-MTOW_design = 20281 * g                  #N
-S = MTOW_design / 3169
 V_to = 1.13*(np.sqrt(1.1*MTOW_design/(1/2 * rho_1524 *S * CL_to)))
 ROC1 = 4
 ROC2 = 3
@@ -188,7 +194,7 @@ if range_selected == 500:
             E_nc_total += E_nc
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
         elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
-            E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_full, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
+            E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_500, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
             E_nc = 0 * E_cruise_full
             E_c = E_cruise_full - E_nc
             P_ice_cruise_full = P_ice(E_c, 1)
@@ -250,7 +256,7 @@ elif range_selected == 1000:
             E_climb3_total += E_climb3
             E_nc_total += E_nc
             MTOW_energy_calculate = MTOW_energy_calculate - m_fuel_climb3 * g
-        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_500):
+        elif (t_climb1 +t_climb2 +t_climb3) < i <= (t_climb1 + t_climb2 +t_climb3 + t_cruise_full):
             E_cruise_full = Energy(MTOW_energy_calculate, a_cruise_full, (i -(t_climb1 +t_climb2 +t_climb3)), L_D_cruise, 0, V_climb3)
             E_nc = 0 * E_cruise_full
             E_c = E_cruise_full - E_nc
@@ -303,6 +309,7 @@ m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
 m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc
 m_OE_without = (a * MTOW_design/g + b)
 m_MTOW = m_OE + m_payload + m_fuel_total * 1.5
+
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
 print(m_OE,"OEM")
@@ -317,6 +324,16 @@ print(m_propulsion)
 print(P_max_no_eff)
 print(f"P_Peak is {P_ice(E_climb1_total,t_climb1)/10**3}")
 print(f"P_Peak is {P_ice(E_cruise_full_total,t_cruise_full)/10**3}")
-print(m_payload)
-print(m_fuel_total)
-print(m_MTOW)
+
+# print(m_payload)
+# print(m_fuel_total)
+# print(m_MTOW)
+print(CL / CD, "L/D ratio")
+print(b, S_design, S, "Wingspan, design S, input S")
+print(P_max_no_eff, P_max_EM, P_max_fc, "Maximum power no eff, max power em, max power fc")
+E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
+print(E_total / 10**6, "MJ")
+print(m_MTOW, "MTOM")
+print(m_fuel_total, "fuel mass")
+
+# print(t_climb1, t_climb2, t_climb3, t_cruise_full, t_descent1, t_descent2)
