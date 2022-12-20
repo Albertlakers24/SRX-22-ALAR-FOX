@@ -15,7 +15,7 @@ R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
 # Common values for both configurations
-m_pldes = 5443                    #Design payload [kg]
+m_pldes = 5440                    #Design payload [kg]
 E_tot =32604 * 10**6             # Total propulsive energy (in J)
 LD_crs     = 17
 
@@ -23,27 +23,30 @@ LD_crs     = 17
 eta_p = 0.85                   # Propulsive efficiency (overall)
 eta_i = 0.99                        # Inverter efficiency
 #n_eng_em= 0.934*0.995*0.95 # 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
-eta_m = 0.95
+eta_m = 0.95                    #ELECTRIC MOTOR!!
 c_b = e_bat                         # Battery specific energy (J/kg)
+eta_bat = 0.934
+eta_gt = 0.39
+eta_gen = 0.97
 
 def configuration_values(prop_type):
     if prop_type == 1:  # Parallel Series
-        m_mto = 24100
-        m_oe = 12883
-        m_f = 1723
+        m_mto = 24030
+        m_oe = 12900
+        m_f = 1720
         m_bat = 3970
-        pl_increase = 1.47
+        pl_increase = 1 #1.47
         c_p = 1/(43*10**6 * 0.45)
-        eta_g = 0.45  # Generator efficiency
+        eta_g = 0.45  # TURBOPROP efficiency
 
     if prop_type == 2:  # Series
-        m_mto = 25300
+        m_mto = 25290
         m_oe = 13700
-        m_f = 2211
+        m_f = 2210
         m_bat = 3940
-        pl_increase = 1.54
+        pl_increase = 1 #1.54
         c_p = 1/(43*10**6 * 0.39)
-        eta_g = 0.97 * 0.39  # Generator efficiency
+        eta_g = eta_gt * eta_gen #FUEL POWERTRAIN efficiency (NOT TURBOPROP!)
 
     return m_mto, m_oe, m_f, m_bat, pl_increase, c_p, eta_g
 
@@ -137,7 +140,7 @@ m_plmaxS = max_payload_mass(m_pldes, pl_increaseS, m_mtoS, m_oeS, m_batS)
 fS = f_ratio(m_mtoS, m_oeS)
 m_fB_S = fuelmass_maxpl(m_mtoS, m_oeS, m_batS, m_plmaxS)
 phi_B_S, psi_B_S = mass_fraction(m_mtoS, m_batS, m_fB_S, fS)
-R_b_S = R_cruise(phi_B_PS, psi_B_PS, fS, c_pS,eta_g_S)
+R_b_S = R_cruise(phi_B_S, psi_B_S, fS, c_pS,eta_g_S)
 RB_S = R_tot(R_b_S, R_b_S, LD_crs)/1852
 # Point C
 phi_C_S, psi_C_S = mass_fraction(m_mtoS, m_batS, m_fS, fS)
@@ -157,3 +160,9 @@ print('Hybrid Electric Series',rangesS, plmassesS)
 
 plotting(rangesS, plmassesS, 'Payload range diagram Electric Hybrid Series', 'blue')
 plotting(rangesPS, plmassesPS, 'Payload range diagram Hybrid Electric Parallel Series', 'orange')
+
+print("FUEL VALUES")
+print(m_fS)
+print(m_oeS + m_pldes + m_fS + m_batS)
+print(m_mtoS)
+print("fuel at max payload", m_fB_S)
