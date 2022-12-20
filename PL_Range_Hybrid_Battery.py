@@ -12,13 +12,13 @@ f_con = 5/100
 R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
-m_pldes = 5443                    #Design payload [kg]
+m_pldes = 5443   #Design payload [kg]
 E_tot = 32604 * 10**6 #31226 * 10**6                 # Total propulsive energy (in J)
 
 #Aircraft mass characteristics -- --> to be updated!!
 # SERIES PARALLEL
 m_oe    =  12883                    #Operational empty weight [kg]
-phi = ((0.55*0.6) + (0.04*0.4)) #(0.55+0.02)/2                               # Rate of hybridization (Point C - Design point)
+phi = 0.2456 #(0.55+0.02)/2  # Rate of hybridization (Point C - Design point)
 n_eng_tp = 0.45          #Engine efficiency (thermodynamic, turboprop)
 m_f = 1723 #3633
 m_mto   = 24100 -1723 + m_f  #25857                # Max take-off
@@ -41,7 +41,7 @@ m_plmax = m_pldes* 1.156
 
 # ----- BATTERY ------
 e_bat       = 2.7 * 10**6
-n_eng_em    = 0.934*0.85*0.99*0.995*0.95                      #Enine efficiency (electric motor)
+n_eng_em    = 0.95 #0.934*0.85*0.99*0.995*0.95                      #Enine efficiency (electric motor)
 n_p_em      = 0.85                      #Propulsive efficiency (electric motor)
 #P_em = 2000*10**3
 # ------- TURBOPROP
