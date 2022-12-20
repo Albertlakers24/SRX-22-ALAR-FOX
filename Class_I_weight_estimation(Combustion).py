@@ -43,7 +43,7 @@ CD0_take_off = CD_0(15, 1)
 CD0_landing = CD_0(35, 1)
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
-red_CD = 0.90
+red_CD = 1
 CD_to = (CD0_take_off + (CL_to**2 /(np.pi * A* e_take_off))) * red_CD
 CL_land = 2.6                      #Change with Estimate (1.9-3.3)
 CD_land = (CD0_landing + (CL_to**2 /(np.pi * A* e_landing))) * red_CD
@@ -126,6 +126,7 @@ ddp = 0.8                   #Deep discharge protection
 E_bat = 2.7*10**6 *0.99 * 0.995 * 0.95      #Total Battery Energy per piece (Bat eff, Inverter eff, Em eff)
 eta_stt = 0.6 * 0.97 * 0.995**2 * 0.85 * 0.95                #Efficiency chain from shaft-to-thrust
 eta_btt = 0.934 * 0.85        #Efficiency chain from battery-to-thrust
+eta_eng_lh2 = 0.3  # Brake thermal efficiency 0.2-0.25
 NoD_ice = 2                   #Number of turboprop engines
 NoD_em_tip = 2                #Number of electric motor engines (wing tip)
 NoD_em_dis = 2                #Number of electric motor engines (distributed)
@@ -148,14 +149,14 @@ m_propeller_dis = m_em_dis * 0.14
 m_em_tip = 50
 m_propeller_tip = m_em_tip * 0.14
 def m_fuel(P):
-    BSFC_fuelcell = 1/ (120*10**6 * 0.6 )
-    m_fuel = P * BSFC_fuelcell
+    BSFC_combustion = 1/ (120*10**6 * eta_eng_lh2)
+    m_fuel = P * BSFC_combustion
     return m_fuel
 def P_ice(E,t):
-    P_ice = E/(eta_stt * t)
+    P_ice = E/(0.85 * eta_eng_lh2 * t)
     return P_ice
 def Energy(MTOW,acc,t,L_D,ROC,V1):
-    Energy = MTOW * (acc * t +V1) / L_D + (MTOW/g * acc **2)/2 + MTOW * ROC
+    Energy = MTOW * (acc * t + V1) / L_D + (MTOW/g * acc **2)/2 + MTOW * ROC
     return Energy
 def m_bat(E_nc):
     m_bat = (1+ddp) * (E_nc)/ (eta_btt * E_bat)
@@ -299,19 +300,20 @@ prop_eff = 0.85
 
 #FC efficiencies
 FC_eff = 0.6
-P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_stt
-P_max_fc = P_max_no_eff / wire_eff / inverter_eff**2 / motor_eff / prop_eff
-P_max_EM = P_max_no_eff / prop_eff / motor_eff
+P_max_no_eff = P_ice(E_climb1_total,t_climb1) / 10**3 * eta_eng_lh2 * 0.85
+# P_max_fc = P_max_no_eff / wire_eff / inverter_eff**2 / motor_eff / prop_eff
+# P_max_EM = P_max_no_eff / prop_eff / motor_eff
 P_max_shaft = P_max_no_eff / prop_eff
-m_fuelcell_struc = 2474 / 3#P_max_fc / 3
-m_inverter = (P_max_no_eff / wire_eff) / 30
-m_propulsion = (P_max_EM / 15 + m_inverter) * 1.5
+# m_fuelcell_struc = P_max_fc / 3
+# m_inverter = (P_max_no_eff / wire_eff) / 30
+# m_propulsion = (P_max_EM / 15 + m_inverter) * 1.5
+m_propulsion = 500 * 2
 '''m_fuelcell_struc = P_ice(E_climb1_total,t_climb1)/10**3 /3
 m_inverter = P_ice(E_climb1_total,t_climb1)/10**3 /30
 m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
-m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc + m_fuel_total * 1.4
+m_OE = (a * MTOW_design/g + b) + m_propulsion #+ m_fuelcell_struc
 m_OE_without = (a * MTOW_design/g + b)
-m_MTOW = m_OE + m_payload + m_fuel_total
+m_MTOW = m_OE + m_payload + m_fuel_total * 2.4
 
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
@@ -333,14 +335,13 @@ print(f"P_Peak is {P_ice(E_cruise_full_total,t_cruise_full)/10**3}")
 # print(m_MTOW)
 print(CL / CD, "L/D ratio", CD)
 print(b, S_design, S, "Wingspan, design S, input S")
-print(P_max_no_eff, P_max_EM, P_max_fc, "Maximum power no eff, max power em, max power fc")
+print(P_max_no_eff, "Maximum power no eff")
 E_total = E_climb1_total + E_climb2_total + E_climb3_total + E_cruise_full_total + E_descent1_total + E_descent2_total
 print(P_max_shaft, "Maximum shaft power in kW")
 print(E_total / 10**6, "MJ")
 print(m_MTOW, "MTOM")
 print(m_OE, "OEM")
 print(m_fuel_total, "fuel mass")
-print(E_total / (120 * 10 ** 6))
+# print(m_fuel_total / t_total_full)
 
 # print(t_climb1, t_climb2, t_climb3, t_cruise_full, t_descent1, t_descent2)
-print(t_total_500)
