@@ -32,7 +32,7 @@ def configuration_values(prop_type):
         m_oe = 19446
         m_f = 2159
         m_bat = 6298
-        pl_increase = 1.47
+        pl_increase = 1.2
         c_p = 1/(43*10**6*0.45)
         eta_g = 0.45  # Generator efficiency
 
@@ -41,7 +41,7 @@ def configuration_values(prop_type):
         m_oe = 21785
         m_f = 2778
         m_bat = 8525
-        pl_increase = 1.54
+        pl_increase = 1.25
         c_p = 1/(43*10**6*0.39)
         eta_g = 0.97*0.99*0.99*0.39  # Generator efficiency
 
@@ -73,7 +73,7 @@ def R_tot(R_nom, R_cruise, LD_crs):
     R_eq = ((R_nom + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
     R_aux = R_eq - R_nom
     R = R_cruise + R_aux
-    return R
+    return R_eq
 
 def plotting(ranges, plmasses, title, colour):
     # plotting the points
@@ -86,12 +86,12 @@ def plotting(ranges, plmasses, title, colour):
     plt.annotate('Maximum payload', xy=(1700, plmasses[1] + 50))
 
     plt.axvline(x=ranges[2], color='grey', linestyle='--')
-    plt.annotate('Range @ Design payload', xy=(ranges[2] - 60, 100), rotation='vertical')
+    plt.annotate('Range @ Design payload', xy=(ranges[2] - 60, 200), rotation='vertical')
     plt.axvline(x=ranges[1], color='grey', linestyle='--')
-    plt.annotate('Range @ Maximum payload', xy=(ranges[1] - 60, 100), rotation='vertical')
+    plt.annotate('Range @ Maximum payload', xy=(ranges[1] - 60, 200), rotation='vertical')
 
     plt.xlim(0,2300)
-    plt.ylim(0,8700)
+    plt.ylim(0,7050)
     n = ['A', 'B', 'C', 'D']
     for i, txt in enumerate(n):
         plt.annotate(txt, (ranges[i], plmasses[i]))
