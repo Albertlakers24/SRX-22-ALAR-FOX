@@ -20,11 +20,10 @@ E_tot =25365 * 10**6             # Total propulsive energy (in J)
 LD_crs     = 22
 
 # Efficiencies
-eta_p = 0.85                   # Propulsive efficiency (overall)
-eta_i = 0.99                        # Inverter efficiency
-#n_eng_em= 0.934*0.995*0.95 # 0.934*0.99*0.995*0.95*0.85 #Enine efficiency (electric motor)
-eta_m = 0.95
-c_b = e_bat                         # Battery specific energy (J/kg)
+eta_p = 0.85                    # Propulsive efficiency (overall)
+eta_i = 0.99                    # Inverter efficiency
+eta_m = 0.95*0.934              # Motor * Battery efficiency
+c_b = e_bat                     # Battery specific energy (J/kg)
 
 def configuration_values(prop_type):
     if prop_type == 1:  # Parallel Series
@@ -68,11 +67,9 @@ def R_cruise(phi, psi, f, c_p, eta_g):
     r_tot = LD_crs * eta_i * eta_m * eta_p / g * ((phi * c_b * (1 - f)) / (1 - psi * (1 - f)) + eta_g / c_p * np.log(1 / (1 - psi * (1 - f))))
     return r_tot
 
-def R_tot(R_nom, R_cruise, LD_crs):
+def R_tot(R_cruise, LD_crs):
     R_lost = (1 / 0.7) * (LD_crs) * (h_cr + ((V_cr ** 2) / (2 * g)))
-    R_eq = ((R_nom + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
-    R_aux = R_eq - R_nom
-    R = R_cruise + R_aux
+    R_eq = ((R_cruise + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
     return R_eq
 
 def plotting(ranges, plmasses, title, colour):
@@ -113,17 +110,17 @@ fPS = f_ratio(m_mtoPS, m_oePS)
 m_fB_PS = fuelmass_maxpl(m_mtoPS, m_oePS, m_batPS, m_plmaxPS)
 phi_B_PS, psi_B_PS = mass_fraction(m_mtoPS, m_batPS, m_fB_PS, fPS)
 R_b_PS = R_cruise(phi_B_PS, psi_B_PS, fPS, c_pPS,eta_g_PS)
-RB_PS = R_tot(R_b_PS, R_b_PS, LD_crs)/1852
+RB_PS = R_tot(R_b_PS, LD_crs)/1852
 # Point C
 phi_C_PS, psi_C_PS = mass_fraction(m_mtoPS, m_batPS, m_fPS, fPS)
 R_c_PS = R_cruise(phi_C_PS, psi_C_PS,fPS, c_pPS,eta_g_PS)
-RC_PS = R_tot(R_c_PS, R_c_PS, LD_crs)/1852
+RC_PS = R_tot(R_c_PS, LD_crs)/1852
 # Point D
 m_mtoD_PS = m_oePS + m_batPS + m_fPS
 f_D_PS = f_ratio(m_mtoD_PS, m_oePS)
 phi_D_PS, psi_D_PS = mass_fraction(m_mtoD_PS, m_batPS, m_fPS, f_D_PS)
 R_d_PS = R_cruise(phi_D_PS, psi_D_PS,f_D_PS, c_pPS,eta_g_PS)
-RD_PS = R_tot(R_d_PS, R_d_PS, LD_crs)/1852
+RD_PS = R_tot(R_d_PS, LD_crs)/1852
 
 rangesPS = [0, RB_PS, RC_PS, RD_PS]
 plmassesPS = [m_plmaxPS, m_plmaxPS,m_pldes, 0]
@@ -138,17 +135,17 @@ fS = f_ratio(m_mtoS, m_oeS)
 m_fB_S = fuelmass_maxpl(m_mtoS, m_oeS, m_batS, m_plmaxS)
 phi_B_S, psi_B_S = mass_fraction(m_mtoS, m_batS, m_fB_S, fS)
 R_b_S = R_cruise(phi_B_PS, psi_B_PS, fS, c_pS,eta_g_S)
-RB_S = R_tot(R_b_S, R_b_S, LD_crs)/1852
+RB_S = R_tot(R_b_S, LD_crs)/1852
 # Point C
 phi_C_S, psi_C_S = mass_fraction(m_mtoS, m_batS, m_fS, fS)
 R_c_S = R_cruise(phi_C_S, psi_C_S, fS, c_pS,eta_g_S)
-RC_S = R_tot(R_c_S, R_c_S, LD_crs)/1852
+RC_S = R_tot(R_c_S, LD_crs)/1852
 # Point D
 m_mtoD_S = m_oeS + m_batS + m_fS
 f_D_S = f_ratio(m_mtoD_S, m_oeS)
 phi_D_S, psi_D_S = mass_fraction(m_mtoD_S, m_batS, m_fS, f_D_S)
 R_d_S = R_cruise(phi_D_S, psi_D_S,fS, c_pS,eta_g_S)
-RD_S = R_tot(R_d_S, R_d_S, LD_crs)/1852
+RD_S = R_tot(R_d_S, LD_crs)/1852
 
 rangesS = [0, RB_S, RC_S, RD_S]
 plmassesS = [m_plmaxS, m_plmaxS,m_pldes, 0]
