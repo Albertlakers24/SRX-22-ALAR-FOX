@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 # constants
 g = 9.80665
-e_bat       = 2.7  * 10**6
+e_bat       = 1.656  * 10**6
 e_f         = 42 * 10**6
 
 # Mission Charecteristics
@@ -16,8 +16,8 @@ t_E = 45 * 60    # in seconds - endurance time
 
 # Common values for both configurations
 m_pldes = 5443                    #Design payload [kg]
-E_tot =32604 * 10**6             # Total propulsive energy (in J)
-LD_crs     = 17
+E_tot =25365 * 10**6             # Total propulsive energy (in J)
+LD_crs     = 22
 
 # Efficiencies
 eta_p = 0.85                   # Propulsive efficiency (overall)
@@ -28,22 +28,22 @@ c_b = e_bat                         # Battery specific energy (J/kg)
 
 def configuration_values(prop_type):
     if prop_type == 1:  # Parallel Series
-        m_mto = 24100
-        m_oe = 12883
-        m_f = 1723
-        m_bat = 3970
+        m_mto = 33346
+        m_oe = 19446
+        m_f = 2159
+        m_bat = 6298
         pl_increase = 1.47
-        c_p = 1/(43*10**6 * 0.45)
+        c_p = 1/(43*10**6*0.45)
         eta_g = 0.45  # Generator efficiency
 
     if prop_type == 2:  # Series
-        m_mto = 25300
-        m_oe = 13700
-        m_f = 2211
-        m_bat = 3940
+        m_mto = 38532
+        m_oe = 21785
+        m_f = 2778
+        m_bat = 8525
         pl_increase = 1.54
-        c_p = 1/(43*10**6 * 0.39)
-        eta_g = 0.97 * 0.39  # Generator efficiency
+        c_p = 1/(43*10**6*0.39)
+        eta_g = 0.97*0.99*0.99*0.39  # Generator efficiency
 
     return m_mto, m_oe, m_f, m_bat, pl_increase, c_p, eta_g
 
