@@ -59,7 +59,7 @@ W_P_design = 0.04706
 W_S_design = 3169
 m_turboprop = 1074.5/2
 #Range Calculation
-MTOW_design = 21889 * g                  #N
+MTOW_design = 19243 * g                  #N
 # S = MTOW_design / 3169
 # CL = MTOW_design / (rho_cruise * V_cruise **2 / 2 * S)
 CL = 0.72
@@ -150,7 +150,7 @@ m_em_tip = 50
 m_propeller_tip = m_em_tip * 0.14
 def m_fuel(P):
     BSFC_combustion = 1/ (120*10**6 * eta_eng_lh2)
-    m_fuel = P * BSFC_combustion / 2.4
+    m_fuel = P * BSFC_combustion
     return m_fuel
 def P_ice(E,t):
     P_ice = E/(0.85 * eta_eng_lh2 * t)

@@ -28,11 +28,11 @@ def configuration_values(prop_type):
         LD_crs = 22  # Lift to drag ratio during cruise
         eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
     if prop_type == 2:    # LH2 Combustion
-        m_mto = 19223  # in kg --> Max take off
-        m_oe = 12512  # in kg --> Operating empty
+        m_mto = 21728  # in kg --> Max take off
+        m_oe = 15086  # in kg --> Operating empty
         m_f = 1268  # in kg --> Fuel mass
-        pl_increase = m_pldes * 1.121
-        LD_crs = 17  # Lift to drag ratio during cruise
+        pl_increase = 1.1
+        LD_crs = 19.8  # Lift to drag ratio during cruise
         eta_eng = 0.3
     return m_oe, m_mto, m_f, pl_increase, LD_crs, eta_eng
 

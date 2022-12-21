@@ -309,9 +309,9 @@ m_propulsion = (P_max_EM / 15 + m_inverter) * 1.5
 '''m_fuelcell_struc = P_ice(E_climb1_total,t_climb1)/10**3 /3
 m_inverter = P_ice(E_climb1_total,t_climb1)/10**3 /30
 m_propulsion = (P_ice(E_climb1_total,t_climb1)/10**3 /15 + m_inverter) * 1.5'''
-m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc
+m_OE = (a * MTOW_design/g + b) + m_propulsion + m_fuelcell_struc + m_fuel_total * 1.4
 m_OE_without = (a * MTOW_design/g + b)
-m_MTOW = m_OE + m_payload + m_fuel_total * 2.4
+m_MTOW = m_OE + m_payload + m_fuel_total
 
 print(m_MTOW,"MTOM")
 print(m_OE_without,"OEM_without")
@@ -343,3 +343,4 @@ print(m_fuel_total, "fuel mass")
 print(E_total / (120 * 10 ** 6))
 
 # print(t_climb1, t_climb2, t_climb3, t_cruise_full, t_descent1, t_descent2)
+print(t_total_500)
