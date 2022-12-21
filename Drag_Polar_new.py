@@ -23,7 +23,7 @@ delta_f_take_off = 15       # TAKE Flap deflection - in degrees
 delta_f_landing = 35        # LANDING Flap deflection - in degrees
 
 # Make CL Lists for each flight phase
-step = 0.02
+step = 0.01
 CL_list_takeOff = np.arange(0, CL_max_take0ff + step, step)
 CL_list_cruise = np.arange(0, CL_max_cruise + step, step)
 CL_list_landing = np.arange(0, CL_max_landing + step, step)
@@ -77,7 +77,7 @@ e_EH_Land = e_cruise + Change_e_EH_Land
 
 # DRAG LH2 PROPULSION - ONLY WING MOUNTED!!
 
-red_CD = 0.90
+red_CD = 0.9
 for i in range(len(CL_list_cruise)):
     CDi_cruise = (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
     CD_cruise = (CD0_Cruise + CDi_cruise) * red_CD

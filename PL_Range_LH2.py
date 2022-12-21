@@ -22,13 +22,13 @@ def configuration_values(prop_type):
     if prop_type == 1:  # LH2 fuel cell
         m_f = 669 # LH2 mass in kg
         m_tank = 936 # 1.4*m_fh
-        m_oe = 12195 + m_tank # Operating empty mass + tank mass
+        m_oe = 12195 + m_tank# Operating empty mass + tank mass
         m_mto = 19243 #19370
         pl_increase = 1.0735
         LD_crs = 22  # Lift to drag ratio during cruise
         eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
     if prop_type == 2:    # LH2 Combustion
-        m_mto = 21728  # in kg --> Max take off
+        m_mto = 21728 # in kg --> Max take off
         m_oe = 15086  # in kg --> Operating empty
         m_f = 1268  # in kg --> Fuel mass
         pl_increase = 1.1

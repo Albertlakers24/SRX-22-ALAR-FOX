@@ -161,7 +161,7 @@ def m_bat(E_nc):
     m_bat = (1+ddp) * (E_nc)/ (eta_btt * E_bat)
     return m_bat
 
-range_selected = 1000 #Choose range of 500 or 1000
+range_selected = 500 #Choose range of 500 or 1000
 
 if range_selected == 500:
     for i in range(1,int(t_total_500)+1):
@@ -343,4 +343,4 @@ print(m_fuel_total, "fuel mass")
 print(E_total / (120 * 10 ** 6))
 
 # print(t_climb1, t_climb2, t_climb3, t_cruise_full, t_descent1, t_descent2)
-print(t_total_500)
+print(t_total_full)
