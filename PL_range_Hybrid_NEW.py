@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 
 # constants
 g = 9.80665
-e_bat       = 2.7  * 10**6
-e_f         = 42 * 10**6
+e_bat       = 1.656 * 10**6
+e_f         = 43 * 10**6
 
 # Mission Charecteristics
 V_cr = 141.471   # in m/s
@@ -15,9 +15,9 @@ R_div = 185200   # in m ---> 100nmi
 t_E = 45 * 60    # in seconds - endurance time
 
 # Common values for both configurations
-m_pldes = 5440                    #Design payload [kg]
+m_pldes = 5443                    #Design payload [kg]
 E_tot =32604 * 10**6             # Total propulsive energy (in J)
-LD_crs     = 17
+LD_crs     = 22
 
 # Efficiencies
 eta_p = 0.85                   # Propulsive efficiency (overall)
@@ -31,20 +31,21 @@ eta_gen = 0.97
 
 def configuration_values(prop_type):
     if prop_type == 1:  # Parallel Series
-        m_mto = 24030
-        m_oe = 12900
-        m_f = 1720
-        m_bat = 3970
-        pl_increase = 1 #1.47
+        m_mto = 33346
+        m_oe = 19446
+        m_f = 2159
+        m_bat = 6298
+        pl_increase = 1.2
+
         c_p = 1/(43*10**6 * 0.45)
         eta_g = 0.45  # TURBOPROP efficiency
 
     if prop_type == 2:  # Series
-        m_mto = 25290
-        m_oe = 13700
-        m_f = 2210
-        m_bat = 3940
-        pl_increase = 1 #1.54
+        m_mto = 38532
+        m_oe = 21786
+        m_f = 2778
+        m_bat = 8525
+        pl_increase = 1.25
         c_p = 1/(43*10**6 * 0.39)
         eta_g = eta_gt * eta_gen #FUEL POWERTRAIN efficiency (NOT TURBOPROP!)
 
@@ -73,10 +74,10 @@ def R_cruise(phi, psi, f, c_p, eta_g):
 
 def R_tot(R_nom, R_cruise, LD_crs):
     R_lost = (1 / 0.7) * (LD_crs) * (h_cr + ((V_cr ** 2) / (2 * g)))
-    R_eq = ((R_nom + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
-    R_aux = R_eq - R_nom
+    R_eq = ((R_cruise + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
+    R_aux = R_eq - R_nom # R_nom = R_eq - R_aux
     R = R_cruise + R_aux
-    return R
+    return R_eq
 
 def plotting(ranges, plmasses, title, colour):
     # plotting the points
@@ -166,3 +167,19 @@ print(m_fS)
 print(m_oeS + m_pldes + m_fS + m_batS)
 print(m_mtoS)
 print("fuel at max payload", m_fB_S)
+print("payload max SERIES", m_plmaxS)
+print("payload max PARALLEL", m_plmaxPS)
+print("payload parallel - design payload", m_plmaxPS - m_pldes)
+print("psi for SERIES and PARALLEL", psi_B_S, psi_B_PS)
+print("phi for SERIES and PARALLEL", phi_B_S, phi_B_PS)
+
+'''
+LIMITATION OF THE METHOD:
+These diagrams must be observed with a grain of salt: While the diagram shows that it is theoretically possible to 
+fly the entire range of the mission on batteries, this is not accurate. From an energy perspective, it is indeed
+possible to perform such mission, however what the diagram does not take into account are the different power requirements
+for different phases of flight - during take-off, the power provided by the batteries is limiting, and the aircraft cannot
+fulfill that flight phase unless supported on hybrid with both batteries AND fuel. 
+
+As such, the diagram - while accurate - does not depict the full picture and may be deceiving.
+'''
