@@ -24,14 +24,14 @@ def configuration_values(prop_type):
         m_tank = 936 # 1.4*m_fh
         m_oe = 12195 + m_tank# Operating empty mass + tank mass
         m_mto = 19243 #19370
-        pl_increase = 1.0735
+        pl_increase = 1.06145
         LD_crs = 22  # Lift to drag ratio during cruise
         eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
     if prop_type == 2:    # LH2 Combustion
         m_mto = 21728 # in kg --> Max take off
         m_oe = 15086  # in kg --> Operating empty
         m_f = 1268  # in kg --> Fuel mass
-        pl_increase = 1.1
+        pl_increase = 1.116
         LD_crs = 19.8  # Lift to drag ratio during cruise
         eta_eng = 0.3
     return m_oe, m_mto, m_f, pl_increase, LD_crs, eta_eng
@@ -71,7 +71,7 @@ def plotting(ranges, plmasses, title, colour):
     plt.annotate('Range @ Maximum payload', xy=(ranges[1] - 60, 100), rotation='vertical')
 
     plt.xlim(0,2300)
-    plt.ylim(0,8700)
+    plt.ylim(0,7050)
     n = ['A', 'B', 'C', 'D']
     for i, txt in enumerate(n):
         plt.annotate(txt, (ranges[i], plmasses[i]))
