@@ -85,10 +85,10 @@ for i in range(len(CL_list_cruise)):
     CD_list_cruise_WTprop.append(CD_cruise_WTProp)
 CL_CD = CL_list_cruise / CD_list_cruise_WTprop
 max_CL_CD = max(CL_CD)
-print(CL_CD)
-print(max_CL_CD, "max L/D")
+# print(CL_CD)
+# print(max_CL_CD, "max L/D")
 index = np.where(CL_CD == max_CL_CD)
-print(CL_list_cruise[index])
+# print(CL_list_cruise[index])
 # print(CL_CD.index(max_CL_CD))
 
 
@@ -132,7 +132,7 @@ for i in range(len(CL_list_landing)):
     CD_list_landing_EH.append(CD_Land_EH)
 
 
-
+'''
 plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_EH, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
 plt.plot(CD_list_takeOf_withLG_EH, CL_list_takeOff, color = 'orange', label = 'Take-off, Landing gear down')
@@ -152,3 +152,4 @@ plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
 plt.title('Drag polar - with wing tip propellers') # giving a title to my graph
 plt.show()
+'''
