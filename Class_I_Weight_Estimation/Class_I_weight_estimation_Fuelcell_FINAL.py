@@ -43,17 +43,17 @@ em_mass = (1 / eta_EM) / em_power_density
 inverter_mass = (1 / eta_EM / eta_wire / eta_inverter) / inverter_power_density
 masses_sum = (fc_mass + em_mass + inverter_mass) / W_P_design * g / 10**3
 
-def mtom(oew_ratio, range):
-    mtom = (m_payload + m_crew_total) / (1 - 2.4 * mf_mMTO(range) * (1 + m_res) - oew_ratio)
+def mtom(oew_ratio):
+    mtom = (m_payload + m_crew_total) / (1 - 2.4 * mf_mMTO("full") * (1 + m_res) - oew_ratio)
     return mtom
 oew_mtom = a_regression + masses_sum
-m_mto = mtom(oew_mtom, "full")
+m_mto = mtom(oew_mtom)
 
 def fuel_mass(oew_ratio, range):
     if range == "full":
-        m_f = mtom(oew_ratio, range) * (mf_mMTO(range) * (1 + m_res)) * (1 + m_f_extra)
+        m_f = mtom(oew_ratio) * (mf_mMTO(range) * (1 + m_res)) * (1 + m_f_extra)
     elif range == 500:
-        m_f = mtom(oew_ratio, range) * (mf_mMTO(range)) * (1 + m_f_extra)
+        m_f = mtom(oew_ratio) * (mf_mMTO(range)) * (1 + m_f_extra)
     return m_f
 m_f = fuel_mass(oew_mtom, "full")
 oem = oew_mtom * m_mto + m_f * 1.4
