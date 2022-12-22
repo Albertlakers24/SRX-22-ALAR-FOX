@@ -10,7 +10,6 @@ s_takeoff_1524 = s_takeoff
 s_landing_1524 = s_landing
 
 ##Cdo calculations
-A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e = 1/(np.pi*A*Psi+(1/phi))
 Cd0 = Cfe * Swet_S
 #ROC and beta estimates
