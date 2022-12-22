@@ -34,52 +34,29 @@ def mf_mMTO(range):
         R = (R_norm / 2 + R_lost) * (1 + f_con)  # m
     mf_mMTO_fraction = 1 - np.exp((-1 * R) / (total_eff * (e_lh2 / g) * CL_CD))
     return mf_mMTO_fraction
-print(mf_mMTO("full"))
 
 m_payload = m_pax + m_pax_baggage
 m_crew_total = m_crew + m_crew_baggage
-# m_mto = (b_regression + m_payload) / (1 - a_regression - ((mf_mMTO("full") * 2.4) * (1 + m_res)) * (1 + m_f_extra))
-# m_oem = a_regression * m_mto + b_regression
-
-# e = 2
-# while e > 1.037:
-#     power_shaft = W_P_design * m_mto
-#     fc_mass = (power_shaft / total_eff * eta_fuelcell * eta_prop) / fc_power_density
-#     em_mass = (power_shaft / eta_EM) / em_power_density
-#     inverter_mass = (power_shaft / eta_EM / eta_wire / eta_inverter) / inverter_power_density
-#     m_mto_old = m_mto
-#     m_mto = (fc_mass + em_mass + inverter_mass) + m_mto_old
-#     print(m_mto, m_mto_old)
-#     e = (m_mto / m_mto_old)
 
 fc_mass = (1 / total_eff * eta_fuelcell * eta_prop) / fc_power_density
 em_mass = (1 / eta_EM) / em_power_density
 inverter_mass = (1 / eta_EM / eta_wire / eta_inverter) / inverter_power_density
 masses_sum = (fc_mass + em_mass + inverter_mass) / W_P_design * g / 10**3
-print(masses_sum, "masses sum")
 
 def mtom(oew_ratio, range):
     mtom = (m_payload + m_crew_total) / (1 - 2.4 * mf_mMTO(range) * (1 + m_res) - oew_ratio)
     return mtom
 oew_mtom = a_regression + masses_sum
-print(oew_mtom)
 m_mto = mtom(oew_mtom, "full")
 
-print(m_mto)
 def fuel_mass(oew_ratio, range):
     if range == "full":
         m_f = mtom(oew_ratio, range) * (mf_mMTO(range) * (1 + m_res)) * (1 + m_f_extra)
     elif range == 500:
         m_f = mtom(oew_ratio, range) * (mf_mMTO(range)) * (1 + m_f_extra)
     return m_f
-oem = oew_mtom * m_mto
-print(fuel_mass(oew_mtom, "full"), oem)
-# print(fuel_mass("full"))
-# print(fuel_mass_ref)
-#
-# power_needed = m_mto * g / W_P_design / 10**3
-# print(power_needed, m_mto)
-
-
-
-
+m_f = fuel_mass(oew_mtom, "full")
+oem = oew_mtom * m_mto + m_f * 1.4
+print("MTOM:", m_mto)
+print("OEM:", oem)
+print("Fuel mass:", m_f)
