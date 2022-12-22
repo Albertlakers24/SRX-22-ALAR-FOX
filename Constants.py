@@ -32,7 +32,8 @@ m_crew = 3 * 190 * lbs_kg           #Crew mass
 m_crew_baggage = 3 * 30 * lbs_kg    #Baggage mass for crew
 R_norm = 1000 * nmi_m               #Design Range
 R_div = 100 * nmi_m                 #Divergence Range
-Loiter = 30 * min_s                 #Loiter Endurance
+t_loiter = 30 * min_s               #Loiter Endurance
+f_con = 5/100                       #Contingency fuel percentage
 #Efficiency Constants
 eta_prop = 0.85                     #Propeller efficiency
 eta_EM = 0.95                       #Electric motor efficiency

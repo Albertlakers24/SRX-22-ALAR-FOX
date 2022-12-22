@@ -4,7 +4,7 @@ from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 
 #Constants
 f_con = 5/100                   #-
-m_res = 0.25                    #-
+m_res = 0.30                    #-
 a_regression = 0.5617           #- Regression value
 b_regression = 1199.7           #- Regression value
 CL_CD = round(max_CL_CD)        #- Imported value
