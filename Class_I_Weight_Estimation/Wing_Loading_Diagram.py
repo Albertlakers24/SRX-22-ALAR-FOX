@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from Constants import *
 #Constants
-rho_1524= ISA_calculator(4500*ft_m,10)[2]              #1524m ISA + 10 ◦C day (kg/m3)
+'''rho_1524= ISA_calculator(4500*ft_m,10)[2]              #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
 rho_cruise = ISA_calculator(280*FL_ft*ft_m,0)
 W_S = np.arange(1,6000,1)
@@ -146,7 +146,7 @@ elif propulsion_type == 4:
     W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
 
 
-'''W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
+W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
 W_P_TOP = takeoff_constraint(1,s_takeoff_1524,rho_0,h2,k_t,1,2)
 W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_0,CL_land,beta_em)
 W_P_cru = cruise_contraint(eta_prop,1,0.026,1.009,70,W_S,9,0.71,beta_em)
@@ -203,8 +203,7 @@ elif propulsion_type ==4:
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
-'''
-'''print("Hydrogen Combustion W/S = 3552")
+print("Hydrogen Combustion W/S = 3552")
 print("Hydrogen Combustion W/P =  0.0535")
 print("Fuel Cell W/S = 3560")
 print("Fuel Cell W/P = 0.0763 ")
