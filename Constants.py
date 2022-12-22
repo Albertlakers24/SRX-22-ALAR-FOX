@@ -49,6 +49,7 @@ CL_max_take0ff = 2.1                # -
 CL_max_cruise = 1.9                 # -
 CL_max_landing = 2.6                # -
 
+
 #General Functions
 def ISA_calculator(h,dt):
     T = T_0 + lapse_rate * h + dt
