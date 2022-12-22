@@ -10,7 +10,7 @@ h_cr = 8534.4    # in m
 R_nom = 1852000  # in m ---> Design range - 1000nmi
 f_con = 5/100
 R_div = 85200   # in m ---> 100nmi
-t_E =  45 * 60    # in seconds - endurance time
+t_E =  30 * 60    # in seconds - endurance time
 m_pldes = 5443  # Payload mass designed for
 
 # Propulsion charecteristics
@@ -20,18 +20,18 @@ e_f = 120 * 10**6
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 def configuration_values(prop_type):
     if prop_type == 1:  # LH2 fuel cell
-        m_f = 669 # LH2 mass in kg
-        m_tank = 936 # 1.4*m_fh
-        m_oe = 12195 + m_tank # Operating empty mass + tank mass
-        m_mto = 19243 #19370
-        pl_increase = 1.0735
+        m_f = 488.2#669 # LH2 mass in kg
+        #m_tank = 936 # 1.4*m_fh
+        m_oe = 11652 #12195 + m_tank# Operating empty mass + tank mass
+        m_mto = 17630 #19370
+        pl_increase = 1.055
         LD_crs = 22  # Lift to drag ratio during cruise
-        eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
+        eta_eng = 0.6 * 0.97 * 0.995 * 0.95
     if prop_type == 2:    # LH2 Combustion
-        m_mto = 21728  # in kg --> Max take off
+        m_mto = 21728 # in kg --> Max take off
         m_oe = 15086  # in kg --> Operating empty
         m_f = 1268  # in kg --> Fuel mass
-        pl_increase = 1.1
+        pl_increase = 1.116
         LD_crs = 19.8  # Lift to drag ratio during cruise
         eta_eng = 0.3
     return m_oe, m_mto, m_f, pl_increase, LD_crs, eta_eng
@@ -71,7 +71,7 @@ def plotting(ranges, plmasses, title, colour):
     plt.annotate('Range @ Maximum payload', xy=(ranges[1] - 60, 100), rotation='vertical')
 
     plt.xlim(0,2300)
-    plt.ylim(0,8700)
+    plt.ylim(0,7050)
     n = ['A', 'B', 'C', 'D']
     for i, txt in enumerate(n):
         plt.annotate(txt, (ranges[i], plmasses[i]))

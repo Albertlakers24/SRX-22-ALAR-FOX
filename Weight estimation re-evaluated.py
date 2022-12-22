@@ -9,7 +9,7 @@ import numpy as np
 
 # Manual inputs
 Type = 1
-Range = 1
+range = 1
 
 # Type 1: Hydrogen Combustion
 # Type 2: Kerosene
@@ -80,16 +80,18 @@ CL_CD = 19.8
 CD = 0.72 / CL_CD  # -
 
 # Calculations Range
-if Range == 1:
-    R_lost = 1 / 0.7 * (CL / CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
-    R = (R_norm + R_lost) * (1 + f_con) + 1.2 * R_div + (E * V_cruise)  # m
-if Range == 2:
-    R_lost = 1 / 0.7 * (CL / CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
-    R = (R_norm / 2 + R_lost) * (1 + f_con)  # m
+def Range(number):
+    if number == 1:
+        R_lost = 1 / 0.7 * (CL / CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
+        R = (R_norm + R_lost) * (1 + f_con) + 1.2 * R_div + (E * V_cruise)  # m
+    if number == 2:
+        R_lost = 1 / 0.7 * (CL / CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
+        R = (R_norm / 2 + R_lost) * (1 + f_con)  # m
+    return R
 
 # Calculations fuel fraction
-mfuel_MTO_FULL = 1 - np.exp(-R / (eta_eng * eta_p * (e_f / g) * (CL / CD)))  # - normal
-mbat_MTO_FULL = R / (eta_EM * eta_p * (e_bat / g) * (CL / CD))  # - battery
+mfuel_MTO_FULL = 1 - np.exp(-Range(range) / (eta_eng * eta_p * (e_f / g) * (CL / CD)))  # - normal
+mbat_MTO_FULL = Range(range) / (eta_EM * eta_p * (e_bat / g) * (CL / CD))  # - battery
 Mused = mfuel_MTO_FULL  # -
 
 # Calculations Payload
@@ -99,15 +101,18 @@ W_F_extra = 1.03  # 3%
 WPLtot = WPAX + WPAXBAGGAGE  # N
 
 if Type == 1:
-    if Range == 1:
+    if range == 1:
         MTOW = (b + WPLtot + W_tanks) / (1 - a - (Mused * (1 + Mres)) * W_F_extra)
         WOE = a * MTOW + b + W_tanks
         WF = MTOW * (Mused * (1 + Mres)) * W_F_extra
         WF_extra = WF * (W_F_extra - 1)
-    if Range == 2:
+    if range == 2:
+        Mused = 1 - np.exp(-Range(1) / (eta_eng * eta_p * (e_f / g) * (CL / CD)))
         MTOW = (b + WPLtot + W_tanks) / (1 - a - (Mused * (1 + Mres)) * W_F_extra)
         WOE = a * MTOW + b + W_tanks
-        # MTOW_used =
+        Mused = 1 - np.exp(-Range(2) / (eta_eng * eta_p * (e_f / g) * (CL / CD)))
+        WF = MTOW * (Mused)# * (1 + Mres))
+        WF_extra = 0
 
 if Type == 2:
     if Range == 1:
@@ -149,3 +154,4 @@ print("efficiency =", eta_eng * eta_p)
 print("CL/CD =", CL / CD)
 print("Cl=", CL)
 print("CD", CD)
+print(Mused)

@@ -22,6 +22,7 @@ max_power_needed_no_eff = max_power_needed_all_eff * FC_eff * wire_eff * inverte
 max_power_needed = max_power_needed_no_eff / motor_eff / prop_eff
 print(max_power_needed)
 power_cruise = 3148 #2758 #kW
+max_power_needed = 4669#4946#2474
 
 g_0 = 9.80665
 Molar_mass_air = 0.0289644 #kg/mol
@@ -118,6 +119,7 @@ def number_props(num_blades, ratio):
 diameters_small_2, number_props_2, rpms_cruise_2, rpms_takeoff_2 = number_props(2, ratio_big_small)
 diameters_small_3, number_props_3, rpms_cruise_3, rpms_takeoff_3 = number_props(3, ratio_big_small)
 diameters_small_4, number_props_4, rpms_cruise_4, rpms_takeoff_4 = number_props(4, ratio_big_small)
+print(diameters_small_3)
 # print(rpms_cruise, rpms_takeoff)
 # diameters_small_split = np.array_split(diameters_small, 10)
 # number_props_split = np.array_split(number_props, 10)
