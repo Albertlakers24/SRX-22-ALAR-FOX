@@ -1,6 +1,6 @@
 import numpy as np
 #import scipy as sp
-from Lift_Drag_Polar import p, T, specific_gas_constant
+from Class_I_Weight_Estimation.Lift_Drag_Polar import p, T, specific_gas_constant
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered

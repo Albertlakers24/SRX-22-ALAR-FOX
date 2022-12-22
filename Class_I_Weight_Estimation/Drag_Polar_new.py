@@ -29,6 +29,7 @@ CL_list_cruise = np.arange(0, CL_max_cruise + step, step)
 CL_list_landing = np.arange(0, CL_max_landing + step, step)
 
 # Make CD Lists for each flight phase
+CD_list_cruise_WTprop = []
 CD_list_cruise = []
 #LH2
 CD_list_takeOff_woLG_LH2 = []
@@ -79,10 +80,10 @@ e_EH_Land = e_cruise + Change_e_EH_Land
 
 red_CD = 0.9
 for i in range(len(CL_list_cruise)):
-    CDi_cruise = (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
-    CD_cruise = (CD0_Cruise + CDi_cruise) * red_CD
-    CD_list_cruise.append(CD_cruise)
-CL_CD = CL_list_cruise / CD_list_cruise
+    CDi_cruise_WTProp = (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
+    CD_cruise_WTProp = (CD0_Cruise + CDi_cruise_WTProp) * red_CD
+    CD_list_cruise_WTprop.append(CD_cruise_WTProp)
+CL_CD = CL_list_cruise / CD_list_cruise_WTprop
 max_CL_CD = max(CL_CD)
 print(CL_CD)
 print(max_CL_CD, "max L/D")
@@ -91,24 +92,29 @@ print(CL_list_cruise[index])
 # print(CL_CD.index(max_CL_CD))
 
 
-# LH2 CASES
+# Wing tip propeller
 
 for i in range(len(CL_list_takeOff)):
     CDi_TO_LH2 = (CL_list_takeOff[i])**2/(np.pi *A*e_LH2_TO)
-    CD_TO_woLG = CD0_TO_woLG + CDi_TO_LH2
+    CD_TO_woLG = (CD0_TO_woLG + CDi_TO_LH2) * red_CD
     CD_list_takeOff_woLG_LH2.append(CD_TO_woLG)
 
 for i in range(len(CL_list_takeOff)):
     CDi_TO_LH2 = (CL_list_takeOff[i])**2/(np.pi *A*e_LH2_TO)
-    CD_TO_WithLG = CD0_TO_WithLG + CDi_TO_LH2
+    CD_TO_WithLG = (CD0_TO_WithLG + CDi_TO_LH2) * red_CD
     CD_list_takeOf_withLG_LH2.append(CD_TO_WithLG)
 
 for i in range(len(CL_list_landing)):
     CDi_land_LH2 = (CL_list_landing[i])**2/(np.pi *A*e_LH2_Land)
-    CD_Land_LH2 = CD0_Landing + CDi_land_LH2
+    CD_Land_LH2 = (CD0_Landing + CDi_land_LH2) * red_CD
     CD_list_landing_LH2.append(CD_Land_LH2)
 
 # ELECTRIC HYBRID CASES
+
+for i in range(len(CL_list_cruise)):
+    CDi_cruise= (CL_list_cruise[i])**2/(np.pi *A*e_cruise)
+    CD_cruise = (CD0_Cruise + CDi_cruise)
+    CD_list_cruise.append(CD_cruise)
 
 for i in range(len(CL_list_takeOff)):
     CDi_TO_EH = (CL_list_takeOff[i]) ** 2 / (np.pi * A * e_EH_TO)
@@ -125,22 +131,24 @@ for i in range(len(CL_list_landing)):
     CD_Land_EH = CD0_Landing + CDi_land_EH
     CD_list_landing_EH.append(CD_Land_EH)
 
-'''plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
+
+
+plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_EH, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
 plt.plot(CD_list_takeOf_withLG_EH, CL_list_takeOff, color = 'orange', label = 'Take-off, Landing gear down')
 plt.plot(CD_list_landing_EH, CL_list_landing, color = 'blue', label = 'Landing')
 plt.legend()
 plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
-plt.title('Drag polar for Electric Hybrid propulsion') # giving a title to my graph
-plt.show()'''
+plt.title('Drag polar - without wing tip propellers') # giving a title to my graph
+plt.show()
 
-plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
+plt.plot(CD_list_cruise_WTprop, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_LH2, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
 plt.plot(CD_list_takeOf_withLG_LH2, CL_list_takeOff, color = 'orange', label = 'Take-off, Landing gear down')
 plt.plot(CD_list_landing_LH2, CL_list_landing, color = 'blue', label = 'Landing')
 plt.legend()
 plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
-plt.title('Drag polar for hydrogen combustion') # giving a title to my graph
+plt.title('Drag polar - with wing tip propellers') # giving a title to my graph
 plt.show()
