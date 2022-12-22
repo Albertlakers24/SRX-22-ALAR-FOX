@@ -16,7 +16,7 @@ T_0 = 288.15                        #ISA Temperature
 p_0 = 101325                        #ISA Pressure
 rho_0 = 1.225                       #ISA Density
 lapse_rate = -6.5/km_m              #Troposphere lapse rate
-Molar_mass_air = 8.31432            #N m kmol⁻¹ K⁻¹
+Molar_mass_air = 0.0289644            #N m kmol⁻¹ K⁻¹
 specific_gas_constant = 287.052     #J·kg⁻¹·K⁻¹
 universal_gas_constant = 8.31432    #N m kmol⁻¹ K⁻¹
 E = 30 * 60                         #Loiter endurance in seconds
@@ -38,7 +38,7 @@ eta_fuelcell = 0.60                 #Fuel cell efficiency
 
 #General Functions
 def ISA_calculator(h,dt):
-    T = (T_0+dt) + lapse_rate * h
-    p = p_0 * ((T_0 / T) ** ((g * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
-    rho = p / (specific_gas_constant * T)
+    T = T_0 + lapse_rate * h + dt
+    p = p_0 * (((T-dt) / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
+    rho = p / (specific_gas_constant*T)
     return T, p, rho
