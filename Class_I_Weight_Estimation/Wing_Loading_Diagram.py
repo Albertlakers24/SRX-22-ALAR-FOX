@@ -2,9 +2,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 from Constants import *
 #Constants
-'''rho_1524= ISA_calculator(4500*ft_m,10)[2]              #1524m ISA + 10 ◦C day (kg/m3)
+rho_1524= ISA_calculator(4500*ft_m,10)[2]              #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
-rho_cruise = ISA_calculator(280*FL_ft*ft_m,0)
+rho_cruise = ISA_calculator(280*FL_ft*ft_m,0)[2]
 W_S = np.arange(1,6000,1)
 s_takeoff_1524 = s_takeoff
 s_landing_1524 = s_landing
@@ -43,7 +43,7 @@ beta_s_to = 1
 beta_em = 1
 C_LFL = 0.45                        #Landing field length coefficient s^2/m
 alpha_p_em = 1
-CL_2 = (1.13)**2 * CL_to
+CL_2 = 1.13**2 * CL_to
 k_t = 0.85
 h2 = 50 * ft_m
 V_s0 = 31
@@ -145,14 +145,6 @@ elif propulsion_type == 4:
     W_P_TOP = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
     W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
 
-
-W_S_approach = rho_0/ 2 * V_s0 **2 * CL_land
-W_P_TOP = takeoff_constraint(1,s_takeoff_1524,rho_0,h2,k_t,1,2)
-W_S_land = s_land_constraint(s_landing_1524,C_LFL,rho_0,CL_land,beta_em)
-W_P_cru = cruise_contraint(eta_prop,1,0.026,1.009,70,W_S,9,0.71,beta_em)
-W_P_ROC = roc_constraint(0.8,1,2.0,0.026,1.23,9.0,0.71,W_S,1,1,2)
-W_P_CV = climb_gradient_constraint(0.8,1,0.083,0.16,1.5,1.23,W_S,1,1,2)
-W_P_TOP = takeoff_constraint(1,750,1.23,50*ft,k_t,1,2)
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'g',label = "Takeoff Constraint")
 plt.plot(W_S,W_P_TOP_OEI,'r',label = "Takeoff Constraint (OEI)")
@@ -177,7 +169,6 @@ if propulsion_type == 1:
     plt.plot(3532,0.0535,'o',label = "Design point")
 elif propulsion_type == 2:
     plt.title("Hydrogen Fuel cell")
-    plt.title("Hydrogen Combustion")
     plt.fill_between(W_S, W_P_TOP_OEI, 1, color="red", alpha=0.1)
     plt.axvspan(4198, 6000, color="red", alpha=0.1)
     plt.fill_between(W_S, W_P_cruise, 1, color="red", alpha=0.1)
@@ -203,7 +194,7 @@ elif propulsion_type ==4:
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
-print("Hydrogen Combustion W/S = 3552")
+'''print("Hydrogen Combustion W/S = 3552")
 print("Hydrogen Combustion W/P =  0.0535")
 print("Fuel Cell W/S = 3560")
 print("Fuel Cell W/P = 0.0763 ")
