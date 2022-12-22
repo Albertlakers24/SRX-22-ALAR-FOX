@@ -1,21 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# from Class_I_Weight_Estimation import Cd0, e, A
+from Constants import *
 #prop_type = 1   # 1 for LH2 (both combustion & fuel cell), 2 for Electric Hybrid (Both configurations)
-
-# INPUT CL_Max for each flight phase  ---> Call from Class I ---- EVENTUALLY
-CL_max_take0ff = 2.1
-CL_max_cruise = 1.9
-CL_max_landing = 2.6
-
 # INPUTS from Class I
 ##Cdo calculations
-Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
-phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e_cruise = 1/(np.pi*A*Psi+(1/phi))
-Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 CD0_Cruise = Cfe * Swet_S
 
 # FLAP DEFLECTION --> FROM ADSEE READER
