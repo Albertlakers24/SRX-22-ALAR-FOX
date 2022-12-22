@@ -136,7 +136,7 @@ elif propulsion_type == 4:
     W_P_CV_OEI = climb_gradient_constraint(eta_prop, Power_lapse(rho_1524,rho_0), ROC_V_OEI, CD_to_props, CL_max_take0ff, rho_1524, W_S, beta_em,2, 1)
     W_P_TOP = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
     W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
-
+'''
 plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'g',label = "Takeoff Constraint")
 plt.plot(W_S,W_P_TOP_OEI,'r',label = "Takeoff Constraint (OEI)")
@@ -186,6 +186,8 @@ elif propulsion_type ==4:
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
+'''
+
 '''print("Hydrogen Combustion W/S = 3552")
 print("Hydrogen Combustion W/P =  0.0535")
 print("Fuel Cell W/S = 3560")
