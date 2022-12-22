@@ -102,7 +102,7 @@ def takeoff_constraint(alpha_p,L_to,density,h_2, k_t,N_e,y):
         W_P = alpha_p * ((1.15 * np.sqrt((W_S / (L_to * k_t * density * g * np.pi * A * e)))) + (4 * h_2 / L_to)) ** (-1) * np.sqrt((CL_2 / W_S) * ((density) / 2))
     return W_P
 
-propulsion_type = 4 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
+propulsion_type = 2 #1. Hydrogen Combustion, 2.Hydrogen Fuel Cell, 3. Hybrid Series, 4. Hybrid Parallel Series
 
 e_take_off = oswald_efficiency(15)
 e_landing = oswald_efficiency(35)
