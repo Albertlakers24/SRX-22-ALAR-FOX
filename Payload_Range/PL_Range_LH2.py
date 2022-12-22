@@ -10,7 +10,7 @@ h_cr = 8534.4    # in m
 R_nom = 1852000  # in m ---> Design range - 1000nmi
 f_con = 5/100
 R_div = 85200   # in m ---> 100nmi
-t_E =  45 * 60    # in seconds - endurance time
+t_E =  30 * 60    # in seconds - endurance time
 m_pldes = 5443  # Payload mass designed for
 
 # Propulsion charecteristics
@@ -20,13 +20,13 @@ e_f = 120 * 10**6
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 def configuration_values(prop_type):
     if prop_type == 1:  # LH2 fuel cell
-        m_f = 669 # LH2 mass in kg
-        m_tank = 936 # 1.4*m_fh
-        m_oe = 12195 + m_tank# Operating empty mass + tank mass
+        m_f = 593#669 # LH2 mass in kg
+        #m_tank = 936 # 1.4*m_fh
+        m_oe = 13606#12195 + m_tank# Operating empty mass + tank mass
         m_mto = 19243 #19370
         pl_increase = 1.06145
         LD_crs = 22  # Lift to drag ratio during cruise
-        eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
+        eta_eng = 0.6 * 0.97 * 0.995 * 0.95
     if prop_type == 2:    # LH2 Combustion
         m_mto = 21728 # in kg --> Max take off
         m_oe = 15086  # in kg --> Operating empty
