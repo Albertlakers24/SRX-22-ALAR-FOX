@@ -1,14 +1,6 @@
 import numpy as np
 from Class_I_Weight_Estimation.Drag_Polar_new import max_CL_CD
-from Constants import *
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
-
-# Outputs: MTOW OEW and WF
-# Relationships: MTOW = WOE + WF + WPL
-# Relationships: MTOW = WE + WF + WPLtot + Wtfo
-# LOOK INTO MF/MTO FORMULA FROM ROLOEF READER
-# LIQUID FUELS WILL HAVE THE SAME FORMULA AS JET-A FUEL
-
 
 #Constants
 f_con = 5/100                   #-
@@ -20,9 +12,6 @@ total_eff = eta_fuelcell * eta_inverter * eta_wire * eta_EM * eta_prop #one inve
 m_f_extra = 0.03                #-
 fuel_mass_ref = 669             #kg
 m_tanks = 1.4 * fuel_mass_ref   #kg
-fc_power_density = 3            #kW/kg
-inverter_power_density = 30     #kW/kg
-em_power_density = 15           #kW/kg
 
 #Calculations Range
 def mf_mMTO(range):
