@@ -20,11 +20,11 @@ e_f = 120 * 10**6
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 def configuration_values(prop_type):
     if prop_type == 1:  # LH2 fuel cell
-        m_f = 593#669 # LH2 mass in kg
+        m_f = 488.2#669 # LH2 mass in kg
         #m_tank = 936 # 1.4*m_fh
-        m_oe = 13606#12195 + m_tank# Operating empty mass + tank mass
-        m_mto = 19243 #19370
-        pl_increase = 1.06145
+        m_oe = 11652 #12195 + m_tank# Operating empty mass + tank mass
+        m_mto = 17630 #19370
+        pl_increase = 1.055
         LD_crs = 22  # Lift to drag ratio during cruise
         eta_eng = 0.6 * 0.97 * 0.995 * 0.95
     if prop_type == 2:    # LH2 Combustion
