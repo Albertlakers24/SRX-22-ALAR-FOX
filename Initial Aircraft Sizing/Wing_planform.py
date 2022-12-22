@@ -1,14 +1,14 @@
 import numpy as np
 from Constants import *
+from Class_I_Weight_Estimation.Wing_Loading_Diagram import A
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
-prop_type = 4                        # 1 = H2 combustion, 2 = fuel cell, 3 = EH Series, 4 = EH Parallel Series
+prop_type = 2                        # 1 = H2 combustion, 2 = fuel cell, 3 = EH Series, 4 = EH Parallel Series
 #Constants
-gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
-T = ISA_calculator(h_cruise*FL_ft*ft_m,0)[0]
-p = ISA_calculator(h_cruise*FL_ft*ft_m,0)[1]
+T_cruise,p_cruise,rho_cruise,a_cruise = ISA_calculator(h_cruise,0)
+
 # Parameters per aircraft
 if prop_type == 1:
     MTOM = 19200    # LH2 combustion in kg
@@ -20,14 +20,13 @@ if prop_type == 4:
     MTOM = 24100    # battery fuel hybrid in parallel series
 
 Sw = MTOM *g / 3171     # To be updated!!
-A = 12
 b = np.sqrt(A*Sw)
 print('Sw', Sw, 'b', b)
 
 # Mission charecteristics
 #Calculation
 #Sw = 61                               # main wing area [m^2], change value base this on class I est.
-a_cruise = np.sqrt(gamma*specific_gas_constant*T)          # Speed of sound at cruise altitude  [m/s]
+a_cruise = np.sqrt(gamma*specific_gas_constant*T_cruise)          # Speed of sound at cruise altitude  [m/s]
 M_cruise = V_cruise / a_cruise         # Mach number during cruise
 M_dd = M_cruise + 0.03                 # Drag-divergence Mach number
 taper = 0.45                           # Taper ratio (from 0 to 1), optimum taper is 0.45 for unswept
@@ -37,7 +36,7 @@ taper = 0.45                           # Taper ratio (from 0 to 1), optimum tape
 if switch == 1:
     c_r = 2*Sw/((1+taper)*b)           # Tip chord  [m]
     c_t = c_r * taper                  # Root chord [m]
-    qhat = 0.5 * gamma * p * (M_cruise**2)
+    qhat = 0.5 * gamma * p_cruise * (M_cruise**2)
     C_Lhat = MTOM/(qhat*Sw)            # Cruise lift coefficient
     t_c_ratio = min(0.18, ((M_cross-M_dd)-0.115*(C_Lhat**1.5))) # thickness to chord ratio
     c_mac = (2/3)*c_r*((1+taper+taper**2)/(1+taper))  # length of MAC
@@ -45,7 +44,7 @@ if switch == 1:
 
     #Printing results
     print("t_c_ratio: ", t_c_ratio)
-    print("Pressure [Pa]:", p)
+    print("Pressure [Pa]:", p_cruise)
     print("Cruise Mach number: ", M_cruise)
     print("Speed of sound at cruise", a_cruise)
     print("C_L_hat", C_Lhat)
