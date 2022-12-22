@@ -1,26 +1,12 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from Constants import *
 #Constants
-g = 9.80665
-lambda_trop = -6.5/1000
-R = 287.0528
-kts = 0.51444444
-ft = 0.3048
-lbs = 0.453592
-V_cruise =  275 * kts     #kts -> m/s (TAS)
-h_cruise = 280*100 * ft     #m
-s_takeoff_1524 = 4500 * ft           #Takeoff Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-s_landing_1524 = (4500 * ft)         #Landing Distance at 1524 m above mean sea-level (ISA + 10 degree) (m)
-rho_0= 1.225                    #ISA + 10 ◦C day (kg/m3) ADD TEMPERATURE DEVIATION
-rho_1524= 1.01893               #1524m ISA + 10 ◦C day (kg/m3)
+rho_1524= ISA_calculator()              #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
 rho_cruise_rho0 = (1 +((lambda_trop* h_cruise)/(288.150))) ** (-1*(g/(R*lambda_trop)+1))
 rho_cruise = rho_cruise_rho0 * rho_0
-eff_prop = 0.85                 #Change with Literature
-PAX = 50
-WPAX = 200*lbs*PAX*g                                 #N
-WPAXBAGGAGE = 40*lbs*PAX*g                           #N Crew is bagageless
-m_payload = (WPAX + WPAXBAGGAGE) / g
+
 W_S = np.arange(1,6000,1)
 
 ##Cdo calculations
@@ -40,8 +26,6 @@ ROC_V = 0.024#0.0032
 ROC_V_OEI = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_approach = 141 * 0.514444         #Requirement
 V_approach_stall = V_approach /1.23  #CS 25 requirement of V_stall_land = V_approach / 1.23
-a = 0.5088
-b = 1199.7
 beta_V_app_fc = 0.96
 beta_s_land_fc = 0.96
 beta_cruise_fc  = 0.98

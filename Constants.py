@@ -10,6 +10,7 @@ FL_ft = 100                         #FL to ft
 lbs_kg = 0.453592                   #lbs to kg
 V_cruise = 275 * kts_m_s            #Cruise Velocity Requirement
 h_cruise = 280 * FL_ft * ft_m       #Cruise height Requirement
+V_approach = 141 * kts_m_s          #Approach speed Requirement
 PAX = 48                            #Passenger Requirement
 T_0 = 288.15                        #ISA Temperature
 p_0 = 101325                        #ISA Pressure
@@ -36,8 +37,8 @@ eta_inverter = 0.995                #Inverter efficiency
 eta_fuelcell = 0.60                 #Fuel cell efficiency
 
 #General Functions
-def ISA_calculator(h):
-    T = T_0 + lapse_rate * h
+def ISA_calculator(h,dt):
+    T = (T_0+dt) + lapse_rate * h
     p = p_0 * ((T_0 / T) ** ((g * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant * T)
     return T, p, rho
