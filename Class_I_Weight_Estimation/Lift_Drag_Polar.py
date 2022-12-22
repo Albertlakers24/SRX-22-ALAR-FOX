@@ -1,5 +1,5 @@
 import numpy as np
-from Class_I_Weight_Estimation.Class_I_Conventional import Cd0, A, e
+from Class_I_Weight_Estimation.Class_I_Combustion import Cd0, A, e
 
 #Constants
 g_0 = 9.80665
