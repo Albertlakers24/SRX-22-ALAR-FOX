@@ -1,5 +1,5 @@
 import numpy as np
-from Class_I_Weight_Estimation.Drag_Polar_new import max_CL_CD
+from Class_I_Weight_Estimation.Drag_Polar import max_CL_CD
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 
 #Constants

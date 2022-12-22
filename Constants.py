@@ -43,6 +43,7 @@ fc_power_density = 3                #kW/kg
 inverter_power_density = 30         #kW/kg
 em_power_density = 15               #kW/kg
 #Aerodynamic Constants
+A = 12                              #Aspect Ratio (ONLY VALUE THAT COULD BE ITERATED)
 Psi = 0.0075                        #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                          #span efficiency factor (value based on Roelof reader p.46)
 Cfe = 0.0030                        #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
