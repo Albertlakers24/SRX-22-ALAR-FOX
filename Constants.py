@@ -1,3 +1,4 @@
+import numpy as np
 #Units Conversion
 kts_m_s = 0.514444                  #knots to m/s
 nmi_m = 1852                        #nmi to m
@@ -12,9 +13,10 @@ T_0 = 288.15                        #ISA Temperature
 p_0 = 101325                        #ISA Pressure
 rho_0 = 1.225                       #ISA Density
 lapse_rate = -6.5/km_m              #Troposphere lapse rate
-Molar_mass_air = 0.0289644            #N m kmol⁻¹ K⁻¹
+Molar_mass_air = 0.0289644          #N m kmol⁻¹ K⁻¹
 specific_gas_constant = 287.052     #J·kg⁻¹·K⁻¹
 universal_gas_constant = 8.31432    #N m kmol⁻¹ K⁻¹
+gamma = 1.4                         #Specific heat ratio of gas
 e_lh2 = 120*10**6                   #J/kg Specific Energy Liquid Hydrogen
 #Requirment Constants
 V_cruise = 275 * kts_m_s            #Cruise Velocity Requirement
@@ -53,6 +55,7 @@ CL_max_landing = 2.6                # -
 #General Functions
 def ISA_calculator(h,dt):
     T = T_0 + lapse_rate * h + dt
-    p = p_0 * (((T-dt) / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
+    p = p_0 * ((T / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant*T)
-    return T, p, rho
+    a = np.sqrt(gamma * T * specific_gas_constant)
+    return T, p, rho, a

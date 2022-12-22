@@ -1,48 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
-V_cruise = 275 #KTAS
-kts_to_ms = 0.51444444444444
-ft_to_m = 0.3048
-V_cruise_ms = V_cruise * kts_to_ms
+from Constants import *
 M_tip = 0.95
 
 E_500_nmi = 11835 #MJ
 E_1000 = 34943 #MJ
 max_power_needed_all_eff = 3835 #kW
-#Regular efficiencies
-wire_eff = 0.97
-inverter_eff = 0.995
-motor_eff = 0.95
-prop_eff = 0.85
 
-#FC efficiencies
-FC_eff = 0.6
-
-max_power_needed_no_eff = max_power_needed_all_eff * FC_eff * wire_eff * inverter_eff**2 * motor_eff * prop_eff
-max_power_needed = max_power_needed_no_eff / motor_eff / prop_eff
+max_power_needed_no_eff = max_power_needed_all_eff * eta_fuelcell * eta_wire * eta_inverter**2 * eta_EM * eta_prop
+max_power_needed = max_power_needed_no_eff / eta_EM / eta_prop
 print(max_power_needed)
 power_cruise = 3148 #2758 #kW
 max_power_needed = 4669#4946#2474
 
-g_0 = 9.80665
-Molar_mass_air = 0.0289644 #kg/mol
-universal_gas_constant = 8.31432 #N m kmol⁻¹ K⁻¹
-specific_gas_constant = 287.052 #J·kg⁻¹·K⁻¹
-gamma = 1.4
-
-T_0 = 288.15
-p_0 = 101325 #Pa
-lapse_rate = -0.0065
-
-def ISA_calculator(h):
-    T = T_0 + lapse_rate * h
-    p = p_0 * ((T_0 / T) ** ((g_0 * Molar_mass_air) / (universal_gas_constant * lapse_rate)))
-    rho = p / (specific_gas_constant * T)
-    a = np.sqrt(gamma * T * specific_gas_constant)
-    return T, rho, a
-T_sea, rho_sea, a_sea = ISA_calculator(0 * ft_to_m)
-T_cruise, rho_cruise, a_cruise = ISA_calculator(28000 * ft_to_m)
-M_cruise = V_cruise_ms / a_cruise
+T_sea, p_sea, rho_sea, a_sea = ISA_calculator(0.0,0.0)
+T_cruise, p_cruise, rho_cruise, a_cruise = ISA_calculator(h_cruise,0.0)
+M_cruise = V_cruise / a_cruise
 rps = 2500 / 60
 # D = a / (np.pi * rps) * np.sqrt(M_tip**2 - M_cruise**2)
 # print(rho, a)
@@ -50,7 +23,6 @@ rps = 2500 / 60
 V_max_takeoff = 213 #m/s
 V_max_cruise = M_tip * a_cruise
 V_takeoff = 65 #m/s
-V_cruise = 275 * kts_to_ms
 def tip_speed(V_real, V_max):
     V_tip = np.sqrt(V_max**2 - V_real**2)
     return V_tip
