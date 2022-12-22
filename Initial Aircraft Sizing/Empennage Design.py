@@ -1,7 +1,6 @@
 import numpy as np
-from Class_I_Weight_Estimation import V_cruise, MTOW
-from Lift_Drag_Polar import b
-from Wing_planform import Sw, c_mac, specific_gas_constant, T, p, gamma, M_cross
+from Class_I_Weight_Estimation.Lift_Drag_Polar import b
+from Wing_planform import Sw, c_mac, specific_gas_constant, gamma, M_cross
 
 
 
