@@ -37,11 +37,11 @@ x_batteries_forward = 0.3 * l_f
 # Mass fraction of components w.r.t MTOM
 if prop_choice == 1:           #Case 1 = hydrogen combustion, 2 propellors on the wing, tank at aft, more or less done
     Mf_fuselage = 0.14      # Mass fraction of components w.r.t MTOW
-    Mf_prop = 0.12
-    Mf_empennage = 0.05
-    Mf_sys = 0.26
-    Mf_wing = 0.14
-    Mf_tank = 0.1   # Mass fraction of the tank to be updated
+    Mf_prop = 0.09
+    Mf_empennage = 0.04
+    Mf_sys = 0.25
+    Mf_wing = 0.13
+    Mf_tank = 0.08   # Mass fraction of the tank to be updated
 
     print("======================================")
     print("For hydrogen combustion propulsion: ")
@@ -54,13 +54,13 @@ if prop_choice == 1:           #Case 1 = hydrogen combustion, 2 propellors on th
 
 
 elif prop_choice == 2:         # Case 2 = battery fuel hybrid in series/parrallel , 2 propellors on the fuselage, batteries at the center of the fuselage
-    Mf_fuselage = 0.11   # Mass fraction of components w.r.t MTOM, need to be changed
+    Mf_fuselage = 0.13   # Mass fraction of components w.r.t MTOM, need to be changed
     Mf_prop_fuse = 0.1
-    Mf_prop_wing = 0.17
-    Mf_sys = 0.2
+    Mf_prop_wing = 0.06
+    Mf_sys = 0.25
     Mf_wing = 0.13
     Mf_empennage = 0.03
-    Mf_batteries = 0.1
+    Mf_batteries = 0.19
     print("======================================")
     print("For battery hybrid propulsion in series/ parallel configuration: ")
     M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries
@@ -72,13 +72,13 @@ elif prop_choice == 2:         # Case 2 = battery fuel hybrid in series/parralle
 
 
 elif prop_choice == 3:         # Case 3 = battery fuel hybrid in series, 2 propellors at the wingtip, batteries at the center of the fuselage
-    Mf_fuselage = 0.11   ## Mass fraction of components w.r.t MTOM, need to be changed
+    Mf_fuselage = 0.12   ## Mass fraction of components w.r.t MTOM, need to be changed
     Mf_prop_fuse = 0.1
-    Mf_prop_wing = 0.17
-    Mf_sys = 0.2
-    Mf_wing = 0.13
+    Mf_prop_wing = 0.1
+    Mf_sys = 0.24
+    Mf_wing = 0.11
     Mf_empennage = 0.03
-    Mf_batteries = 0.1
+    Mf_batteries = 0.21
     print("======================================")
     print("For battery hybrid propulsion in series configuration: ")
     M_fg_frac = Mf_fuselage + Mf_empennage + Mf_sys + Mf_batteries
@@ -90,11 +90,11 @@ elif prop_choice == 3:         # Case 3 = battery fuel hybrid in series, 2 prope
 
 
 elif prop_choice == 4:          # Case 4 = hydrogen fuel cell, 2 propellors on the wing, tank at aft, , more or less done
-    Mf_fuselage = 0.11  # Mass fraction of components w.r.t MTOM
-    Mf_prop = 0.13
+    Mf_fuselage = 0.13  # Mass fraction of components w.r.t MTOM
+    Mf_prop = 0.12
     Mf_empennage = 0.03
-    Mf_sys = 0.26
-    Mf_wing = 0.13
+    Mf_sys = 0.25
+    Mf_wing = 0.14
     Mf_tank = 0.05    # Mass fraction of the tank to be updated
     print("======================================")
     print("For hydrogen fuel cell architecture: ")
