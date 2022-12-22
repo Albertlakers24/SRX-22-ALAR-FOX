@@ -37,6 +37,9 @@ eta_EM = 0.95                       #Electric motor efficiency
 eta_wire = 0.97                     #Wire efficiency
 eta_inverter = 0.995                #Inverter efficiency
 eta_fuelcell = 0.60                 #Fuel cell efficiency
+fc_power_density = 3                #kW/kg
+inverter_power_density = 30         #kW/kg
+em_power_density = 15               #kW/kg
 
 #General Functions
 def ISA_calculator(h,dt):
