@@ -1,6 +1,7 @@
 import numpy as np
 from Constants import *
-from Class_I_Weight_Estimation.Wing_Loading_Diagram import A
+from Class_I_Weight_Estimation.Wing_Loading_Diagram import A,W_S_design
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
@@ -13,13 +14,13 @@ T_cruise,p_cruise,rho_cruise,a_cruise = ISA_calculator(h_cruise,0)
 if prop_type == 1:
     MTOM = 19200    # LH2 combustion in kg
 if prop_type == 2:
-    MTOM = 19400    # hydrogen fuel cell
+    MTOM = m_mto    # hydrogen fuel cell
 if prop_type == 3:
     MTOM = 25300    # battery fuel hybrid in series
 if prop_type == 4:
     MTOM = 24100    # battery fuel hybrid in parallel series
 
-Sw = MTOM *g / 3171     # To be updated!!
+Sw = (MTOM*g)/ W_S_design     # To be updated!!
 b = np.sqrt(A*Sw)
 print('Sw', Sw, 'b', b)
 
@@ -43,7 +44,7 @@ if switch == 1:
     y_mac = 0.5*(1/3)*(1+2*taper)/(1+taper)*b       # Spanwise location of MAC
 
     #Printing results
-    print("t_c_ratio: ", t_c_ratio)
+    '''print("t_c_ratio: ", t_c_ratio)
     print("Pressure [Pa]:", p_cruise)
     print("Cruise Mach number: ", M_cruise)
     print("Speed of sound at cruise", a_cruise)
@@ -52,7 +53,7 @@ if switch == 1:
     print("MAC: ", c_mac)
     print("root chord: ",c_r)
     print("tip chord: ", c_t)
-    print("Spanwise position of MAC", y_mac)
+    print("Spanwise position of MAC", y_mac)'''
 
 if switch == 2:                         # For double tapered wing
 
