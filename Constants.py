@@ -1,6 +1,7 @@
 import numpy as np
 #Units Conversion
 kts_m_s = 0.514444                  #knots to m/s
+nmi_mile = 1.151                      #nmi to miles
 nmi_m = 1852                        #nmi to m
 min_s = 60                          #minutes to seconds
 ft_m = 0.3048                       #ft to m
