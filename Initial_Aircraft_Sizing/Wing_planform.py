@@ -44,7 +44,7 @@ if switch == 1:
     y_mac = 0.5*(1/3)*(1+2*taper)/(1+taper)*b       # Spanwise location of MAC
 
     #Printing results
-    print("t_c_ratio: ", t_c_ratio)
+    '''print("t_c_ratio: ", t_c_ratio)
     print("Pressure [Pa]:", p_cruise)
     print("Cruise Mach number: ", M_cruise)
     print("Speed of sound at cruise", a_cruise)
@@ -53,7 +53,7 @@ if switch == 1:
     print("MAC: ", c_mac)
     print("root chord: ",c_r)
     print("tip chord: ", c_t)
-    print("Spanwise position of MAC", y_mac)
+    print("Spanwise position of MAC", y_mac)'''
 
 if switch == 2:                         # For double tapered wing
 
