@@ -2,9 +2,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 from Constants import *
 #Constants
-rho_1524= ISA_calculator(4500*ft_m,10)[2]              #1524m ISA + 10 ◦C day (kg/m3)
+rho_1524= ISA_calculator(4500*ft_m,dt_takeoff)[2]              #1524m ISA + 10 ◦C day (kg/m3)
 rho_1524_rho0 = rho_1524/rho_0
-rho_cruise = ISA_calculator(280*FL_ft*ft_m,0)[2]
+rho_cruise = ISA_calculator(280*FL_ft*ft_m,dt_cruise)[2]
 W_S = np.arange(1,6000,1)
 s_takeoff_1524 = s_takeoff
 s_landing_1524 = s_landing
