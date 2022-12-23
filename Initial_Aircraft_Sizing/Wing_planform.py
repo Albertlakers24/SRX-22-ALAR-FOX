@@ -1,6 +1,7 @@
 import numpy as np
 from Constants import *
-from Class_I_Weight_Estimation.Wing_Loading_Diagram import A
+from Class_I_Weight_Estimation.Wing_Loading_Diagram import A,W_S_design
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
@@ -13,13 +14,13 @@ T_cruise,p_cruise,rho_cruise,a_cruise = ISA_calculator(h_cruise,0)
 if prop_type == 1:
     MTOM = 19200    # LH2 combustion in kg
 if prop_type == 2:
-    MTOM = 19400    # hydrogen fuel cell
+    MTOM = m_mto    # hydrogen fuel cell
 if prop_type == 3:
     MTOM = 25300    # battery fuel hybrid in series
 if prop_type == 4:
     MTOM = 24100    # battery fuel hybrid in parallel series
 
-Sw = MTOM *g / 3171     # To be updated!!
+Sw = (MTOM*g)/ W_S_design     # To be updated!!
 b = np.sqrt(A*Sw)
 print('Sw', Sw, 'b', b)
 
