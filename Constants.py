@@ -57,7 +57,7 @@ CL_max_landing = 2.6                # -
 #General Functions
 def ISA_calculator(h,dt):
     T = T_0 + lapse_rate * h + dt
-    p = p_0 * ((T / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
+    p = p_0 * (((T-dt) / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant*T)
     a = np.sqrt(gamma * T * specific_gas_constant)
     return T, p, rho, a
