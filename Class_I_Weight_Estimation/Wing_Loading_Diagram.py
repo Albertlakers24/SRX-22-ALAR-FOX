@@ -8,7 +8,6 @@ rho_cruise = ISA_calculator(280*FL_ft*ft_m,0)[2]
 W_S = np.arange(1,6000,1)
 s_takeoff_1524 = s_takeoff
 s_landing_1524 = s_landing
-
 ##Cdo calculations
 e = 1/(np.pi*A*Psi+(1/phi))
 Cd0 = Cfe * Swet_S
@@ -165,7 +164,7 @@ elif propulsion_type == 2:
     plt.fill_between(W_S, W_P_cruise, 1, color="red", alpha=0.1)
     plt.fill_between(W_S, W_P_CV_OEI, 1, color="red", alpha=0.1)
     plt.fill_between(W_S, W_P_ROC, 1, color="red", alpha=0.1)
-    plt.plot(3560, 0.0763, 'o',label = "Design point")
+    plt.plot(3560, 0.076, 'o',label = "Design point")
 elif propulsion_type == 3:
     plt.title("Hybrid Electric Series")
     plt.fill_between(W_S, W_P_TOP_OEI, 1, color="red", alpha=0.1)
@@ -185,9 +184,8 @@ elif propulsion_type ==4:
 plt.legend(loc = "upper right")
 plt.grid()
 plt.show()
-'''
 
-'''print("Hydrogen Combustion W/S = 3552")
+print("Hydrogen Combustion W/S = 3552")
 print("Hydrogen Combustion W/P =  0.0535")
 print("Fuel Cell W/S = 3560")
 print("Fuel Cell W/P = 0.0763 ")
