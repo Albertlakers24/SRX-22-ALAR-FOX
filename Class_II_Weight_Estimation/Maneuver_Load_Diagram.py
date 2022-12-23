@@ -5,16 +5,18 @@ from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 from Initial_Aircraft_Sizing.Wing_planform import b
 
+rho = rho_0 # IF CALCULATING @ SEA-LEVEL, rho = rho_0. IF CALCULATING @ CRUISE, rho = rho_cruise
+
 # T_cruise, p_cruise, rho_cruise, a_cruise = ISA_calculator(5000*ft_m, 0)
 # V_cruise = V_cruise * np.sqrt(rho_cruise / rho_0)
-constant_q = 1/2 * CL_max_cruise * rho_0
+constant_q = 1/2 * CL_max_cruise * rho
 mass = m_mto
 S = m_mto * g / W_S_design
 V_A = []
 n_A_list = []
 n_max = max(2.1 * (24000 / (m_mto + 10000)), 2.5)
 n_min = -1
-V_max = np.sqrt((2 * n_max * W_S_design) / (rho_0 * CL_max_cruise)) #* np.sqrt(rho_cruise / rho_0)
+V_max = np.sqrt((2 * n_max * W_S_design) / (rho_0 * CL_max_cruise)) * np.sqrt(rho / rho_0)
 for i in np.arange(0, V_max, 0.1):
     V_A.append(i)
     n = constant_q * i**2 / W_S_design
@@ -22,7 +24,7 @@ for i in np.arange(0, V_max, 0.1):
 
 V_H = []
 n_H_list = []
-V_min = np.sqrt((2 * 1 * W_S_design) / (rho_0 * CL_max_cruise)) #* np.sqrt(rho_cruise / rho_0)
+V_min = np.sqrt((2 * 1 * W_S_design) / (rho_0 * CL_max_cruise)) * np.sqrt(rho / rho_0)
 for j in np.arange(0, V_min, 0.1):
     V_H.append(j)
     n = -constant_q * j ** 2 / W_S_design
@@ -33,11 +35,11 @@ V_D = V_cruise / 0.8
 n_max_flaps = 2
 n_flaps_list = []
 V_flaps = []
-V_max_flaps = np.sqrt((2 * n_max_flaps * W_S_design) / (rho_0 * CL_max_landing))
-V_intersect = np.sqrt((2 * n_max_flaps * W_S_design) / (rho_0 * CL_max_cruise))
+V_max_flaps = np.sqrt((2 * n_max_flaps * W_S_design) / (rho_0 * CL_max_landing)) #double check if constant rho_0 or not
+V_intersect = np.sqrt((2 * n_max_flaps * W_S_design) / (rho_0 * CL_max_cruise)) #double check if constant rho_0 or not
 for i in np.arange(0, V_max_flaps, 0.1):
     V_flaps.append(i)
-    n = (1/2 * CL_max_landing * rho_0) * i**2 / W_S_design
+    n = (1/2 * CL_max_landing * rho_0) * i**2 / W_S_design #double check if constant rho_0 or not
     n_flaps_list.append(n)
 
 point_F = [V_cruise, -1]
