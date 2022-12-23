@@ -1,7 +1,5 @@
 import numpy as np
-from Class_I_Weight_Estimation import V_cruise, MTOW
-from Lift_Drag_Polar import b
-from Wing_planform import Sw, c_mac, specific_gas_constant, T, p, gamma, M_cross
+from Wing_planform import Sw, c_mac, specific_gas_constant, gamma, M_cross,b
 
 
 
@@ -9,7 +7,7 @@ from Wing_planform import Sw, c_mac, specific_gas_constant, T, p, gamma, M_cross
 ##Design 2; Liquid Hydrogen Combustion
 ##Design 3; Hybrid Electric Parallel Series
 ##Design 4; Hybrid Electric Series CHeck
-Design = 2
+Design = 3
 
 #Constants from other files
 D_outer = 2.8 + 0.21*2              #m
@@ -17,16 +15,16 @@ D_inner = 2.8                       #m
 
 if Design ==1:                  #FUEL CELL -> DONE
     ##AIRCRAFT DESIGN fixed inputs
-    cw = 2.23               # from Gabriel (double tapered)
-    bw = 27                 # from Gabriel
-    Sw = 57.6               # from Gabriel
+    cw = 2.2                # from Gabriel (double tapered)
+    bw = 25                 # from Gabriel
+    Sw = 53                 # from Gabriel
     l_f = 23.876            # m
-    xcg_aft = 10.75         # m
-    l_ultimate = 20.57      # m
+    xcg_aft = 11.28         # m
+    l_ultimate = 19.755      # m
 
     ##Change
     x_h = 22.3              #m
-    x_v = 21.6              #m
+    x_v = 20.9              #m
     Vh = 0.86               # TBD horizontal tail volume from data  -> 0.68113 (propeller)
     Vv = 0.08               # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
     Av = 1.3                # - (1-2)
@@ -41,12 +39,12 @@ if Design ==1:                  #FUEL CELL -> DONE
 
 if Design ==2:              #Liquid hydrogen combustion
     #AIRCRAFT DESIGN FROM GABRIEL
-    cw = 2.333                  # m
-    bw = 26.709                 # m
-    Sw = 59.449                 # m^2
-    l_f = 26.876                # m
-    xcg_aft = 12.92             # m
-    l_ultimate = 22.679         # m
+    cw = 2.3                    # m
+    bw = 27                     # m
+    Sw = 60                     # m^2
+    l_f = 26.8                  # m
+    xcg_aft = 12.79             # m
+    l_ultimate = 22.679         # m   - update
 
     Vh = 0.9                    # TBD horizontal tail volume from data  -> 0.68113 (propeller)
     Vv = 0.068                  # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
@@ -54,7 +52,7 @@ if Design ==2:              #Liquid hydrogen combustion
     Ah = 4.5                    # - (3-5)
     taperv = 0.5                # - (0.3-0.7) taper ratio
     taperh = 0.6                # - (0.3-1) taper ratio
-    x_v = 23.65
+    x_v = 23.9
     x_h = x_v +1.5
 
     l_h = x_h-xcg_aft
@@ -68,20 +66,20 @@ if Design ==2:              #Liquid hydrogen combustion
 
 if Design ==3:                          #Parallel series hybrid
     # AIRCRAFT DESIGN FROM GABRIEL
-    cw = 2.63                   # m
-    bw =  30.7                  # m
-    Sw =   78.8                 # m^2
-    l_f = 21.776                # m
-    xcg_aft = 9.43             # m
-    l_ultimate = 16.96          # m
+    cw = 2.9                    # m
+    bw =  33                    # m
+    Sw =   92                   # m^2
+    l_f = 21.7                  # m
+    xcg_aft = 9.44              # m
+    l_ultimate = 16.96          # m-----update
 
     Vh = 0.9                    # TBD horizontal tail volume from data  -> 0.68113 (propeller)
-    Vv = 0.08                   # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
+    Vv = 0.058                   # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
     Av = 1.5                    # - (1-2) ATR42 ->1.5
     Ah = 4.5                    # - (3-5) ATR42 ->4.5
     taperv = 0.4                # - (0.3-0.7) taper ratio
     taperh = 0.6                # - (0.3-1) taper ratio
-    x_v = 17.5                  # m
+    x_v = 17.55                  # m
     x_h = x_v+2.4               # m
 
     l_h = x_h - xcg_aft
@@ -95,21 +93,21 @@ if Design ==3:                          #Parallel series hybrid
 
 if Design ==4:                  #Hybrid; series
     # AIRCRAFT DESIGN FROM GABRIEL
-    cw =  2.69              # m
-    bw =  30                # m
-    Sw = 75.4               # m^2
-    l_f =21.776             # m
-    xcg_aft = 9.112         # m
-    l_ultimate = 16.96      # m
+    cw =  3.1              # m
+    bw =  36                # m
+    Sw = 106               # m^2
+    l_f =21.7             # m
+    xcg_aft = 9.32         # m
+    l_ultimate = 14         # m  -----update
 
     Vh = 0.9                # TBD horizontal tail volume from data  -> 0.68113 (propeller)
-    Vv = 0.08               # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
+    Vv = 0.06               # TBD vertical tail volume from data    -> 0.08 (expected for propeller)
     Av = 1.5                # - (1-2)
     Ah = 4.5                # - (3-5)
     taperv = 0.5            # - (0.3-0.7) taper ratio
     taperh = 0.8            # - (0.3-1) taper ratio
-    x_v = 19.1              # m
-    x_h = x_v+1.5           # m
+    x_v = 18                # m
+    x_h = x_v+2.5           # m
 
     l_h = x_h - xcg_aft
     l_v = x_v - xcg_aft
