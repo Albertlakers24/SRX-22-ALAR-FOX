@@ -9,7 +9,7 @@ import numpy as np
 
 # Manual inputs
 Type = 1
-range = 2
+range = 1
 
 # Type 1: Hydrogen Combustion
 # Type 2: Kerosene
@@ -154,3 +154,4 @@ print("efficiency =", eta_eng * eta_p)
 print("CL/CD =", CL / CD)
 print("Cl=", CL)
 print("CD", CD)
+print(Mused)

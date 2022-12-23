@@ -1,17 +1,11 @@
 import numpy as np
 from matplotlib import pyplot as plt
-
-
-g = 9.80665
+from Class_I_Weight_Estimation.Drag_Polar import max_CL_CD
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_f as m_fuel, m_mto as m_mtow, oem as m_oem
+from Constants import *
 
 # Mission Charecteristics
-V_cr = 141.471   # in m/s
-h_cr = 8534.4    # in m
-R_nom = 1852000  # in m ---> Design range - 1000nmi
-f_con = 5/100
-R_div = 85200   # in m ---> 100nmi
-t_E =  45 * 60    # in seconds - endurance time
-m_pldes = 5443  # Payload mass designed for
+m_pldes = m_pax + m_pax_baggage  # Payload mass designed for
 
 # Propulsion charecteristics
 eta_p = 0.85                             #Propulsive efficiency twin turboprop
@@ -20,13 +14,13 @@ e_f = 120 * 10**6
 # Masses Aircraft --> Max, empty, fuel - per propulsion system
 def configuration_values(prop_type):
     if prop_type == 1:  # LH2 fuel cell
-        m_f = 669 # LH2 mass in kg
-        m_tank = 936 # 1.4*m_fh
-        m_oe = 12195 + m_tank# Operating empty mass + tank mass
-        m_mto = 19243 #19370
-        pl_increase = 1.06145
-        LD_crs = 22  # Lift to drag ratio during cruise
-        eta_eng = 0.6 * 0.97 * 0.995 * 0.85 * 0.95
+        m_f = m_fuel#669 # LH2 mass in kg
+        #m_tank = 936 # 1.4*m_fh
+        m_oe = m_oem #12195 + m_tank# Operating empty mass + tank mass
+        m_mto = m_mtow #19370
+        pl_increase = 1.099
+        LD_crs = max_CL_CD  # Lift to drag ratio during cruise
+        eta_eng = 0.6 * 0.97 * 0.995 * 0.95
     if prop_type == 2:    # LH2 Combustion
         m_mto = 21728 # in kg --> Max take off
         m_oe = 15086  # in kg --> Operating empty
@@ -45,13 +39,13 @@ def fuelmass_maxpl(m_mto, m_oe, m_plmax):
     return m_fB
 
 def R_cruise(eta_eng, LD_crs, m_oe, m_plmax, m_fuel):
-    r_tot =  eta_eng * eta_p * (LD_crs) * (e_f/g) * np.log((m_oe + m_plmax + m_fuel)/(m_oe + m_plmax))
+    r_tot =  eta_eng * eta_prop * (LD_crs) * (e_f/g) * np.log((m_oe + m_plmax + m_fuel)/(m_oe + m_plmax))
     return r_tot
 
-def R_tot(R_nom, R_cruise, LD):
-    R_lost = (1 / 0.7) * (LD) * (h_cr + ((V_cr ** 2) / (2 * g)))
-    R_eq = ((R_nom + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_E * V_cr)
-    R_aux = R_eq - R_nom
+def R_tot(R_norm, R_cruise, LD):
+    R_lost = (1 / 0.7) * (LD) * (h_cruise + ((V_cruise ** 2) / (2 * g)))
+    R_eq = ((R_norm + R_lost) * (1 + f_con)) + (1.2 * R_div) + (t_loiter * V_cruise)
+    R_aux = R_eq - R_norm
     R = R_cruise - R_aux
     return R
 
@@ -123,6 +117,6 @@ R_D_C = R_tot(r_dC, r_dC, LD_crsC)/1852
 
 rangesC = [0, R_B_C, R_C_C, R_D_C]
 plmassesC = [m_plmaxC, m_plmaxC, m_pldes, 0]
-print('LH2 Combustion', rangesC, plmassesC)
+#print('LH2 Combustion', rangesC, plmassesC)
 plotting(rangesFC, plmassesFC, 'Payload-Range diagram for LH2 fuel cell', 'red')
-plotting(rangesC, plmassesC, 'Payload-Range diagram for LH2 Combustion', 'green')
+#plotting(rangesC, plmassesC, 'Payload-Range diagram for LH2 Combustion', 'green')

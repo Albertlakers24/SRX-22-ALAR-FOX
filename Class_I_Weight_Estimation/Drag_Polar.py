@@ -1,21 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-# from Class_I_Weight_Estimation import Cd0, e, A
+from Constants import *
 #prop_type = 1   # 1 for LH2 (both combustion & fuel cell), 2 for Electric Hybrid (Both configurations)
-
-# INPUT CL_Max for each flight phase  ---> Call from Class I ---- EVENTUALLY
-CL_max_take0ff = 2.1
-CL_max_cruise = 1.9
-CL_max_landing = 2.6
-
 # INPUTS from Class I
 ##Cdo calculations
-Psi = 0.0075                    #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
-phi = 0.97                      #span efficiency factor (value based on Roelof reader p.46)
 A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
 e_cruise = 1/(np.pi*A*Psi+(1/phi))
-Cfe = 0.0030                     #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
-Swet_S = 6.1                     #(6.0-6.2) wetted area ratios -> depending on airframe structure
 CD0_Cruise = Cfe * Swet_S
 
 # FLAP DEFLECTION --> FROM ADSEE READER
@@ -85,10 +75,10 @@ for i in range(len(CL_list_cruise)):
     CD_list_cruise_WTprop.append(CD_cruise_WTProp)
 CL_CD = CL_list_cruise / CD_list_cruise_WTprop
 max_CL_CD = max(CL_CD)
-print(CL_CD)
-print(max_CL_CD, "max L/D")
+# print(CL_CD)
+# print(max_CL_CD, "max L/D")
 index = np.where(CL_CD == max_CL_CD)
-print(CL_list_cruise[index])
+# print(CL_list_cruise[index])
 # print(CL_CD.index(max_CL_CD))
 
 
@@ -132,7 +122,7 @@ for i in range(len(CL_list_landing)):
     CD_list_landing_EH.append(CD_Land_EH)
 
 
-
+'''
 plt.plot(CD_list_cruise, CL_list_cruise, color = 'red', label = 'Cruise')
 plt.plot(CD_list_takeOff_woLG_EH, CL_list_takeOff, color = 'green', label = 'Take-off, Landing gear up')
 plt.plot(CD_list_takeOf_withLG_EH, CL_list_takeOff, color = 'orange', label = 'Take-off, Landing gear down')
@@ -152,3 +142,4 @@ plt.xlabel('Drag co-efficient $C_{D}$ [-]')   # naming the x axis
 plt.ylabel('Lift co-efficient $C_{L}$ [-]')  # naming the y axis
 plt.title('Drag polar - with wing tip propellers') # giving a title to my graph
 plt.show()
+'''
