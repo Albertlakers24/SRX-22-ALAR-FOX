@@ -1,0 +1,94 @@
+﻿Date,From,To,Flight_Number,Airline,Distance,Duration,Seat,Seat_Type,Class,Reason,Plane,Registration,Trip,Note,From_OID,To_OID,Airline_OID,Plane_OID
+- -,BRS,ABZ,Air Sicilia (BM),Air Sicilia,402,01:18,,,,,ER4,,,"Direct",490,532,312
+- -,BRS,ACE,Ryanair (FR),Ryanair,1648,03:47,,,,,738,,,"Direct",490,1055,4296
+- -,BRS,AGP,Ryanair (FR),Ryanair,1019,02:32,,,,,738,,,"Direct",490,1230,4296
+- -,BRS,AGP,easyJet (U2),easyJet,1019,02:32,,,,,320 319,,,"Direct",490,1230,2297
+- -,BRS,ALC,Ryanair (FR),Ryanair,910,02:19,,,,,738,,,"Direct",490,1212,4296
+- -,BRS,ALC,Transavia France (TO),Transavia France,910,02:19,,,,,75W,,,"Direct",490,1212,8745
+- -,BRS,ALC,easyJet (U2),easyJet,910,02:19,,,,,319 320,,,"Direct",490,1212,2297
+- -,BRS,AMS,Alitalia (AZ),Alitalia,325,01:09,,,,,E90,,,"Codeshare",490,580,596
+- -,BRS,AMS,KLM Royal Dutch Airlines (KL),KLM Royal Dutch Airlines,325,01:09,,,,,EMJ,,,"Codeshare",490,580,3090
+- -,BRS,AMS,easyJet (U2),easyJet,325,01:09,,,,,320 319,,,"Direct",490,580,2297
+- -,BRS,BCN,easyJet (U2),easyJet,732,01:57,,,,,319,,,"Direct",490,1218,2297
+- -,BRS,BFS,easyJet (U2),easyJet,268,01:02,,,,,319,,,"Direct",490,465,2297
+- -,BRS,BGY,Ryanair (FR),Ryanair,690,01:52,,,,,738,,,"Direct",490,1525,4296
+- -,BRS,BJV,easyJet (U2),easyJet,1770,04:02,,,,,320,,,"Direct",490,4315,2297
+- -,BRS,BLQ,Ryanair (FR),Ryanair,799,02:05,,,,,738,,,"Direct",490,1538,4296
+- -,BRS,BOD,easyJet (U2),easyJet,461,01:25,,,,,319 320,,,"Direct",490,1264,2297
+- -,BRS,BRU,Brussels Airlines (SN),Brussels Airlines,313,01:07,,,,,ER4,,,"Codeshare",490,302,1531
+- -,BRS,BUD,Ryanair (FR),Ryanair,1020,02:32,,,,,738,,,"Direct",490,1489,4296
+- -,BRS,BZR,Ryanair (FR),Ryanair,624,01:44,,,,,738,,,"Direct",490,1360,4296
+- -,BRS,CDG,easyJet (U2),easyJet,284,01:04,,,,,319 320,,,"Direct",490,1382,2297
+- -,BRS,CEG,Germania (ST),Germania,124,00:44,,,,,ER4,,,"Direct",490,519,2547
+- -,BRS,CFU,Transavia France (TO),Transavia France,1355,03:12,,,,,75W,,,"Direct",490,1460,8745
+- -,BRS,CFU,easyJet (U2),easyJet,1355,03:12,,,,,320,,,"Direct",490,1460,2297
+- -,BRS,CHQ,Ryanair (FR),Ryanair,1718,03:56,,,,,738,,,"Direct",490,1474,4296
+- -,BRS,CPH,easyJet (U2),easyJet,694,01:53,,,,,319,,,"Direct",490,609,2297
+- -,BRS,DLM,Transavia France (TO),Transavia France,1841,04:10,,,,,75W,,,"Direct",490,1715,8745
+- -,BRS,DLM,easyJet (U2),easyJet,1841,04:10,,,,,320,,,"Direct",490,1715,2297
+- -,BRS,DUB,Aer Lingus (EI),Aer Lingus,205,00:54,,,,,AT7 AT4,,,"Codeshare",490,599,837
+- -,BRS,DUB,Ryanair (FR),Ryanair,205,00:54,,,,,738,,,"Direct",490,599,4296
+- -,BRS,EDI,easyJet (U2),easyJet,316,01:07,,,,,320 319,,,"Direct",490,535,2297
+- -,BRS,EGC,Ryanair (FR),Ryanair,476,01:27,,,,,738,,,"Direct",490,1265,4296
+- -,BRS,FAO,Ryanair (FR),Ryanair,1024,02:32,,,,,738,,,"Direct",490,1626,4296
+- -,BRS,FAO,easyJet (U2),easyJet,1024,02:32,,,,,319 320,,,"Direct",490,1626,2297
+- -,BRS,FCO,easyJet (U2),easyJet,966,02:25,,,,,320,,,"Direct",490,1555,2297
+- -,BRS,FNC,easyJet (U2),easyJet,1472,03:26,,,,,320,,,"Direct",490,4091,2297
+- -,BRS,FRA,Air Sicilia (BM),Air Sicilia,501,01:30,,,,,ER4,,,"Direct",490,340,312
+- -,BRS,FUE,Transavia France (TO),Transavia France,1685,03:52,,,,,75W,,,"Direct",490,1051,8745
+- -,BRS,FUE,easyJet (U2),easyJet,1685,03:52,,,,,319 320,,,"Direct",490,1051,2297
+- -,BRS,GCI,Aurigny Air Services (GR),Aurigny Air Services,134,00:46,,,,,AT7,,,"Direct",490,498,508
+- -,BRS,GDN,Ryanair (FR),Ryanair,903,02:18,,,,,738,,,"Direct",490,668,4296
+- -,BRS,GLA,easyJet (U2),easyJet,317,01:08,,,,,319,,,"Direct",490,534,2297
+- -,BRS,GRO,Ryanair (FR),Ryanair,703,01:54,,,,,738,,,"Direct",490,1222,4296
+- -,BRS,GVA,easyJet (U2),easyJet,535,01:34,,,,,320 319,,,"Direct",490,1665,2297
+- -,BRS,HAM,Air Sicilia (BM),Air Sicilia,555,01:36,,,,,ER3,,,"Direct",490,342,312
+- -,BRS,HER,easyJet (U2),easyJet,1767,04:02,,,,,320,,,"Direct",490,1452,2297
+- -,BRS,IBZ,Ryanair (FR),Ryanair,886,02:16,,,,,738,,,"Direct",490,1225,4296
+- -,BRS,INV,easyJet (U2),easyJet,428,01:21,,,,,319,,,"Direct",490,533,2297
+- -,BRS,JER,Skynet Airlines (SI),Skynet Airlines,151,00:48,,,,,AT4 ATR,,,"Direct",490,499,4438
+- -,BRS,KEF,easyJet (U2),easyJet,1128,02:45,,,,,320 319,,,"Direct",490,16,2297
+- -,BRS,KRK,easyJet (U2),easyJet,983,02:27,,,,,319,,,"Direct",490,669,2297
+- -,BRS,KUN,Ryanair (FR),Ryanair,1129,02:45,,,,,738,,,"Direct",490,3956,4296
+- -,BRS,LIG,Ryanair (FR),Ryanair,420,01:20,,,,,738,,,"Direct",490,1270,4296
+- -,BRS,LIS,easyJet (U2),easyJet,923,02:20,,,,,320,,,"Direct",490,1638,2297
+- -,BRS,LPA,Ryanair (FR),Ryanair,1748,03:59,,,,,738,,,"Direct",490,1054,4296
+- -,BRS,LPA,Transavia France (TO),Transavia France,1748,03:59,,,,,75W,,,"Direct",490,1054,8745
+- -,BRS,MAD,easyJet (U2),easyJet,754,02:00,,,,,320 319,,,"Direct",490,1229,2297
+- -,BRS,MAH,Transavia France (TO),Transavia France,862,02:13,,,,,75W,,,"Direct",490,1231,8745
+- -,BRS,MJV,easyJet (U2),easyJet,944,02:23,,,,,319 320,,,"Direct",490,1227,2297
+- -,BRS,MLA,Ryanair (FR),Ryanair,1367,03:14,,,,,738,,,"Direct",490,1606,4296
+- -,BRS,MLA,Air Malta (KM),Air Malta,1367,03:14,,,,,320,,,"Direct",490,1606,242
+- -,BRS,MUC,Air Sicilia (BM),Air Sicilia,677,01:51,,,,,ER4,,,"Direct",490,346,312
+- -,BRS,MXP,Air Sicilia (BM),Air Sicilia,656,01:48,,,,,ER4,,,"Direct",490,1524,312
+- -,BRS,NBE,Transavia France (TO),Transavia France,1240,02:58,,,,,75W,,,"Direct",490,7447,8745
+- -,BRS,NCE,easyJet (U2),easyJet,705,01:54,,,,,319 320,,,"Direct",490,1354,2297
+- -,BRS,NCL,easyJet (U2),easyJet,255,01:00,,,,,319 320,,,"Direct",490,521,2297
+- -,BRS,NOC,Ryanair (FR),Ryanair,309,01:07,,,,,738,,,"Direct",490,600,4296
+- -,BRS,ORK,Aer Lingus (EI),Aer Lingus,249,00:59,,,,,AT7,,,"Codeshare",490,596,837
+- -,BRS,PFO,Transavia France (TO),Transavia France,2086,04:40,,,,,75W,,,"Direct",490,1198,8745
+- -,BRS,PFO,easyJet (U2),easyJet,2086,04:40,,,,,320,,,"Direct",490,1198,2297
+- -,BRS,PMI,Ryanair (FR),Ryanair,858,02:12,,,,,738,,,"Direct",490,3998,4296
+- -,BRS,PMI,Transavia France (TO),Transavia France,858,02:12,,,,,75W,,,"Direct",490,3998,8745
+- -,BRS,PMI,Thomsonfly (BY),Thomsonfly,858,02:12,,,,,75W,,,"Direct",490,3998,5013
+- -,BRS,PMI,easyJet (U2),easyJet,858,02:12,,,,,320 319,,,"Direct",490,3998,2297
+- -,BRS,POZ,Ryanair (FR),Ryanair,833,02:09,,,,,738,,,"Direct",490,674,4296
+- -,BRS,PRG,easyJet (U2),easyJet,745,01:59,,,,,319,,,"Direct",490,1587,2297
+- -,BRS,PSA,easyJet (U2),easyJet,808,02:06,,,,,320 319,,,"Direct",490,1562,2297
+- -,BRS,RAK,easyJet (U2),easyJet,1392,03:17,,,,,320 319,,,"Direct",490,1075,2297
+- -,BRS,REU,Ryanair (FR),Ryanair,730,01:57,,,,,738,,,"Direct",490,1236,4296
+- -,BRS,REU,Transavia France (TO),Transavia France,730,01:57,,,,,75W,,,"Direct",490,1236,8745
+- -,BRS,RZE,Ryanair (FR),Ryanair,1079,02:39,,,,,738,,,"Direct",490,675,4296
+- -,BRS,SNN,Aer Lingus (EI),Aer Lingus,278,01:03,,,,,AT4,,,"Codeshare",490,603,837
+- -,BRS,SXF,easyJet (U2),easyJet,694,01:53,,,,,319,,,"Direct",490,337,2297
+- -,BRS,TFS,Ryanair (FR),Ryanair,1764,04:01,,,,,738,,,"Direct",490,1056,4296
+- -,BRS,TFS,Transavia France (TO),Transavia France,1764,04:01,,,,,75W,,,"Direct",490,1056,8745
+- -,BRS,TFS,Thomsonfly (BY),Thomsonfly,1764,04:01,,,,,75W,,,"Direct",490,1056,5013
+- -,BRS,TFS,easyJet (U2),easyJet,1764,04:01,,,,,320 319,,,"Direct",490,1056,2297
+- -,BRS,TLS,Germania (ST),Germania,568,01:38,,,,,ER4,,,"Direct",490,1273,2547
+- -,BRS,TLS,easyJet (U2),easyJet,568,01:38,,,,,320 319,,,"Direct",490,1273,2297
+- -,BRS,TSF,Ryanair (FR),Ryanair,786,02:04,,,,,738,,,"Direct",490,1539,4296
+- -,BRS,VLC,Ryanair (FR),Ryanair,828,02:09,,,,,738,,,"Direct",490,1246,4296
+- -,BRS,WMI,Ryanair (FR),Ryanair,993,02:29,,,,,738,,,"Direct",490,8414,4296
+- -,BRS,WRO,Ryanair (FR),Ryanair,845,02:11,,,,,738,,,"Direct",490,680,4296
+- -,BRS,ZRH,Helvetic Airways (2L),Helvetic Airways,573,01:38,,,,,100,,,"Direct",490,1678,2750
