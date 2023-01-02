@@ -1,46 +1,33 @@
 import numpy as np
-#import scipy as sp
-from Lift_Drag_Polar import p, T, specific_gas_constant
+from Constants import *
+from Class_I_Weight_Estimation.Wing_Loading_Diagram import A,W_S_design
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
 #from Fuselage import prop_choice
 #Switch for simple/double tapered wing
 switch = 1                            # put 1 for simple tapered, 2 for double tapered
-prop_choice = 4                    # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
+prop_type = 2                        # 1 = H2 combustion, 2 = fuel cell, 3 = EH Series, 4 = EH Parallel Series
 #Constants
-gamma = 1.4                            # Specific heat ratio of gas
 M_cross = 0.935                        # Technology factor for supercritical airfoils
+T_cruise,p_cruise,rho_cruise,a_cruise = ISA_calculator(h_cruise,0)
 
 # Parameters per aircraft
-if prop_choice == 1:
-    MTOM = 19234   # LH2 combustion in kg
-    Sw = 60       #main wing area [m^2], done
-    b = 27
-    print("================================")
-    print("Wing Planform for LH2 combustion")
-if prop_choice == 2:
-    MTOM = 25857    # series parallel in kg
-    Sw = 92       # main wing area [m^2], done
-    b = 33
-    print("================================")
-    print("Wing Planform for Hybrid Series Parallel")
-if prop_choice == 3:
-    MTOM = 24378    # series electric hybrid in kg
-    Sw = 106       # main wing area [m^2], done
-    b = 36
-    print("================================")
-    print("Wing Planform for Hybrid Series")
-if prop_choice == 4:
-    MTOM = 19231    # H2FC in kg done
-    Sw = 53      # main wing area [m^2]
-    b = 25
-    print("================================")
-    print("Wing Planform for Hydrogen FC")
+if prop_type == 1:
+    MTOM = 19200    # LH2 combustion in kg
+if prop_type == 2:
+    MTOM = m_mto    # hydrogen fuel cell
+if prop_type == 3:
+    MTOM = 25300    # battery fuel hybrid in series
+if prop_type == 4:
+    MTOM = 24100    # battery fuel hybrid in parallel series
+
+Sw = (MTOM*g)/ W_S_design     # To be updated!!
+b = np.sqrt(A*Sw)
+print('Sw', Sw, 'b', b)
 
 # Mission charecteristics
-V_cruise = 141.471   # in m/s
-
 #Calculation
 #Sw = 61                               # main wing area [m^2], change value base this on class I est.
-a_cruise = np.sqrt(gamma*specific_gas_constant*T)          # Speed of sound at cruise altitude  [m/s]
+a_cruise = np.sqrt(gamma*specific_gas_constant*T_cruise)          # Speed of sound at cruise altitude  [m/s]
 M_cruise = V_cruise / a_cruise         # Mach number during cruise
 M_dd = M_cruise + 0.03                 # Drag-divergence Mach number
 taper = 0.45                           # Taper ratio (from 0 to 1), optimum taper is 0.45 for unswept
@@ -50,15 +37,15 @@ taper = 0.45                           # Taper ratio (from 0 to 1), optimum tape
 if switch == 1:
     c_r = 2*Sw/((1+taper)*b)           # Tip chord  [m]
     c_t = c_r * taper                  # Root chord [m]
-    qhat = 0.5 * gamma * p * (M_cruise**2)
+    qhat = 0.5 * gamma * p_cruise * (M_cruise**2)
     C_Lhat = MTOM/(qhat*Sw)            # Cruise lift coefficient
     t_c_ratio = min(0.18, ((M_cross-M_dd)-0.115*(C_Lhat**1.5))) # thickness to chord ratio
     c_mac = (2/3)*c_r*((1+taper+taper**2)/(1+taper))  # length of MAC
     y_mac = 0.5*(1/3)*(1+2*taper)/(1+taper)*b       # Spanwise location of MAC
 
     #Printing results
-    print("t_c_ratio: ", t_c_ratio)
-    print("Pressure [Pa]:", p)
+    '''print("t_c_ratio: ", t_c_ratio)
+    print("Pressure [Pa]:", p_cruise)
     print("Cruise Mach number: ", M_cruise)
     print("Speed of sound at cruise", a_cruise)
     print("C_L_hat", C_Lhat)
@@ -66,12 +53,12 @@ if switch == 1:
     print("MAC: ", c_mac)
     print("root chord: ",c_r)
     print("tip chord: ", c_t)
-    print("Spanwise position of MAC", y_mac)
+    print("Spanwise position of MAC", y_mac)'''
 
 if switch == 2:                         # For double tapered wing
 
     # c_r = 2*Sw/((1+taper)*b)
-    eta_k = 0.5                         # relative span position of kink, need to determine this value later
+    eta_k = 0.4                         # relative span position of kink, need to determine this value later
                                         # Depending on the postition of the propellor
     y_k = b * eta_k / 2                 # Spanwise position of the kink
     taper_inner = 1                     # Taper ratio of the inner wing [to be changed]

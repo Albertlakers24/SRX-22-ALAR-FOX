@@ -1,6 +1,7 @@
 import numpy as np
 #Units Conversion
 kts_m_s = 0.514444                  #knots to m/s
+nmi_mile = 1.151                      #nmi to miles
 nmi_m = 1852                        #nmi to m
 min_s = 60                          #minutes to seconds
 ft_m = 0.3048                       #ft to m
@@ -22,6 +23,11 @@ e_lh2 = 120*10**6                   #J/kg Specific Energy Liquid Hydrogen
 V_cruise = 275 * kts_m_s            #Cruise Velocity Requirement
 h_cruise = 280 * FL_ft * ft_m       #Cruise height Requirement
 V_approach = 141 * kts_m_s          #Approach speed Requirement
+takeoff_critical = 5000 * ft_m      #Takeoff at 5000ft above mean sea level
+landing_critial = 5000 * ft_m       #Landing at 5000ft above mean sea level
+dt_land = 10                        #Offset temperature to ISA at landing
+dt_takeoff = 10                     #Offset temperature to ISA at takeoff
+dt_cruise = 0                       #Offset temperature to ISA at cruise
 PAX = 48                            #Passenger Requirement
 E = 30 * 60                         #Loiter endurance in seconds
 s_takeoff = 4500 * ft_m             #Takeoff Distance
@@ -32,7 +38,8 @@ m_crew = 3 * 190 * lbs_kg           #Crew mass
 m_crew_baggage = 3 * 30 * lbs_kg    #Baggage mass for crew
 R_norm = 1000 * nmi_m               #Design Range
 R_div = 100 * nmi_m                 #Divergence Range
-Loiter = 30 * min_s                 #Loiter Endurance
+t_loiter = 30 * min_s               #Loiter Endurance
+f_con = 5/100                       #Contingency fuel percentage
 #Efficiency Constants
 eta_prop = 0.85                     #Propeller efficiency
 eta_EM = 0.95                       #Electric motor efficiency
@@ -43,6 +50,7 @@ fc_power_density = 3                #kW/kg
 inverter_power_density = 30         #kW/kg
 em_power_density = 15               #kW/kg
 #Aerodynamic Constants
+A = 12                              #Aspect Ratio (ONLY VALUE THAT COULD BE ITERATED)
 Psi = 0.0075                        #Parasite drag dependent on the lift coefficient (value based on Roelof reader p.46)
 phi = 0.97                          #span efficiency factor (value based on Roelof reader p.46)
 Cfe = 0.0030                        #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
@@ -55,7 +63,7 @@ CL_max_landing = 2.6                # -
 #General Functions
 def ISA_calculator(h,dt):
     T = T_0 + lapse_rate * h + dt
-    p = p_0 * ((T / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
+    p = p_0 * (((T-dt) / T_0) ** ((-g) / (specific_gas_constant * lapse_rate)))
     rho = p / (specific_gas_constant*T)
     a = np.sqrt(gamma * T * specific_gas_constant)
     return T, p, rho, a
