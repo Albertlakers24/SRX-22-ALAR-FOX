@@ -61,7 +61,8 @@ CL_max_takeoff = 2.1                # -
 CL_max_cruise = 1.9                 # -
 CL_max_landing = 2.6                # -
 CL_max_loiter = 1.9                 # -
-
+#Calculation Constants
+OEW_cg = 11.3                       #m
 
 #General Functions
 def ISA_calculator(h,dt):
