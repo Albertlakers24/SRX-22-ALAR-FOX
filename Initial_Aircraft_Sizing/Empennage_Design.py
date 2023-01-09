@@ -1,5 +1,5 @@
 import numpy as np
-from Wing_planform import Sw, c_mac, specific_gas_constant, gamma, M_cross,b
+from Initial_Aircraft_Sizing.Wing_planform import Sw, c_mac, specific_gas_constant, gamma, M_cross,b
 
 
 
@@ -7,7 +7,7 @@ from Wing_planform import Sw, c_mac, specific_gas_constant, gamma, M_cross,b
 ##Design 2; Liquid Hydrogen Combustion
 ##Design 3; Hybrid Electric Parallel Series
 ##Design 4; Hybrid Electric Series CHeck
-Design = 3
+Design = 1
 
 #Constants from other files
 D_outer = 2.8 + 0.21*2              #m

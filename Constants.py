@@ -22,18 +22,22 @@ e_lh2 = 120*10**6                   #J/kg Specific Energy Liquid Hydrogen
 #Requirment Constants
 V_cruise = 275 * kts_m_s            #Cruise Velocity Requirement
 h_cruise = 280 * FL_ft * ft_m       #Cruise height Requirement
+h_loiter = 195 * FL_ft * ft_m       #Loiter height (requirement)
 V_approach = 141 * kts_m_s          #Approach speed Requirement
 takeoff_critical = 5000 * ft_m      #Takeoff at 5000ft above mean sea level
 landing_critical = 5000 * ft_m      #Landing at 5000ft above mean sea level
 dt_land = 10                        #Offset temperature to ISA at landing
 dt_takeoff = 10                     #Offset temperature to ISA at takeoff
 dt_cruise = 0                       #Offset temperature to ISA at cruise
+dt_loiter = 0                       #Offset temperature to ISA at loiter
 PAX = 48                            #Passenger Requirement
 E = 30 * 60                         #Loiter endurance in seconds
 s_takeoff = 4500 * ft_m             #Takeoff Distance
 s_landing = 4500 * ft_m             #Landing Distance
 m_pax = 200*lbs_kg*PAX              #Fat American passenger mass
 m_pax_baggage = 40*lbs_kg*PAX       #Baggage mass for passenger
+vol_pax = 0.14                      #Volume per passenger
+vol_pax_baggage = 0.14 * PAX        #Total volume of baggage
 m_crew = 3 * 190 * lbs_kg           #Crew mass
 m_crew_baggage = 3 * 30 * lbs_kg    #Baggage mass for crew
 R_norm = 1000 * nmi_m               #Design Range
@@ -58,7 +62,9 @@ Swet_S = 6.1                        #(6.0-6.2) wetted area ratios -> depending o
 CL_max_takeoff = 2.1                # -
 CL_max_cruise = 1.9                 # -
 CL_max_landing = 2.6                # -
-
+CL_max_loiter = 1.9                 # -
+#Calculation Constants
+OEW_cg = 11.3                       #m
 
 #General Functions
 def ISA_calculator(h,dt):
