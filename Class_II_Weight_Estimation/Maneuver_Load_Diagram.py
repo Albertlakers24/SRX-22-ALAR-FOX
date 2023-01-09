@@ -92,7 +92,7 @@ plt.grid()
 plt.show()
 
 print("n max", n_max)
-print("V_S", V_S)
+# print("V_S", V_S)
 print("V_D", V_D)
 print("n min", n_min)
 
@@ -178,14 +178,15 @@ V_B_SL_oem = V_B_calc(0, W_S_oem)
 delta_n_maxes_cruise, delta_n_pos_list_cruise = delta_n(rho_cruise, V_cruise, W_S_oem, h_cruise)
 delta_n_maxes_SL, delta_n_pos_list_SL = delta_n(rho_0, V_B_SL_oem, W_S_oem, 0)
 delta_n_maxes_dive, delta_n_pos_list_dive = delta_n(rho_cruise, V_D, W_S_oem, h_cruise)
-H_crit_cruise_index = np.argmin(delta_n_maxes_cruise)
-H_crit_SL_index = np.argmin(delta_n_maxes_SL)
+H_crit_cruise_index = np.argmax(delta_n_maxes_cruise)
+H_crit_SL_index = np.argmax(delta_n_maxes_SL)
 H_crit_cruise = H_list[H_crit_cruise_index]
 H_crit_SL = H_list[H_crit_SL_index]
 delta_n_cruise_crit = max(delta_n_maxes_cruise)
 delta_n_SL_crit = max(delta_n_maxes_SL)
 delta_n_dive_crit = max(delta_n_maxes_dive)
 print(delta_n_maxes_cruise)
+print(H_crit_cruise_index, delta_n_cruise_crit)
 
 #POINTS
 point_B_up = [V_B_SL_oem, 1 + delta_n_SL_crit]
