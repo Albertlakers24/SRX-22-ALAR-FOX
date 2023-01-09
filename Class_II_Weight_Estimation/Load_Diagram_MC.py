@@ -7,7 +7,8 @@ from Initial_Aircraft_Sizing.Wing_planform import b, c_mac
 
 # Density
 rho = 0 # just to define rho, this NEVER changes
-density = 0 # 0 @ sea-level, 1 @ cruise, else @ loiter
+density = 2 # 0 @ sea-level, 1 @ cruise, else @ loiter
+
 if density == 0:
     rho = rho_0 # density at sea level
 elif density == 1:
@@ -159,6 +160,7 @@ else:
     U_ref_C = 12.71
     U_ref_D = U_ref_C / 2
 
+
 Z_mo = h_cruise
 R1 = beta_s_land_fc
 R2 = m_zf/m_mto
@@ -171,3 +173,61 @@ if H1 < H2:
     H = H2
 else:
     H = H1
+
+U_ds = U_ref_C * F_g * (H/107)**(1/6)
+U_list = []
+H_list = []
+for i in np.arange(0,2*H+1,1):
+    H_list.append(i)
+    U = (U_ds/2)*(1-np.cos((np.pi*i/H)))
+    U_list.append(U)
+
+H_9 = 9
+U_ds9 = U_ref_C * F_g * (H_9/107)**(1/6)
+H_33 = 33.5
+U_ds33 = U_ref_C * F_g * (H_33/107)**(1/6)
+H_58 = 58
+U_ds58 = U_ref_C * F_g * (H_58/107)**(1/6)
+H_82 = 82.5
+U_ds82 = U_ref_C * F_g * (H_82/107)**(1/6)
+H_107 = 107
+U_ds107 = U_ref_C * F_g * (H_107/107)**(1/6)
+
+#Design speed for max. gust intensity
+mu = (2* W_S_design) / (rho * c_mac * CL_alpha * g)
+K_G = (0.88 * mu) / (5.3 + mu)
+V_B = V_S * np.sqrt(1 + ((K_G * rho_0 * U_ref_C * V_C * CL_alpha)/(2* W_S_design)))
+
+V = V_D * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
+lmbda = (2 * W_S_design) / (CL_alpha * rho * V * g)
+
+U_ref_V = U_ref_D # CHANGE BASED ON VELOCITY
+H = 9
+dH = 1
+max_gust = []
+while H <= 107:
+    omega = (np.pi * V) / H
+    #print("omega =", omega)
+    U_ds = U_ref_V * F_g * (H/107)**(1/6)
+    #print("U_ds =", U_ds)
+    t = 0.00005
+    dt = 0.005
+    ns = []
+    nsmax = []
+    while t < (2*np.pi)/omega:
+        dn = (U_ds / (2*g))*(omega * np.sin(omega * t)+(1/(1+(omega * lmbda)**(-2)))*((np.exp(-t/lmbda)/lmbda)-(np.cos(omega*t)/lmbda)-(omega*np.sin(omega*t))))
+        ns.append(dn)
+        t = t + dt
+        nmax = max(ns)
+    nsmax.append(nmax)
+    H_list.append(H)
+    H = H + dH
+    max_gust.append(nmax)
+    #print(*nsmax, sep = "\\n")
+
+Hlen = range(9,108)
+
+print(np.argmax(max_gust))
+
+plt.plot(Hlen, max_gust)
+plt.show()
