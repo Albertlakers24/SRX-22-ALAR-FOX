@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Constants import *
+from Constants
 from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 from Initial_Aircraft_Sizing.Wing_planform import b
 
 # Density
-rho = 0
-density = 0
+rho = 0 # just to define rho, this NEVER changes
+density = 0 # 0 @ sea-level, 1 @ cruise, else @ loiter
 if density == 0:
     rho = rho_0 # density at sea level
 elif density == 1:
@@ -17,9 +17,9 @@ else:
 
 # MANEUVER DIAGRAM DESIGN
 #Max lift coefficient
-if rho == 0:
+if density == 0:
     Clmax = CL_max_landing
-elif rho == 1:
+elif density == 1:
     Clmax = CL_max_cruise
 else:
     Clmax = CL_max_loiter # add loiter Clmax to Constants file
@@ -29,8 +29,10 @@ n = 2.1 + (24000 / (m_mto + 10000))
 
 if n < 2.5:
     n_max = 2.5
-if n > 3.8:
+elif n > 3.8:
     n_max = 3.8
+else:
+    n_max = n
 
 n_min = -1
 

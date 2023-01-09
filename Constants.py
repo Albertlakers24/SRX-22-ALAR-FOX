@@ -1,7 +1,7 @@
 import numpy as np
 #Units Conversion
 kts_m_s = 0.514444                  #knots to m/s
-nmi_mile = 1.151                      #nmi to miles
+nmi_mile = 1.151                    #nmi to miles
 nmi_m = 1852                        #nmi to m
 min_s = 60                          #minutes to seconds
 ft_m = 0.3048                       #ft to m
@@ -24,7 +24,7 @@ V_cruise = 275 * kts_m_s            #Cruise Velocity Requirement
 h_cruise = 280 * FL_ft * ft_m       #Cruise height Requirement
 V_approach = 141 * kts_m_s          #Approach speed Requirement
 takeoff_critical = 5000 * ft_m      #Takeoff at 5000ft above mean sea level
-landing_critial = 5000 * ft_m       #Landing at 5000ft above mean sea level
+landing_critical = 5000 * ft_m      #Landing at 5000ft above mean sea level
 dt_land = 10                        #Offset temperature to ISA at landing
 dt_takeoff = 10                     #Offset temperature to ISA at takeoff
 dt_cruise = 0                       #Offset temperature to ISA at cruise
