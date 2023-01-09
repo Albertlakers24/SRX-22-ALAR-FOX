@@ -55,7 +55,7 @@ Psi = 0.0075                        #Parasite drag dependent on the lift coeffic
 phi = 0.97                          #span efficiency factor (value based on Roelof reader p.46)
 Cfe = 0.0030                        #equivalent skin friction coefficient -> depending on aircraft from empirical estimation
 Swet_S = 6.1                        #(6.0-6.2) wetted area ratios -> depending on airframe structure
-CL_max_take0ff = 2.1                # -
+CL_max_takeoff = 2.1                # -
 CL_max_cruise = 1.9                 # -
 CL_max_landing = 2.6                # -
 
