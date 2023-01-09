@@ -49,4 +49,4 @@ oem = oew_mtom * m_mto + m_f * 1.4
 m_zf = m_mto - m_f
 #print("MTOM:", m_mto)
 #print("OEM:", oem)
-# print("Fuel mass:", m_f)
+#print("Fuel mass:", m_f)
