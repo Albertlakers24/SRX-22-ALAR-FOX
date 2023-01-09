@@ -1,6 +1,6 @@
 
 
-from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, m_tanks
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, m_tanks, oem
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 from Constants import *
 
@@ -93,7 +93,7 @@ L_D = max_CL_CD
 
 #W_press
 V_pr_m3 = 86.78 #Could change
-V_pr_ft3 = V_pr_m3/ft_m**(3)
+V_pr_ft3 = V_pr_m3/(ft_m**(3))
 P_delta = 8 #psi
 W_press = 11.9+(V_pr_ft3*P_delta)**(0.271)
 
@@ -196,7 +196,7 @@ print('Weight Aircon and De-Icing', W_aircon_ice)
 print('Weight Furnishing =', W_furnish)
 
 print('Class II Weight Estimation =', LH2_system_tank+Engine_weight+Fuel_Cell_Weight+W_wing+W_hor_tail+W_ver_tail+W_fus+W_land_main+W_land_nose+W_flight_controls+W_hydraulics+W_av+W_elec+W_aircon_ice+W_furnish)
-
+print('Class I OEM =', oem)
 
 
 
