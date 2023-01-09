@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Constants import *
-from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, oem
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, oem, m_zf, m_f
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 from Initial_Aircraft_Sizing.Wing_planform import b
+from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 
 rho = rho_0 # IF CALCULATING @ SEA-LEVEL, rho = rho_0. IF CALCULATING @ CRUISE, rho = rho_cruise
 
@@ -101,6 +102,32 @@ def u_ref(h):
         u_ref = 13.41 - (h - 4572) * (13.41 - 6.36) / (18288 - 4572)
     return u_ref
 
+def u_shape(h):
+    U_ds_list = []
+    U_design = []
+    H_list = []
+    for H in range(9, 108):
+        Z_mo = h_cruise
+        R_1 = beta_s_land_fc
+        R_2 = m_zf / m_mto
+        F_gm = np.sqrt(R_2 * np.tan(np.pi * R_1 / 4))
+        F_gz = 1 - Z_mo / 76200
+        F_g = 0.5 * (F_gz + F_gm)
+        U_ds = u_ref(h) * F_g * (H / 350)**(1/6)
+        U_ds_list.append(U_ds)
+        U_list = []
+        H_list.append(H)
+        for s in range(0, 2 * (H + 1)):
+            U = U_ds / 2 * (1 - np.cos(np.pi * s / H))
+            U_list.append(U)
+        U_design.append(max(U_list))
+    return U_design, H_list
+
+U_design, H_list = u_shape(0)
+plt.figure()
+plt.plot(H_list, U_design)
+plt.show()
+
 def V_B_calc(h, W_S):
     if (h == 0 or h == (5000 * ft_m)):
         T, p, rho, a = ISA_calculator(h, dt_takeoff)
@@ -111,24 +138,45 @@ def V_B_calc(h, W_S):
     V_B = V_min * np.sqrt(1 + (Kg * rho_0 * u_ref(h) * V_cruise * CL_alpha) / (2 * W_S)) * np.sqrt(rho / rho_0)
     return V_B
 
-def delta_n(h, V, W_S):
-    if (h == 0 or h == (5000 * ft_m)):
-        T, p, rho, a = ISA_calculator(h, dt_takeoff)
-    else:
-        T, p, rho, a = ISA_calculator(h, dt_cruise)
-    if V == V_D:
-        delta_n = (rho * V * np.sqrt(rho / rho_0) * CL_alpha * u_ref(h)/2) / (2 * W_S)
-    else:
-        delta_n = (rho * V * np.sqrt(rho / rho_0) * CL_alpha * u_ref(h)) / (2 * W_S)
-    return 1 + delta_n, 1 - delta_n
+# def delta_n(h, V, W_S):
+#     if (h == 0 or h == (5000 * ft_m)):
+#         T, p, rho, a = ISA_calculator(h, dt_takeoff)
+#     else:
+#         T, p, rho, a = ISA_calculator(h, dt_cruise)
+#     if V == V_D:
+#         delta_n = (rho * V * np.sqrt(rho / rho_0) * CL_alpha * u_shape(h)/2) / (2 * W_S)
+#     else:
+#         delta_n = (rho * V * np.sqrt(rho / rho_0) * CL_alpha * u_shape(h)) / (2 * W_S)
+#     return 1 + delta_n, 1 - delta_n
+
+def delta_n(rho, V, W_S):
+    delta_n_pos_list = []
+    delta_n_neg_list = []
+    for H in H_list:#range(9, 108):
+        omega = np.pi * V / H
+        lambda_var = W_S / CL_alpha * 2 / rho / V / g
+        U_des = U_design[H-9]
+        for t in np.arange(0, 2*np.pi/omega, 0.01):
+            delta_n_pos = U_des / (2 * g) * (omega * np.sin(omega * t) + 1 / (1 + (omega * lambda_var)**(-2)) * (np.exp(-t/lambda_var)/lambda_var-np.cos(omega*t)/lambda_var-omega*np.sin(omega * t)))
+            delta_n_neg = delta_n_pos * -1
+            delta_n_pos_list.append(delta_n_pos)
+            delta_n_neg_list.append(delta_n_neg)
+    return delta_n_pos_list, delta_n_neg_list
+
 #OEM WILL BE MORE CRITICAL
 # V_B_SL_mtom = V_B_calc(0, W_S_design)
 V_B_SL_oem = V_B_calc(0, W_S_oem)
-delta_cruise_up, delta_cruise_down = delta_n(0, V_cruise, W_S_oem)
+delta_cruise_up, delta_cruise_down = delta_n(rho, V_cruise, W_S_oem)
 # delta_B_SL_up_mtom, delta_B_SL_down_mtom = delta_n(0, V_B_SL_mtom, W_S_design)
-delta_B_SL_up_oem, delta_B_SL_down_oem = delta_n(0, V_B_SL_oem, W_S_oem)
-delta_D_up, delta_D_down = delta_n(0, V_D, W_S_oem)
+delta_B_SL_up_oem, delta_B_SL_down_oem = delta_n(rho, V_B_SL_oem, W_S_oem)
+delta_D_up, delta_D_down = delta_n(rho, V_D, W_S_oem)
 
+H_crit_cruise_index = np.argmax(delta_cruise_up)
+H_crit_SL_index = np.argmax(delta_cruise_up)
+H_crit_cruise = H_list[H_crit_cruise_index]
+H_crit_SL = H_list[H_crit_SL_index]
+
+"""
 #Points
 point_B_up = [V_B_SL_oem, delta_B_SL_up_oem]
 point_C_up = [V_cruise, delta_cruise_up]
@@ -226,3 +274,4 @@ plt.show()
 # ax.spines['bottom'].set_position(('data',0))
 # plt.grid()
 # plt.show()
+"""
