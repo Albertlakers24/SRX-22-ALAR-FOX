@@ -153,4 +153,4 @@ constant average DoH throughout the entire flight. As such, this method merely p
 as the average DoH will result in power values that are far in excess of the required during certain flight phases,
 while also providing power values that are below the required for other flight phases. As a result, this method is
 incorrect for a significant portion of the flight, and therefore the NEW method is superior in this regard. All
-calculations will, from this point forward, be performed with the NEW method.
+calculations will, from this point forward, be performed with the NEW method.'''

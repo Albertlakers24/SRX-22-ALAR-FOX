@@ -14,7 +14,7 @@ delta_f_landing = 35        # LANDING Flap deflection - in degrees
 
 # Make CL Lists for each flight phase
 step = 0.01
-CL_list_takeOff = np.arange(0, CL_max_take0ff + step, step)
+CL_list_takeOff = np.arange(0, CL_max_takeoff + step, step)
 CL_list_cruise = np.arange(0, CL_max_cruise + step, step)
 CL_list_landing = np.arange(0, CL_max_landing + step, step)
 

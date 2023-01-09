@@ -1,32 +1,32 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-"""
-Verification Constants:
-RF_CO2 is in W/m^2
-horizon is the time horizon- 30yrs (Dallara) for short-lived species and 100 yrs for long-lived species
-Time span - from 2035 to 2065
-massflow is in kg/s
-t_year is time flown in a year in seconds
-number_aircraft is the expected fleet size
+"""TODO after the holidays:
+* add massflow as a function to other files
+* check for fleet size with marketing group
+* check if forcing factor should be made a function with time? -> Schmidt-Appleman criterion
+* check RF parameter for contrails if changed in case of a hydrogen Fuel Cell
 """
 
-RF_CO2 = 3.7
-horizon = 100
+
+"""CONSTANTS FROM OTHER PARAMTERS"""
+"""horizon is the time horizon- 30yrs (Dallara) for short-lived species and 100 yrs for long-lived species"""
+horizon = 30                            #years
+massflow = 0.031153898                  #kg/s
+t_year = 747900*12                      #time flown by 1 aircraft for 1 year
+number_aircraft = 100                   #number of aircraft for 1 fleet
+Distance_year = 600000                  #distance flown by 1 aircraft for 1 year
+
+"""CONSTANT PARAMTERS """
+RF_CO2 = 3.7                            #W/m^2
+S = 3                                   #K
+alpha_t = 0.595                         #-
+tau_t1 = 8.4                            #yrs
+tau_t2 = 409.5                          #yrs
+
+"""TIMES"""
 time = np.arange(2035, 2035+horizon, 1)
 time_horizon = np.arange(0,horizon, 1)
-massflow = 0.031153898
-t_year = 747900*12
-number_aircraft = 100
-Distance_year = 600000
-
-"""Temperature Model Parameters from Dallara:
-S = 3 in K
-tau in yrs"""
-S = 3
-alpha_t = 0.595
-tau_t1 = 8.4
-tau_t2 = 409.5
 
 
 def convolve(signal, response):
