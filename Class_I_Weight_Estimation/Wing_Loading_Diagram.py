@@ -194,4 +194,4 @@ print("Hybrid Series W/P =  0.0764")
 print("Hybrid Parallel Series W/S = 3554")
 print("Hybrid Parallel Series W/P = 0.07")'''
 W_P_design = 0.0763
-W_S_design = 3560
+W_S_design = 3560 #N / m^2

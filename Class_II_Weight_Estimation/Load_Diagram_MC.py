@@ -1,19 +1,19 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Constants import *
-from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, oem, m_zf, m_f
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
-from Initial_Aircraft_Sizing.Wing_planform import b
+from Initial_Aircraft_Sizing.Wing_planform import b, c_mac
 
 # Density
 rho = 0 # just to define rho, this NEVER changes
-density = 1 # 0 @ sea-level, 1 @ cruise, else @ loiter
+density = 0 # 0 @ sea-level, 1 @ cruise, else @ loiter
 if density == 0:
     rho = rho_0 # density at sea level
 elif density == 1:
     rho = rho_cruise
 else:
-    rho = rho_loiter # add loiter density to Constants file
+    rho = 0.663838
 
 #MANEUVER DIAGRAM DESIGN
 #Max lift coefficient
@@ -52,8 +52,8 @@ elif density == 1:
     h = h_cruise
     dt = dt_cruise
 else:
-    h = h_loiter # add loiter FL to Constants file
-    dt = dt_loiter # add loiter temp. offset to Constants file
+    h = h_loiter
+    dt = dt_loiter
 
 a = ISA_calculator(h,dt)[3]
 M_C = V_C / a
@@ -92,14 +92,6 @@ for i in np.arange(0, V_max_flaps, 0.1):
     n = (1/2 * CL_max_landing * rho_0) * i**2 / W_S_design #double check if constant rho_0 or not
     n_flaps_list.append(n)
 '''
-
-#PRINT STATEMENTS
-print("n max", n_max)
-print("V_S", V_S)
-print("V_C", V_C)
-print("V_D", V_D)
-print("n min", n_min)
-print("speed of sound", a)
 
 #Graph
 point_F = [V_C, -1]
@@ -148,3 +140,34 @@ plt.ylabel("n", weight = "bold")
 ax.spines['bottom'].set_position(('data',0))
 plt.grid()
 plt.show()
+
+#GUST DIAGRAM DESIGN
+#Constants
+CL_alpha = 5.03
+chord = b / A
+S = m_mto * g / W_S_design
+W_S_oem = oem * g / S
+
+#Gust Profile
+if density == 0:
+    U_ref_C = 17.07
+    U_ref_D = U_ref_C / 2
+elif density == 1:
+    U_ref_C = 11.37
+    U_ref_D = U_ref_C / 2
+else:
+    U_ref_C = 12.71
+    U_ref_D = U_ref_C / 2
+
+Z_mo = h_cruise
+R1 = beta_s_land_fc
+R2 = m_zf/m_mto
+F_gz = 1 - (Z_mo / 76200)
+F_gm = np.sqrt(R2 * np.tan((np.pi * R1)/4))
+F_g = 0.5 * (F_gz + F_gm)
+H1 = c_mac * 12.5
+H2 = 107
+if H1 < H2:
+    H = H2
+else:
+    H = H1

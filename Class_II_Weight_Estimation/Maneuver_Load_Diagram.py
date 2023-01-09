@@ -6,16 +6,17 @@ from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 from Initial_Aircraft_Sizing.Wing_planform import b
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
 
-rho = rho_0 # IF CALCULATING @ SEA-LEVEL, rho = rho_0. IF CALCULATING @ CRUISE, rho = rho_cruise
+rho = rho_cruise # IF CALCULATING @ SEA-LEVEL, rho = rho_0. IF CALCULATING @ CRUISE, rho = rho_cruise
 
 # T_cruise, p_cruise, rho_cruise, a_cruise = ISA_calculator(5000*ft_m, 0)
 # V_cruise = V_cruise * np.sqrt(rho_cruise / rho_0)
 constant_q = 1/2 * CL_max_cruise * rho
 mass = m_mto
+mass_lbs = m_mto / lbs_kg #conversion between kg and lbs
 S = m_mto * g / W_S_design
 V_A = []
 n_A_list = []
-n_max = max(2.1 * (24000 / (m_mto + 10000)), 2.5)
+n_max = max(2.1 + (24000 / (mass_lbs + 10000)), 2.5)
 n_min = -1
 V_max = np.sqrt((2 * n_max * W_S_design) / (rho_0 * CL_max_cruise)) * np.sqrt(rho / rho_0)
 for i in np.arange(0, V_max, 0.1):
@@ -89,6 +90,11 @@ plt.ylabel("n", weight = "bold")
 ax.spines['bottom'].set_position(('data',0))
 plt.grid()
 plt.show()
+
+print("n max", n_max)
+print("V_S", V_S)
+print("V_D", V_D)
+print("n min", n_min)
 
 #Gust Loads Diagram
 CL_alpha = 5.03         #input
