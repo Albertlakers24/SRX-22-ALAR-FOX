@@ -1,6 +1,6 @@
 import numpy as np
 import scipy as sp
-from Wing_planform import taper
+from Initial_Aircraft_Sizing.Wing_planform import taper
 #Switch
 switch = 1          # put 1 for circular fuselage, 2 for double bubble fuselage
 prop_choice = 4 # 1 = H2 combustion, 2 = series/ parallel, 3 = series, 4 = H2 fuel cell
@@ -97,28 +97,28 @@ Mass_fuselage = W_fuselage * 4.44822 / 9.80665    # mass` of the fuselage [kg]
 
 
 
-#printing results
-print("===============================")
-print(n_row, "rows")
-print(n_SA, "seats abreast")
-print("D_in [m]:", D_inner)
-print("D_out [m]:", D_outer)
-print("skin thickness [m]:", skin_thickness)
-print("l_tank [m]:", l_tank)
-print("l_fuselage [m]:", l_f)
-print("l_nosecone [m]", l_nc)
-print("l_tailcone [m]", l_tc)
-print("l_nc/l_f =", l_nc/l_f)
-print("l_nc/l_f =", l_nc/l_f)
-print("l_constant cross section [m]", l_constant_cross_section)
-print("tail cone angle [deg]", theta_tc)
-print("l_PAX [m]", l_pax)
-print("l_cabin [m]", l_cabin)
-print("l_tail [m]", l_t)
-print("===================================================")
-print("Fineness Ratio: ", fineness_ratio)
-print("Weight estimation fuselage is", Mass_fuselage, "[kg]")
-print("Fuselage wetted area", S_f_wet, "[m^2]")
-print("Fuselage mass fraction", Mass_fuselage/MTOM*100, "[%]")
+# #printing results
+# print("===============================")
+# print(n_row, "rows")
+# print(n_SA, "seats abreast")
+# print("D_in [m]:", D_inner)
+# print("D_out [m]:", D_outer)
+# print("skin thickness [m]:", skin_thickness)
+# print("l_tank [m]:", l_tank)
+# print("l_fuselage [m]:", l_f)
+# print("l_nosecone [m]", l_nc)
+# print("l_tailcone [m]", l_tc)
+# print("l_nc/l_f =", l_nc/l_f)
+# print("l_nc/l_f =", l_nc/l_f)
+# print("l_constant cross section [m]", l_constant_cross_section)
+# print("tail cone angle [deg]", theta_tc)
+# print("l_PAX [m]", l_pax)
+# print("l_cabin [m]", l_cabin)
+# print("l_tail [m]", l_t)
+# print("===================================================")
+# print("Fineness Ratio: ", fineness_ratio)
+# print("Weight estimation fuselage is", Mass_fuselage, "[kg]")
+# print("Fuselage wetted area", S_f_wet, "[m^2]")
+# print("Fuselage mass fraction", Mass_fuselage/MTOM*100, "[%]")
 
 
