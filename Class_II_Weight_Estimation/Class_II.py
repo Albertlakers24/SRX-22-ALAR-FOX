@@ -68,7 +68,7 @@ W_hor_tail = W_hor_tail_lbs * lbs_kg
 
 #Vertical Tail
 #Ht/Hv
-H_t_H_v = 1.0
+H_t_H_v = 1.
 #S_vt
 S_vt = Sv/(ft_m)**2
 #taper_vt
