@@ -16,10 +16,10 @@ ROC = 4                         #Change with CS25 and literature or Requirement 
 ROC_V = 0.024#0.0032
 ROC_V_OEI = 0.0024                     #Change with CS25 and literature or Requirement (Climb Gradient) ROC/V
 V_approach_stall = V_approach /1.23  #CS 25 requirement of V_stall_land = V_approach / 1.23
-beta_V_app_fc = 0.96
-beta_s_land_fc = 0.96
-beta_cruise_fc  = 0.98
-beta_ROC_fc = 0.98
+beta_V_app_fc = 0.97
+beta_s_land_fc = 0.97
+beta_cruise_fc  = 0.985
+beta_ROC_fc = 0.985
 beta_V_app_hc = 0.94
 beta_s_land_hc = 0.94
 beta_cruise_hc  = 0.97
