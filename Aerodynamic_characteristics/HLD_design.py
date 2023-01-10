@@ -40,4 +40,3 @@ CL_over_Cl_ratio = 0.88
 #Design Options
 flaps = ["single slotted","double slotted","fowler"]
 leading = ["None","LE_flap","slat"]
-
