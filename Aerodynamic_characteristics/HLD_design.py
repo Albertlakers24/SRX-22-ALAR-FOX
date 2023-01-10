@@ -38,4 +38,3 @@ def HLD_LE_deltaClmax(flap_type,c_prime_over_c):
 CL_max_req = 1.1 * CL_max_landing
 Cl_max_airfoil = 1.2
 CL_over_Cl_ratio = 0.88
-#Points
