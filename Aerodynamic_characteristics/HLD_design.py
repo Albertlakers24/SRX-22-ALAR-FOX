@@ -1,7 +1,6 @@
 import numpy as np
 from Constants import *
-from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
-from Initial_Aircraft_Sizing.Wing_planform import Sw
+from Wing_lift_estimation import Calculate_wingsweep
 def HLD_TE_deltaClmax(Cf,df,flap_type):
     if flap_type == "single slotted":
         delta_c = 0      #Torenbeek page 533
@@ -24,4 +23,20 @@ def HLD_TE_deltaClmax(Cf,df,flap_type):
 
     return delta_clmax_TE,c_prime_over_c
 
-#def HLD_TE_deltaClmax(Cf, df, flap_type):
+def HLD_LE_deltaClmax(flap_type,c_prime_over_c):
+    if flap_type == "LE_flap":
+        delta_clmax_LE = 0.3
+    if flap_type == "slat":
+        delta_clmax_LE = 0.4 * c_prime_over_c
+    else:
+        delta_clmax_LE = 0
+    return delta_clmax_LE
+
+#Lift Data
+CL_max_req = 1.1 * CL_max_landing
+Cl_max_airfoil = 1.2
+CL_over_Cl_ratio = 0.88
+
+#Design Options
+flaps = ["single slotted","double slotted","fowler"]
+leading = ["None","LE_flap","slat"]

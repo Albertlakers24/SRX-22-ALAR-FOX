@@ -7,7 +7,7 @@ from Initial_Aircraft_Sizing.Wing_planform import b, c_mac
 
 # Density
 rho = 0 # just to define rho, this NEVER changes
-density = 2 # 0 @ sea-level, 1 @ cruise, else @ loiter
+density = 0 # 0 @ sea-level, 1 @ cruise, else @ loiter
 
 if density == 0:
     rho = rho_0 # density at sea level
@@ -16,7 +16,7 @@ elif density == 1:
 else:
     rho = 0.663838
 
-#MANEUVER DIAGRAM DESIGN
+#----------------------------------------MANEUVER DIAGRAM DESIGN-------------------------------------------------------
 #Max lift coefficient
 if density == 0:
     Clmax = CL_max_landing
@@ -142,7 +142,7 @@ ax.spines['bottom'].set_position(('data',0))
 plt.grid()
 plt.show()
 
-#GUST DIAGRAM DESIGN
+#------------------------------------------GUST DIAGRAM DESIGN---------------------------------------------------------
 #Constants
 CL_alpha = 5.03
 chord = b / A
@@ -182,23 +182,12 @@ for i in np.arange(0,2*H+1,1):
     U = (U_ds/2)*(1-np.cos((np.pi*i/H)))
     U_list.append(U)
 
-H_9 = 9
-U_ds9 = U_ref_C * F_g * (H_9/107)**(1/6)
-H_33 = 33.5
-U_ds33 = U_ref_C * F_g * (H_33/107)**(1/6)
-H_58 = 58
-U_ds58 = U_ref_C * F_g * (H_58/107)**(1/6)
-H_82 = 82.5
-U_ds82 = U_ref_C * F_g * (H_82/107)**(1/6)
-H_107 = 107
-U_ds107 = U_ref_C * F_g * (H_107/107)**(1/6)
-
 #Design speed for max. gust intensity
-mu = (2* W_S_design) / (rho * c_mac * CL_alpha * g)
+mu = (2* W_S_oem) / (rho * c_mac * CL_alpha * g)
 K_G = (0.88 * mu) / (5.3 + mu)
-V_B = V_S * np.sqrt(1 + ((K_G * rho_0 * U_ref_C * V_C * CL_alpha)/(2* W_S_design)))
+V_B = V_S * np.sqrt(1 + ((K_G * rho_0 * U_ref_C * V_C * CL_alpha)/(2* W_S_oem)))
 
-V = V_D * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
+V = V_B * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
 lmbda = (2 * W_S_design) / (CL_alpha * rho * V * g)
 
 U_ref_V = U_ref_D # CHANGE BASED ON VELOCITY
@@ -207,9 +196,7 @@ dH = 1
 max_gust = []
 while H <= 107:
     omega = (np.pi * V) / H
-    #print("omega =", omega)
     U_ds = U_ref_V * F_g * (H/107)**(1/6)
-    #print("U_ds =", U_ds)
     t = 0.00005
     dt = 0.005
     ns = []
@@ -225,9 +212,5 @@ while H <= 107:
     max_gust.append(nmax)
     #print(*nsmax, sep = "\\n")
 
-Hlen = range(9,108)
-
-print(np.argmax(max_gust))
-
-plt.plot(Hlen, max_gust)
-plt.show()
+print("distance at max gust:", np.argmax(max_gust))
+print("max deltaN:", max(max_gust))
