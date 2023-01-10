@@ -21,6 +21,9 @@ def mf_mMTO(range):
     elif range == 500:
         R_lost = 1 / 0.7 * (CL_CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
         R = (R_norm / 2 + R_lost) * (1 + f_con)  # m
+    elif range == 1000:
+        R_lost = 1 / 0.7 * (CL_CD) * (h_cruise + (V_cruise ** 2 / (2 * g)))  # m
+        R = (R_norm + R_lost) * (1 + f_con)  # m
     mf_mMTO_fraction = 1 - np.exp((-1 * R) / (total_eff * (e_lh2 / g) * CL_CD))
     return mf_mMTO_fraction
 
@@ -43,10 +46,12 @@ def fuel_mass(oew_ratio, range):
         m_f = mtom(oew_ratio) * (mf_mMTO(range) * (1 + m_res)) * (1 + m_f_extra)
     elif range == 500:
         m_f = mtom(oew_ratio) * (mf_mMTO(range)) * (1 + m_f_extra)
+    elif range == 1000:
+        m_f = mtom(oew_ratio) * (mf_mMTO(range)) * (1 + m_f_extra)
     return m_f
 m_f = fuel_mass(oew_mtom, "full")
 oem = oew_mtom * m_mto + m_f * 1.4
 m_zf = m_mto - m_f
 #print("MTOM:", m_mto)
 #print("OEM:", oem)
-#print("Fuel mass:", m_f)
+# print("Fuel mass:", m_f)
