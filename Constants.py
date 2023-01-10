@@ -65,6 +65,7 @@ CL_max_landing = 2.2                # -
 CL_max_loiter = 1.5                 # -
 #Calculation Constants
 OEW_cg = 11.3                       #m
+H2_power_density = 120              #MJ/kg
 
 #General Functions
 def ISA_calculator(h,dt):

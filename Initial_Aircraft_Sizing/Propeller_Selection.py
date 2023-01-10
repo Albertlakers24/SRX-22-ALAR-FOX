@@ -169,16 +169,3 @@ plt.ylabel("RPM of small propellers during take-off")
 plt.show()
 """
 
-#THRUST AND POWER CALCULATIONS FOR PROPELLERS
-S_big_prop = np.pi/4 * big_prop_diameter**2
-CL_here = 0.72
-CD_here = CL_here / max_CL_CD
-#V_takeoff can be used as V_0
-def V_e(ROC, V, W):
-    flight_angle = np.arcsin(ROC/V)
-    D = rho_5000 * CD_here * V_takeoff**2 * Sw /2
-    T = W * np.sin(flight_angle) + D
-    Ve = np.sqrt(T / (0.5 * rho_5000 * S_big_prop) + V_takeoff**2)
-    return Ve
-
-print(V_e(4, V_takeoff, m_mto))
