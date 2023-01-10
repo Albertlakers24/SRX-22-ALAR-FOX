@@ -75,4 +75,4 @@ print('vpartII', v_partII)
 print('vpartIII', v_partIII)
 
 #C.G. location starting from the forward part of the tank
-
+cg_tank = spartIII*r_flat_sphere
