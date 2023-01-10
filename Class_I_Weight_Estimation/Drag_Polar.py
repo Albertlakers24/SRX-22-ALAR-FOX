@@ -4,7 +4,7 @@ from Constants import *
 #prop_type = 1   # 1 for LH2 (both combustion & fuel cell), 2 for Electric Hybrid (Both configurations)
 # INPUTS from Class I
 ##Cdo calculations
-A = 12                           #Aspect Ratio (12-14) #Reference to ATR 72
+A = A                         #Aspect Ratio (12-14) #Reference to ATR 72
 e_cruise = 1/(np.pi*A*Psi+(1/phi))
 CD0_Cruise = Cfe * Swet_S
 

@@ -187,8 +187,8 @@ mu = (2* W_S_oem) / (rho * c_mac * CL_alpha * g)
 K_G = (0.88 * mu) / (5.3 + mu)
 V_B = V_S * np.sqrt(1 + ((K_G * rho_0 * U_ref_C * V_C * CL_alpha)/(2* W_S_oem)))
 
-V = V_B * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
-lmbda = (2 * W_S_design) / (CL_alpha * rho * V * g)
+V = V_D * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
+lmbda = (2 * W_S_oem) / (CL_alpha * rho * V * g)
 
 U_ref_V = U_ref_D # CHANGE BASED ON VELOCITY
 H = 9
@@ -210,7 +210,68 @@ while H <= 107:
     H_list.append(H)
     H = H + dH
     max_gust.append(nmax)
-    #print(*nsmax, sep = "\\n")
 
-print("distance at max gust:", np.argmax(max_gust))
-print("max deltaN:", max(max_gust))
+print("delta n =", max_gust[22])
+
+
+
+'''
+#Velocity values at OEM
+V_B_max_dn = 1.3285
+V_C_max_dn = 1.9775
+V_D_max_dn = 1.1094
+'''
+
+# Coordinates for Gust Diagram
+pt1 = [0, 1]
+pt2 = [95.04, 1+1.3285]
+pt3 = [141.47, 1+1.9775]
+pt4 = [158.8, 1+1.1094]
+pt5 = [158.8, 1-1.109]
+pt6 = [141.47, 1-1.977]
+pt7 = [95.04, 1-1.329]
+pt8 = [0, 1]
+
+
+x_values = [pt1[0], pt2[0], pt3[0], pt4[0], pt5[0], pt6[0], pt7[0], pt8[0]]
+y_values = [pt1[1], pt2[1], pt3[1], pt4[1], pt5[1], pt6[1], pt7[1], pt8[1]]
+plt.plot(x_values, y_values, 'bo', linestyle="--")
+plt.axhline(y = 1, color = 'r', linestyle = '-')
+plt.show()
+
+#------------------------------FINAL COMBINED PLOT---------------------------------------------------------------------
+fig, ax = plt.subplots()
+plt.tick_params(labelbottom = False)
+plt.plot(V_A, n_A_list, "black")
+plt.plot(V_H, n_H_list, "black")
+#plt.plot(V_flaps, n_flaps_list, "black")
+#plt.plot([V_max_flaps, V_intersect], [2, 2], "black", marker="o")
+plt.plot(x_values_AD, y_values_AD, "black", marker="o")
+plt.plot(x_values_FE, y_values_FE, 'black', marker="o")
+plt.plot(x_values_DE, y_values_DE, "black", marker="o")
+plt.plot([point_H[0], point_F[0]], [point_H[1], point_F[1]], "black", marker="o")
+plt.plot([0, V_D], [1, 1], 'black', linestyle="--")
+plt.plot([V_A_fin, point_A[0]], [0, point_A[1]], 'black', linestyle="--")
+plt.plot([V_S, V_S], [0, 1], "black", linestyle="--")
+plt.plot([point_F[0], V_C], [point_F[1], 0], "black", linestyle="--")
+plt.plot([0,0],[0,0],"black",marker="o")
+plt.plot(x_values, y_values, 'bo', linestyle="-")
+plt.text(0-0.015, 0+0.25, "")
+plt.text(point_A[0]-2, point_A[1]+0.2, "A")
+plt.text(point_D[0]-2, point_D[1]+0.25, "D")
+plt.text(point_E[0]+2, point_E[1]+0.25, "E")
+plt.text(point_F[0]-1, point_F[1]-0.25, "F")
+plt.text(point_H[0]-2, point_H[1]-0.25, "H")
+plt.text(V_S-2,0-0.2, r'$V_{S}$')
+plt.text(V_A_fin-2,0-0.2, r'$V_{A}$')
+plt.text(V_C-2,0+0.1, r'$V_{C}$')
+plt.text(V_D-2,0-0.25, r'$V_{D}$')
+plt.xlim(left=0, right=(V_D+20))
+plt.ylim(top=3,bottom=-1.5)
+# plt.xlabel("V")
+ax.set_xlabel("V", weight = "bold")
+ax.xaxis.set_label_coords(0.96, 0.3)
+plt.ylabel("n", weight = "bold")
+ax.spines['bottom'].set_position(('data',0))
+plt.grid()
+plt.show()

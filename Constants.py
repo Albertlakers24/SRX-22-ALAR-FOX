@@ -73,3 +73,6 @@ def ISA_calculator(h,dt):
     rho = p / (specific_gas_constant*T)
     a = np.sqrt(gamma * T * specific_gas_constant)
     return T, p, rho, a
+
+T_5000, p_5000, rho_5000, a_5000 = ISA_calculator(takeoff_critical, 10)
+T_cruise, p_cruise, rho_cruise, a_cruise = ISA_calculator(V_cruise, 0)
