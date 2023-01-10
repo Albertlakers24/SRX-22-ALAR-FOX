@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from Constants import *
 from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
 from Initial_Aircraft_Sizing.Empennage_Design import l_h, Sh, Ah
-from Initial_Aircraft_Sizing.Wing_planform import Sw, c_mac, M_cruise
+from Initial_Aircraft_Sizing.Wing_planform import Sw, c_mac, M_cruise, taper
 from Initial_Aircraft_Sizing.cg import x_wing, x_cg_LEMAC
 
 print("-------------------RESULTS FROM CONTROL/STABILITY------------------")
@@ -23,20 +23,18 @@ Sh=Sh                                                   #m^2
 Ah = Ah                                                 #-
 Aw = A                                                  #-
 M = M_cruise                                            #m/s
-Sweep_halfc_h = 24*np.pi/180                            #radians -> GABRIEL
-Sweep_halfc_w = 22*np.pi/180                            #radians -> GABRIEL
+Sweep_halfc_h = 2.05*np.pi/180                          #radians -> GABRIEL
+Sweep_halfc_w = 1.81*np.pi/180                          #radians -> GABRIEL
 alpha_0 = 2*np.pi/180                                   #radians -> MEGHA
+
+print("taper=", taper)
+print("AR", Aw)
+print("M_cruise", M_cruise)
 
 ##Variables
 Vh_V = 1                                                #- (for T-tail)
 eta = 0.95                                              #-
 CNh_delta = 0.04                                        #deg^-1 assumed from the graph (slide 19)
-
-##Dummy Variables
-Cmac = 0.12             #- -> MEGHA
-i_h = 2*np.pi/180       #radians to minimize parasite drag -> TO BE DETERMINED
-Cmalpha =-0.05          #deg^-1 ->
-xnfix = 1               #m
 
 ##Graph Arange velocities and angle of attack
 V_tailload = np.arange(V_cruise-V_cruise*0.7,V_cruise+V_cruise*0.4)         #m/s
@@ -44,17 +42,24 @@ V_controlforce = np.arange(V_cruise-V_cruise*0.7,V_cruise+V_cruise*0.4)     #m/s
 V_trim = np.arange(V_cruise-V_cruise*0.7,V_cruise+V_cruise*0.4)             #m/s
 alpha_trim = np.arange(0,10, 0.01)                                          #degrees
 
+##Dummy Variables
+Cmac = 0.12             #- -> MEGHA
+i_h = -2*np.pi/180      #radians to minimize parasite drag -> TO BE DETERMINED
+Cmalpha =-0.05          #deg^-1 ->
+xnfix = 1               #m
 
 ##Dummy Variables ControlForce calculations
-fraction = 2.25     #rad m^-1
-Se = 3              #m^2
-MACe = 0.4          #m
-Ch_delta = -0.4     #rad^-1
-xnfree = 0.483*MAC  #m
-delta_te = 0.18127  #rad            have to be re-iterated!
-delta_te0 =0        #rad
+fraction = 2.25     #rad m^-1       0 to 20
+Se = Sh*0.3         #m^2            look at tail surface area
+MACe = 0.4          #m              look at tail MAC
+Ch_delta = -0.2     #rad^-1         -0.3 to -0.1
+xnfree = 0.483*MAC  #m              -> DOROTHEA
 Ch_delta_t = -0.125 #rad^-1
-Vtrim = 100         #m/s
+Vtrim = 100         #m/s            SEE GRAPH
+CNh_alphafree = 1   #
+Cmdelta = 1         #
+fraction2 = 1       #-              ->DOROTHEA
+
 
 def CN_alpha(A,Sweep_halfc):
     """
@@ -79,7 +84,7 @@ def Cm0():
     :param Vh_V: fixed at 1 for T-tail (-)
     :return: Cm0 (always positive) (-)
     """
-    Cm0 = Cmac - CN_alpha(A = Ah, Sweep_halfc=Sweep_halfc_h)*(alpha_0-i_h)*(Vh_V**2)*(Sh*lh/(S*MAC))
+    Cm0 = Cmac - CN_alpha(A = Ah, Sweep_halfc=Sweep_halfc_h)*(alpha_0+i_h)*(Vh_V**2)*(Sh*lh/(S*MAC))
     return Cm0
 
 print("Cm0=", Cm0())
@@ -152,17 +157,21 @@ def CNh():
     CNh = TailLoad(V = V_cruise)/(0.5*rho*V_cruise**2*S)
     return CNh
 
-def ControlForce(V):
+def trimtab_0():
+
+    CNh_alphafree = CN_alpha(A = Ah, Sweep_halfc=Sweep_halfc_h) - CNh_delta*fraction2
+    delta_te0 = ((Ch_delta /Cmdelta)*Cmac) + ((Ch_delta/CNh_delta)*CNh_alphafree*(alpha_0-i_h)) / Ch_delta_t
+    return delta_te0
+
+def ControlForce(V, delta_te):
     """
     Control Curve, used for elevator control force stability (dFe/dV)Fe=0 >0
     :param V: range from 0 to XXXX (m/s)
     :return: Tail Load (N)
     """
 
-    delta_te0 = ()/Ch_delta_t
-
     F_velocity_independent = (MTOW/S)*(Ch_delta/Cmdelta_e())*((xcg-xnfree)/MAC)
-    F_velocity_dependent= 0.5*rho*V**2*Ch_delta_t*(delta_te-delta_te0)
+    F_velocity_dependent= 0.5*rho*V**2*Ch_delta_t*(delta_te-trimtab_0())
     a = fraction*Se*MACe*(Vh_V)**2
 
     Fe = a*(F_velocity_independent - F_velocity_dependent)
@@ -194,7 +203,7 @@ if deriv_controlForce() <0:
 else:
     print("Stability for Control force derivative at trim speed = ", deriv_controlForce(), "N/m/s")
 
-
+"""
 plt.plot(V_trim, delta_e(V=V_trim))
 plt.axvline(x=V_cruise, color="black")
 plt.grid(True)
@@ -202,14 +211,14 @@ plt.xlabel("Velocity (m/s)")
 plt.ylabel("Elevator Deflection (radians)")
 plt.title("Elevator Deflection Curve - Stick Fixed")
 plt.legend(["Elevator Deflection", "Vcruise"])
-plt.show()
+#plt.show()
 
 plt.plot(alpha_trim, delta_e_alpha(alpha=alpha_trim*np.pi/180))
 plt.grid(True)
 plt.xlabel("Angle of Attack (degrees)")
 plt.ylabel("Elevator Deflection (radians)")
 plt.title("Elevator Deflection Curve - Stick Fixed")
-plt.show()
+#plt.show()
 
 plt.plot(V_tailload, TailLoad(V = V_tailload, xcg=xcg+0.6))
 plt.plot(V_tailload, TailLoad(V = V_tailload, xcg=xcg))
@@ -219,12 +228,17 @@ plt.xlabel("Velocity (m/s)")
 plt.ylabel("Tail Load (N)")
 plt.title("Tail Load curve for different velocities and cg locations")
 plt.legend(["xcg>xw", "xcg<xw", "Vcruise"])
-plt.show()
+#plt.show()
 
-plt.plot(V_controlforce, ControlForce(V=V_controlforce))
+print("delta_te0 =", trimtab_0())
+
+plt.plot(V_controlforce, ControlForce(V=V_controlforce, delta_te= trimtab_0()-trimtab_0()))
+plt.plot(V_controlforce, ControlForce(V=V_controlforce, delta_te= trimtab_0()))
+plt.plot(V_controlforce, ControlForce(V=V_controlforce, delta_te= 2*trimtab_0()))
 plt.grid(True)
 plt.xlabel("Velocity (m/s)")
 plt.ylabel("Control Force (N)")
 plt.title("Elevator Control Force Curve - Stick Free")
-plt.show()
-
+plt.legend(["delta_te<delta_te0", "delta_te=delta_te0", "delta_te>delta_te0"])
+#plt.show()
+"""
