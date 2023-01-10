@@ -33,9 +33,9 @@ eta = 0.95                                              #-
 CNh_delta = 0.04                                        #deg^-1 assumed from the graph (slide 19)
 
 ##Dummy Variables
-Cmac = 0.12             #-
-i_h = 2*np.pi/180       #radians to minimize parasite drag
-Cmalpha =-0.05          #deg^-1
+Cmac = 0.12             #- -> MEGHA
+i_h = 2*np.pi/180       #radians to minimize parasite drag -> TO BE DETERMINED
+Cmalpha =-0.05          #deg^-1 ->
 xnfix = 1               #m
 
 ##Graph Arange velocities and angle of attack
