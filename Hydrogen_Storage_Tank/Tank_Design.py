@@ -75,4 +75,5 @@ print('vpartII', v_partII)
 print('vpartIII', v_partIII)
 
 #C.G. location starting from the forward part of the tank
-cg_tank = spartIII*r_flat_sphere
+cg_tank = ((s_partIII*r_flat_sphere/2)+(s_partII*(r_flat_sphere+lenght_cyl/2))+(s_partI*(r_flat_sphere+lenght_cyl+Inner_dia/4)))/tank_surface_total
+print('C.G. Tank', cg_tank)
