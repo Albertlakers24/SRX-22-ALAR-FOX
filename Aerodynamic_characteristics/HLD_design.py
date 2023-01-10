@@ -25,6 +25,17 @@ def HLD_TE_deltaClmax(Cf,df,flap_type):
 
     return delta_clmax_TE,c_prime_over_c
 
-#def HLD_TE_deltaClmax(Cf, df, flap_type):
-CL_max_land_design = 1.1 * CL_max_landing
-print(CL_max_land_design)
+def HLD_LE_deltaClmax(flap_type,c_prime_over_c):
+    if flap_type == "LE_flap":
+        delta_clmax_LE = 0.3
+    if flap_type == "slat":
+        delta_clmax_LE = 0.4 * c_prime_over_c
+    else:
+        delta_clmax_LE = 0
+    return delta_clmax_LE
+
+#Lift Data
+CL_max_req = 1.1 * CL_max_landing
+Cl_max_airfoil = 1.2
+CL_over_Cl_ratio = 0.88
+#Points
