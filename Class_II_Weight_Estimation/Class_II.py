@@ -43,7 +43,7 @@ q_lbft2 = q_kgm2*23.73 #kg/m2 to lbs/ft2
 taper = 0.45
 
 #t/c (assumption for now)
-tc = 0.12           #Change maybe??
+tc = 0.18           #Change maybe??
 
 #Ulitimate load = 1.5*limit load factor (assumption for now)
 Lim_load = 4.       #Will change, add link to maneuver load diagram

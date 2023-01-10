@@ -18,7 +18,7 @@ w_galley = 0.914
 l_seat = 0.76      # seat pitch [m]
 
 # Design choices
-n_SA = 3         # Number of seats abreast
+n_SA = 4         # Number of seats abreast
 
 if n_SA == 3:
     n_PAX = 48                  # Number of passengers (46-50)
