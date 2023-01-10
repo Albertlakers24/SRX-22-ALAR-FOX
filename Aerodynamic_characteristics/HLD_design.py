@@ -1,6 +1,7 @@
 import numpy as np
 from Constants import *
-from
+from Wing_lift_estimation import Calculate_wingsweep
+from Initial_Aircraft_Sizing.Wing_planform import Sw
 def HLD_TE_deltaClmax(Cf,df,flap_type):
     if flap_type == "single slotted":
         delta_c = 0      #Torenbeek page 533
@@ -40,4 +41,3 @@ CL_over_Cl_ratio = 0.88
 #Design Options
 flaps = ["single slotted","double slotted","fowler"]
 leading = ["None","LE_flap","slat"]
-
