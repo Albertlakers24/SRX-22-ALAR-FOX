@@ -1,6 +1,7 @@
 import numpy as np
 from Constants import *
 from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import V_approach_stall
 from Initial_Aircraft_Sizing.Wing_planform import Sw
 def HLD_TE_deltaClmax(Cf,df,flap_type):
     if flap_type == "single slotted":
@@ -25,3 +26,5 @@ def HLD_TE_deltaClmax(Cf,df,flap_type):
     return delta_clmax_TE,c_prime_over_c
 
 #def HLD_TE_deltaClmax(Cf, df, flap_type):
+CL_max_land_design = 1.1 * CL_max_landing
+print(CL_max_land_design)
