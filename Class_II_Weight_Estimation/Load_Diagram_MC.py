@@ -1,21 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from Constants import *
-from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto
+from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import m_mto, oem, m_zf, m_f
 from Class_I_Weight_Estimation.Wing_Loading_Diagram import *
-from Initial_Aircraft_Sizing.Wing_planform import b
+from Initial_Aircraft_Sizing.Wing_planform import b, c_mac
 
 # Density
 rho = 0 # just to define rho, this NEVER changes
-density = 1 # 0 @ sea-level, 1 @ cruise, else @ loiter
+density = 0 # 0 @ sea-level, 1 @ cruise, else @ loiter
+
 if density == 0:
     rho = rho_0 # density at sea level
 elif density == 1:
     rho = rho_cruise
 else:
-    rho = rho_loiter # add loiter density to Constants file
+    rho = 0.663838
 
-#MANEUVER DIAGRAM DESIGN
+#----------------------------------------MANEUVER DIAGRAM DESIGN-------------------------------------------------------
 #Max lift coefficient
 if density == 0:
     Clmax = CL_max_landing
@@ -52,8 +53,8 @@ elif density == 1:
     h = h_cruise
     dt = dt_cruise
 else:
-    h = h_loiter # add loiter FL to Constants file
-    dt = dt_loiter # add loiter temp. offset to Constants file
+    h = h_loiter
+    dt = dt_loiter
 
 a = ISA_calculator(h,dt)[3]
 M_C = V_C / a
@@ -92,14 +93,6 @@ for i in np.arange(0, V_max_flaps, 0.1):
     n = (1/2 * CL_max_landing * rho_0) * i**2 / W_S_design #double check if constant rho_0 or not
     n_flaps_list.append(n)
 '''
-
-#PRINT STATEMENTS
-print("n max", n_max)
-print("V_S", V_S)
-print("V_C", V_C)
-print("V_D", V_D)
-print("n min", n_min)
-print("speed of sound", a)
 
 #Graph
 point_F = [V_C, -1]
@@ -148,3 +141,76 @@ plt.ylabel("n", weight = "bold")
 ax.spines['bottom'].set_position(('data',0))
 plt.grid()
 plt.show()
+
+#------------------------------------------GUST DIAGRAM DESIGN---------------------------------------------------------
+#Constants
+CL_alpha = 5.03
+chord = b / A
+S = m_mto * g / W_S_design
+W_S_oem = oem * g / S
+
+#Gust Profile
+if density == 0:
+    U_ref_C = 17.07
+    U_ref_D = U_ref_C / 2
+elif density == 1:
+    U_ref_C = 11.37
+    U_ref_D = U_ref_C / 2
+else:
+    U_ref_C = 12.71
+    U_ref_D = U_ref_C / 2
+
+
+Z_mo = h_cruise
+R1 = beta_s_land_fc
+R2 = m_zf/m_mto
+F_gz = 1 - (Z_mo / 76200)
+F_gm = np.sqrt(R2 * np.tan((np.pi * R1)/4))
+F_g = 0.5 * (F_gz + F_gm)
+H1 = c_mac * 12.5
+H2 = 107
+if H1 < H2:
+    H = H2
+else:
+    H = H1
+
+U_ds = U_ref_C * F_g * (H/107)**(1/6)
+U_list = []
+H_list = []
+for i in np.arange(0,2*H+1,1):
+    H_list.append(i)
+    U = (U_ds/2)*(1-np.cos((np.pi*i/H)))
+    U_list.append(U)
+
+#Design speed for max. gust intensity
+mu = (2* W_S_oem) / (rho * c_mac * CL_alpha * g)
+K_G = (0.88 * mu) / (5.3 + mu)
+V_B = V_S * np.sqrt(1 + ((K_G * rho_0 * U_ref_C * V_C * CL_alpha)/(2* W_S_oem)))
+
+V = V_B * np.sqrt(rho_0/rho) # CHANGE BASED ON VELOCITY
+lmbda = (2 * W_S_design) / (CL_alpha * rho * V * g)
+
+U_ref_V = U_ref_D # CHANGE BASED ON VELOCITY
+H = 9
+dH = 1
+max_gust = []
+while H <= 107:
+    omega = (np.pi * V) / H
+    U_ds = U_ref_V * F_g * (H/107)**(1/6)
+    t = 0.00005
+    dt = 0.005
+    ns = []
+    nsmax = []
+    while t < (2*np.pi)/omega:
+        dn = (U_ds / (2*g))*(omega * np.sin(omega * t)+(1/(1+(omega * lmbda)**(-2)))*((np.exp(-t/lmbda)/lmbda)-(np.cos(omega*t)/lmbda)-(omega*np.sin(omega*t))))
+        ns.append(dn)
+        t = t + dt
+        nmax = max(ns)
+    nsmax.append(nmax)
+    H_list.append(H)
+    H = H + dH
+    max_gust.append(nmax)
+    #print(*nsmax, sep = "\\n")
+
+print("distance at max gust:", np.argmax(max_gust))
+print("max deltaN:", max(max_gust))
