@@ -30,7 +30,8 @@ S_w = S/((ft_m)**2)
 #weight of fuel in wing, lb = 0
 W_fw = 1.
 #aspect ratio
-A = 12.
+#from constants
+
 #Sweep = 0
 Lambda = 0
 #dynamic pressure at cruise lb/ft^2
