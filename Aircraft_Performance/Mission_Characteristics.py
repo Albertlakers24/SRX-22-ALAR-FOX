@@ -34,7 +34,7 @@ V_TAS2_avg = V_TAS_calc(V_IAS2, s_2, s_1)
 V_TAS3_avg = V_TAS_calc(V_IAS3, s_3, s_2)
 V_TAS4_avg = V_TAS_calc(V_IAS4, s_3, s_4)
 V_TAS5_avg = V_TAS_calc(V_IAS5, s_4, s_5)
-print(V_TAS_list)
+# print(V_TAS_list)
 ROC_list = [ROC1, ROC2, ROC3, ROD1, ROD2]
 
 V_x = []
@@ -52,20 +52,19 @@ def t_calc():
         t_list.append(t)
     return t_list
 t_list = t_calc()
-print("times", t_list)
+# print("times", t_list)
 
 total_distance = sum(np.array(V_x) * np.array(t_list))
-print(V_x)
-print(total_distance / 1852)
+# print(total_distance / 1852)
 full_time_climb = t_list[0] + t_list[1] + t_list[2]
 full_time_descent = t_list[3] + t_list[4]
-print(f"Full time of climb: {full_time_climb} s")
-print(f"Full time of descent: {full_time_descent} s")
+# print(f"Full time of climb: {full_time_climb} s")
+# print(f"Full time of descent: {full_time_descent} s")
 cruise_distance = (1000 * 1852 - total_distance)                             #in m
 cruise_time = cruise_distance / V_cruise
-print(f"Cruise time: {cruise_time} s")
+# print(f"Cruise time: {cruise_time} s")
 full_time = full_time_climb + cruise_time + full_time_descent
-print(f"Full time of 1000 nmi mission: {full_time} s")
+# print(f"Full time of 1000 nmi mission: {full_time} s")
 
 fuel_flow = m_f / full_time                                                     #Fuel Flow per second
 # print(fuel_flow)
