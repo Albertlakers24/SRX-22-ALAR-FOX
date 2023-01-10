@@ -1,6 +1,7 @@
 import numpy as np
 from Constants import *
 from Class_I_Weight_Estimation.Class_I_weight_estimation_Fuelcell_FINAL import *
+from Hydrogen_Storage_Tank.Tank_Design import *
 
 cg_start = OEW_cg                                       #OEW center of gravity from nose (m)
 cargo_front = 123                                       #Front cargo position from the nose (m)
@@ -71,9 +72,8 @@ cgs_3, masses_3 = seating("front", [cgs_1[12]], [masses_1[12]])
 cgs_4, masses_4 = seating("back", [cgs_1[12]], [masses_1[12]])
 
 #LOAD FUEL
-len_tank = 2.2
 tank_mass = m_f #*2.4
-cg_tank = x_cabin_start + l_cabin + 0.5 * len_tank
+cg_tank = x_cabin_start + l_cabin + cg_tank
 cg_end, mass_end = cg_shift(cgs_3[12], masses_3[12], cg_tank, tank_mass)
 
 plt.figure()

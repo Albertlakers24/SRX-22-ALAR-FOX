@@ -1,7 +1,7 @@
 import numpy as np
 import scipy as sp
-from Fuselage import l_f, D_outer, S_f_wet, Mass_fuselage, l_nc, w_door_front, l_pax, w_lav, l_tank, prop_choice
-from Wing_planform import M_cruise, a_cruise, V_cruise, c_mac
+from Initial_Aircraft_Sizing.Fuselage import l_f, D_outer, S_f_wet, Mass_fuselage, l_nc, w_door_front, l_pax, w_lav, l_tank, prop_choice
+from Initial_Aircraft_Sizing.Wing_planform import M_cruise, a_cruise, V_cruise, c_mac
 
 # x_cg = Sum(mass * distance)/Sum(distance)
 #Switches
