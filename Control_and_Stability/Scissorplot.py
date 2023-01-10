@@ -61,7 +61,64 @@ x_ac_wf = x_ac_w - ((1.8*b_f * h_f * l_f)/(C_L_alpha_(A-h) * S * c_bar)) + ((0.2
 x_ac_n = kn * 4*(bn * ln)/ S * c_bar * C_L_alpha_(A-h)    #This assumes all 4 propellers are in the same distance from the nose tip
 x_ac = x_ac_wf + x_ac_n
 
+#Here goes the final equation for stability, presented in the form y = m_s x + c_s
 
+m_s = 1/((C_L_alpha_h /C_L_alpha_(A-h))* (1-downwashgrad_w)* l_h/c_bar * 1)
+
+c_s = (x_ac -0.05)*m_s
 
 # C O N T R O L L A B I L I T Y
 
+
+#Calculation of C_L_h
+
+C_L_h = -0.8  #this assumes we will use an adjustable tail (As most commercial airliners do)
+
+#Calculation of C_L_(A-h)
+# This can be approached using the CL for landing conditions
+W_landing
+rho
+V_landing
+
+C_L_(A-h) = 2*W_landing / (rho * V_landing **2 * S)
+
+
+#Calculation of C_m_ac
+
+nac_cont =      #Aproximate from similar aircraft (previous literature/studies)
+
+flap_cont =      #There is an equation but may also be obtained from other aircraft
+
+fus_cont = -1.8 * (1 - 2.5*b_f/l_f)*(np.pi * b_f * h_f * l_f * C_L_0)/(4*S*c_bar * C_L_alpha_(A-h))
+
+C_m_acw = Cm_0airfoil * ((A*np.cos(lambda)**2)/(A + 2*np.cos(lambda)))
+
+
+C_m_ac = C_m_acw + flap_cont + fus_cont + nac_cont
+
+#Here goes the final equation for Controllability, presented in the form y = m_c x + c_c
+
+m_s = 1/((C_L_h /C_L_(A-h))* l_h/c_bar * 1)
+
+c_s = ((c_m_ac / C_L_(A-h)) - x_ac)*m_s
+
+
+
+#Plotting the curves
+
+
+
+
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.linspace(-1,1,100)   #Vary this as you see
+ys = m_s * x + c_s
+plt.plot(x, ys, '-r', label='Stability')
+yc = m_c * x + c_c
+plt.plot(x, yc, 'g', label = 'Controllability')
+plt.title('Scissor Plot')
+plt.xlabel('x', color='#1C2833')
+plt.ylabel('y', color='#1C2833')
+plt.legend(loc='upper left')
+plt.grid()
+plt.show()
