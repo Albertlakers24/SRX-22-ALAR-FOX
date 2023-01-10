@@ -134,8 +134,8 @@ elif propulsion_type == 4:
     W_P_CV_OEI = climb_gradient_constraint(eta_prop, Power_lapse(rho_1524,rho_0), ROC_V_OEI, CD_to_props, CL_max_takeoff, rho_1524, W_S, beta_em,2, 1)
     W_P_TOP = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 2)
     W_P_TOP_OEI = takeoff_constraint(Power_lapse(rho_1524,rho_0), s_takeoff_1524, rho_1524, h2, k_t, 2, 1)
-'''
-plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
+
+'''plt.vlines(W_S_approach,0,100,'b',label="Approach Speed Constraint")
 plt.plot(W_S,W_P_TOP,'g',label = "Takeoff Constraint")
 plt.plot(W_S,W_P_TOP_OEI,'r',label = "Takeoff Constraint (OEI)")
 plt.vlines(W_S_land,0,100,'c',label ="Landing Constraint")
@@ -164,7 +164,7 @@ elif propulsion_type == 2:
     plt.fill_between(W_S, W_P_cruise, 1, color="red", alpha=0.1)
     plt.fill_between(W_S, W_P_CV_OEI, 1, color="red", alpha=0.1)
     plt.fill_between(W_S, W_P_ROC, 1, color="red", alpha=0.1)
-    plt.plot(3560, 0.076, 'o',label = "Design point")
+    plt.plot(3560, 0.07485, 'o',label = "Design point")
 elif propulsion_type == 3:
     plt.title("Hybrid Electric Series")
     plt.fill_between(W_S, W_P_TOP_OEI, 1, color="red", alpha=0.1)
@@ -183,15 +183,15 @@ elif propulsion_type ==4:
     plt.plot(3554, 0.07, 'o',label = "Design point")
 plt.legend(loc = "upper right")
 plt.grid()
-plt.show()
+plt.show()'''
 
-print("Hydrogen Combustion W/S = 3552")
-print("Hydrogen Combustion W/P =  0.0535")
-print("Fuel Cell W/S = 3560")
-print("Fuel Cell W/P = 0.0763 ")
-print("Hybrid Series W/S = 3564")
-print("Hybrid Series W/P =  0.0764")
-print("Hybrid Parallel Series W/S = 3554")
-print("Hybrid Parallel Series W/P = 0.07")'''
-W_P_design = 0.0763
+#print("Hydrogen Combustion W/S = 3552")
+#print("Hydrogen Combustion W/P =  0.0535")
+#print("Fuel Cell W/S = 3560")
+#print("Fuel Cell W/P = 0.0763 ")
+#print("Hybrid Series W/S = 3564")
+#print("Hybrid Series W/P =  0.0764")
+#print("Hybrid Parallel Series W/S = 3554")
+#print("Hybrid Parallel Series W/P = 0.07")'''
+W_P_design = 0.07485
 W_S_design = 3560 #N / m^2
