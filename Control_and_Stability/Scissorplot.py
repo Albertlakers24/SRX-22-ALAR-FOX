@@ -45,8 +45,19 @@ SM = 0.05               #normal value
 xcg_MAC_gear = 0.4      #??
 
 def C_L_alpha(A, lambdahalf):
-    C_L_alpha = 2 * np.pi * A / (2 + np.sqrt(4 + ((A * beta / eta) * (1 + ((np.tan(lambdahalf)) ** 2 / beta ** 2)))))
+    C_L_alpha = 2 * np.pi * A_h / (2 + np.sqrt(4 + ((A_h * beta / eta) * (1 + ((np.tan(lambdahalf)) ** 2 / beta ** 2)))))
     return C_L_alpha
+
+ """
+    (CHECKED)
+    Equation for Lift rate coefficient of the horizontal tail
+    :param A_h: Aspect Ratio (-)
+    :param Sweep_halfc: sweep at half chord (radians)
+    :param M: Mach number (-)
+    :param eta: airfoil efficiency coefficient (always 0.95)
+    :return: C_N_alpha (rad^-1)
+    """
+
 
 def CL_alpha_Ah():
     Snet = S - cr*bf
