@@ -29,13 +29,16 @@ lambda_quarterchord =0   #rad
 SweepLE = 1.81                #degrees at the LE -> GABRIEL
 rho = ISA_calculator(h = h_cruise, dt=dt_cruise)[2]     #kg/m^3
 W_landing = m_MTOW*beta_s_land_fc
+C_L_h_adj = -0.8             #this assumes we will use an adjustable tail (As most commercial airliners do)
+C_L_h_mov = -1              #for a full moving tail
+C_L_h_fix = -0.35*A_h**(1/3)    #fixed
+
 
 ##Dummy Variables
 vt = 5                   #vertical distance between ac of wing and tail
 ln = -10                   #?? m distance of front nacelle to quarter chord
 bn = 3                   #?? m width of nacelle
 l_fn = 10.24             #?? m TBD nose to nacelle ?? - i DONT TRUST GABRIEL1!!!!
-C_L_h = -0.8             #this assumes we will use an adjustable tail (As most commercial airliners do)
 V_landing = V_approach      #or use V_approach_stall
 print("landing weight",W_landing)
 SM = 0.05               #normal value
@@ -95,9 +98,19 @@ ys = m_s * x + c_s
 ys_SM = m_s*x +c_s_SM
 
 #Here goes the final equation for CONTROLLABILITY, presented in the form y = m_c x + c_c
-m_c = 1/((C_L_h /C_L_Ah())* lh/c_bar * 1)
-c_c = ((C_m_AC()/C_L_Ah()) - AC_location())*m_c
-yc = m_c * x + c_c
+def y_c(C_L_h):
+    m_c = 1 / ((C_L_h / C_L_Ah()) * lh / c_bar * (Vh_V ** 2))
+    c_c = ((C_m_AC() / C_L_Ah()) - AC_location()) * m_c
+    yc = m_c * x + c_c
+    return yc
+
+
+
+
+
+
+#cg locations
+
 
 #Plotting the curves
 plt.plot(x, ys, '-r', label='Neutral Stability Line')
