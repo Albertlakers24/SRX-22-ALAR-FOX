@@ -107,15 +107,12 @@ def y_c(C_L_h):
 
 
 
-
-
-#cg locations
-
-
 #Plotting the curves
 plt.plot(x, ys, '-r', label='Neutral Stability Line')
 plt.plot(x,ys_SM, 'g', label="Stability Line")
-plt.plot(x, yc, 'b', label = 'Controllability')
+plt.plot(x, y_c(C_L_h =C_L_h_fix), 'b', label = 'Controllability, for fixed tail')
+plt.plot(x, y_c(C_L_h =C_L_h_adj), 'g', label = 'Controllability, for adjustable tail')
+plt.plot(x, y_c(C_L_h =C_L_h_mov), 'r', label = 'Controllability, for full moving tail')
 plt.axvline(x=xcg_MAC_gear, color="black")
 plt.title('Scissor Plot')
 plt.xlabel('xcg/MAC', color='#1C2833')
